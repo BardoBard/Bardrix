@@ -58,10 +58,10 @@ jobs:
       if: runner.os == 'Windows'
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
       run: >
-        Bardrix_Tests/{{ matrix.build_type }}/Bardrix_Tests.exe
+        {{ matrix.build_type }}/Bardrix_Tests.exe
     
     - name: Run tests
       if: runner.os != 'Windows'
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
       run: >
-        ls -R
+        ./Bardrix_Tests/Bardrix_Tests
