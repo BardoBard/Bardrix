@@ -67,10 +67,13 @@ jobs:
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
 
     - name: Run tests
+      if: runner.os == 'Windows'
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
       run: >
-        if [[ "${{ runner.os }}" == "Windows" ]]; then
-          ./Bardrix_Tests/Bardrix_Tests.exe
-        else
-          ./Bardrix_Tests/Bardrix_Tests
-        fi
+        ./Bardrix_Tests/Bardrix_Tests.exe
+    
+    - name: Run tests
+      if: runner.os != 'Windows'
+      working-directory: ${{ steps.strings.outputs.build-output-dir }}
+      run: >
+        ./Bardrix_Tests/Bardrix_Tests
