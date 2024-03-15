@@ -70,8 +70,7 @@ jobs:
       if: runner.os == 'Windows'
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
       run: >
-        dir
-        Bardrix_Tests/Bardrix_Tests.exe
+        tree
     
     - name: Run tests
       if: runner.os != 'Windows'
