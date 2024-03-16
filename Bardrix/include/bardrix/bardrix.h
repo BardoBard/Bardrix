@@ -4,7 +4,9 @@
 
 #pragma once
 
-class bardrix {
-public:
-    static void print();
-};
+#include <type_traits>
+#include <ostream>
+#include <cmath>
+
+#define NODISCARD [[nodiscard]]
+#define INLINE inline

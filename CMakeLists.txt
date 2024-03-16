@@ -1,13 +1,19 @@
 cmake_minimum_required(VERSION 3.27)
 project(Bardrix)
-
-option(BARDRIX_BUILD_TESTS "Build test programs" OFF)
 set(BARDRIX_VERSION 0.0.1)
+
+# Set C++ standard
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# Options
+option(BARDRIX_BUILD_TESTS "Build test programs" OFF)
 
 # Add Bardrix library
 add_subdirectory(Bardrix)
 
-# Add BardrixTest if BARDRIX_BUILD_TESTS is set
-if (BARDRIX_BUILD_TESTS)
+# Add BardrixTest if Bardrix is the project
+if (BARDRIX_BUILD_TESTS OR
+        PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
     add_subdirectory(Bardrix_Tests)
-endif()
+endif ()
