@@ -14,17 +14,18 @@
         <!-- Optional elements -->
         <license type="file">LICENSE.txt</license>
         <readme>README.md</readme>
+        <icon>Docs\Images\bardio_icon.png</icon>
 
         <tags>math raytracing educational</tags>
         <releaseNotes>$ReleaseNotes$</releaseNotes>
     </metadata>
     <files>
-        <file src="Docs\*" target="Docs\"/>
-        <file src="README.md" target=""/>
-        <file src="LICENSE.txt" target="" />
+        <file src="..\Docs\**\*" target="Docs\"/>
+        <file src="..\README.md" target=""/>
+        <file src="..\LICENSE.txt" target="" />
 
-        <file src="bardrix\include\**\*.*" target="build\native\include\"/>
-        <file src="bardrix\src\**\*.*" target="build\native\src\"/>
+        <file src="..\Bardrix\include\**\*.*" target="build\native\include\"/>
+        <file src="..\Bardrix\src\**\*.*" target="build\native\src\"/>
         <file src="Bardio.Bardrix.targets" target="build\native\"/>
     </files>
 </package>
