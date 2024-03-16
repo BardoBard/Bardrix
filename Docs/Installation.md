@@ -32,7 +32,7 @@ that supports CMake, such as Visual Studio, CLion, or QtCreator.
 You can add the project as a submodule to your project by running the following command:
 
 ```bash
-git submodule add https://github.com/BardoBard/Bardrix.git
+git submodule add https://github.com/BardoBard/Bardrix.git "Bardrix"
 ```
 
 Then we can include the project in our CMakeLists.txt file:
