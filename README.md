@@ -7,5 +7,13 @@
 
 # Bardrix
 
-Bardrix is a native C++ nuget package that includes useful utilities and mathematical functions for C++ raytracing applications. \
-Besides the source it provides extensive documentation and examples for students to learn about raytracing, which is the goal of this project.
+![MSVC](https://img.shields.io/github/actions/workflow/status/bardobard/bardrix/CMake-Build-And-Test-On-Multiple-Platforms.yml?branch=master&event=push&label=MSVC)
+![clang](https://img.shields.io/github/actions/workflow/status/bardobard/bardrix/CMake-Build-And-Test-On-Multiple-Platforms.yml?branch=master&event=push&label=clang)
+![gcc](https://img.shields.io/github/actions/workflow/status/bardobard/bardrix/CMake-Build-And-Test-On-Multiple-Platforms.yml?branch=master&event=push&label=gcc)
+
+Bardrix is a native C++ nuget package that includes useful utilities and mathematical functions for C++ raytracing
+applications. \
+Besides the source it provides extensive documentation and examples for students to learn about raytracing, which is the
+goal of this project.
+
+See [here](Docs/Installation.md) for an installation guide.

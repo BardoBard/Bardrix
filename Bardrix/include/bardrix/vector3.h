@@ -2,6 +2,8 @@
 // Created by Bard on 14/03/2024.
 //
 
+#pragma once
+
 #include <bardrix/bardrix.h>
 #include <bardrix/dimension3.h>
 

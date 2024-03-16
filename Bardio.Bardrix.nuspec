@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+    <metadata>
+        <title>Bardrix - A Math Library</title>
+        <projectUrl>https://github.com/BardoBard/Bardrix/</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+
+        <!-- Required elements-->
+        <id>Bardio.Bardrix</id>
+        <version>$Version$</version>
+        <authors>Bardio</authors>
+        <description>Bardrix is a math library mainly used for raytracing.</description>
+
+        <!-- Optional elements -->
+        <license type="file">LICENSE.txt</license>
+        <readme>README.md</readme>
+
+        <tags>math raytracing educational</tags>
+        <releaseNotes>$ReleaseNotes$</releaseNotes>
+    </metadata>
+    <files>
+        <file src="Docs\*" target="Docs\"/>
+        <file src="README.md" target=""/>
+        <file src="LICENSE.txt" target="" />
+
+        <file src="bardrix\include\**\*.*" target="build\native\include\"/>
+        <file src="bardrix\src\**\*.*" target="build\native\src\"/>
+        <file src="Bardio.Bardrix.targets" target="build\native\"/>
+    </files>
+</package>
