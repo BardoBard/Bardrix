@@ -15,3 +15,5 @@ Bardrix is a native C++ nuget package that includes useful utilities and mathema
 applications. \
 Besides the source it provides extensive documentation and examples for students to learn about raytracing, which is the
 goal of this project.
+
+See [here](Docs/Installation.md) for an installation guide.
