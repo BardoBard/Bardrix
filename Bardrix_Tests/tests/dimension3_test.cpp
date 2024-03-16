@@ -18,7 +18,7 @@ public:
 };
 
 /// \brief Test the addition of two dimension3, using the + operator
-TEST(dimension3, add_test) {
+TEST(dimension3, add) {
     dim3_test dim3{1, 2, 3};
     dim3_test dim3_positive{4, 5, 6};
 
@@ -38,9 +38,6 @@ TEST(dimension3, add_scalar) {
     ASSERT_EQ(dim3_result, dim3_test(3, 4, 5));
     ASSERT_EQ(dim3_result_inverse, dim3_test(3, 4, 5));
 }
-
-//(?!:dimension3.*?)+(\w+)_test where not dim3_test
-// answer: (
 
 /// \brief Test the degenerate cases of the addition of a dimension3 by a scalar, using the + operator
 TEST(dimension3, add_degenerate) {
