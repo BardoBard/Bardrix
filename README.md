@@ -2,8 +2,8 @@
 ![license](https://img.shields.io/github/license/Bardobard/Bardrix.svg)
 [![issues](https://img.shields.io/github/issues/bardobard/Bardrix.svg)](https://github.com/bardobard/Bardrix/issues)
 
-[![nuget](https://img.shields.io/nuget/v/Bardrix.svg)](https://www.nuget.org/packages/Bardrix/)
-[![nuget-downloads](https://img.shields.io/nuget/dt/Bardrix.svg)](https://www.nuget.org/packages/Bardrix/)
+[![nuget](https://img.shields.io/nuget/v/Bardio.Bardrix.svg)](https://www.nuget.org/packages/Bardio.Bardrix/)
+[![nuget-downloads](https://img.shields.io/nuget/dt/Bardio.Bardrix.svg)](https://www.nuget.org/packages/Bardio.Bardrix/)
 
 # Bardrix
 
