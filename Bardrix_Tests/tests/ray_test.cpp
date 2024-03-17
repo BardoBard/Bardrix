@@ -9,7 +9,7 @@ TEST(ray, constructor) {
     bardrix::ray r;
     EXPECT_EQ(r.get_origin(), bardrix::point3());
     EXPECT_EQ(r.get_direction(), bardrix::vector3(0, 0, 1));
-    EXPECT_EQ(r.get_direction().length(), 1);
+    EXPECT_DOUBLE_EQ(r.get_direction().length(), 1);
     EXPECT_EQ(r.get_length(), 1);
 }
 
@@ -18,7 +18,7 @@ TEST(ray, constructor_with_values) {
     bardrix::ray r(bardrix::point3(1, 2, 3), bardrix::vector3(4, 5, 6));
     EXPECT_EQ(r.get_origin(), bardrix::point3(1, 2, 3));
     EXPECT_EQ(r.get_direction(), bardrix::vector3(4, 5, 6).normalize());
-    EXPECT_EQ(r.get_direction().length(), 1);
+    EXPECT_DOUBLE_EQ(r.get_direction().length(), 1);
     EXPECT_EQ(r.get_length(), bardrix::vector3(4, 5, 6).length());
 }
 
@@ -27,7 +27,7 @@ TEST(ray, constructor_with_values_and_length) {
     bardrix::ray r(bardrix::point3(1, 2, 3), bardrix::vector3(4, 5, 6), 7);
     EXPECT_EQ(r.get_origin(), bardrix::point3(1, 2, 3));
     EXPECT_EQ(r.get_direction(), bardrix::vector3(4, 5, 6).normalize());
-    EXPECT_EQ(r.get_direction().length(), 1);
+    EXPECT_DOUBLE_EQ(r.get_direction().length(), 1);
     EXPECT_EQ(r.get_length(), 7);
 }
 
