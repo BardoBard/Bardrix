@@ -25,11 +25,19 @@ namespace bardrix {
     }
 
     point3 point3::midpoint(const point3& point3) const noexcept {
-        return {(x + point3.x) / 2, (y + point3.y) / 2, (z + point3.z) / 2};
+        return { (x + point3.x) / 2, (y + point3.y) / 2, (z + point3.z) / 2 };
     }
 
     vector3 point3::vector_to(const point3& point3) const noexcept {
-        return {point3.x - x, point3.y - y, point3.z - z};
+        return { point3.x - x, point3.y - y, point3.z - z };
+    }
+
+    point3 point3::operator+(const vector3& vector3) const noexcept {
+        point3 copy = *this;
+        copy.x += vector3.x;
+        copy.y += vector3.y;
+        copy.z += vector3.z;
+        return copy;
     }
 
     std::ostream& point3::print(std::ostream& os) const {
