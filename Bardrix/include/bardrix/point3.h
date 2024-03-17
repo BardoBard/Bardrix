@@ -46,8 +46,8 @@ namespace bardrix {
         NODISCARD vector3 vector_to(const point3& point3) const noexcept;
 
         /// \brief Add a vector to a point
-        /// \param vector3 The vector
-        /// \return The point
+        /// \param vector3 The vector to add
+        /// \return The point with the vector added
         NODISCARD point3 operator+(const vector3& vector3) const noexcept;
 
         /// \brief Print the point to an output stream

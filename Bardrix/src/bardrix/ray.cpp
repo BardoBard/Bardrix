@@ -16,13 +16,23 @@ namespace bardrix {
 
     const point3& ray::get_origin() const noexcept { return origin_; };
 
+    void ray::set_origin(const point3& origin) noexcept { origin_ = origin; }
+
     const vector3& ray::get_direction() const noexcept { return direction_; }
+
+    void ray::set_direction(const vector3& direction) {
+        direction_ = direction.normalize();
+    }
 
     double ray::get_length() const noexcept { return length_; }
 
-    point3 ray::point_at(const double distance) const noexcept { return origin_ + direction_ * distance; }
+    void ray::set_length(double length) noexcept {
+        length_ = (length < 0) ? 0 : length;
+    }
 
-    point3 ray::end() const noexcept { return point_at(length_); }
+    point3 ray::get_end() const noexcept { return point_at(length_); }
+
+    point3 ray::point_at(const double distance) const noexcept { return origin_ + direction_ * distance; }
 
     std::ostream& ray::print(std::ostream& os) const {
         return os << "Origin: " << origin_ << ", Direction: " << direction_ << ", Length: " << length_;
