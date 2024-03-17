@@ -73,7 +73,7 @@ TEST(ray, set_direction) {
     bardrix::ray r;
     r.set_direction(bardrix::vector3(-4, 5, -6));
     EXPECT_EQ(r.get_direction(), bardrix::vector3(-4, 5, -6).normalize());
-    EXPECT_EQ(r.get_direction().length(), 1);
+    EXPECT_DOUBLE_EQ(r.get_direction().length(), 1);
 }
 
 /// \brief Test the set direction method with a zero vector
