@@ -2,7 +2,6 @@
 // Created by Bard on 14/03/2024.
 //
 
-#include <bardrix/bardrix.h>
 #include <bardrix/vector3.h>
 
 namespace bardrix {

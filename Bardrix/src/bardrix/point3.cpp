@@ -2,7 +2,6 @@
 // Created by Bard on 14/03/2024.
 //
 
-#include <bardrix/dimension3.h>
 #include <bardrix/point3.h>
 
 namespace bardrix {

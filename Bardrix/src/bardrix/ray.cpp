@@ -4,8 +4,6 @@
 
 #include <bardrix/ray.h>
 
-#include <utility>
-
 namespace bardrix {
 
     ray::ray() : ray(point3(), vector3(0, 0, 1), 1) {}

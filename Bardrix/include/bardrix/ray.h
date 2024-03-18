@@ -29,13 +29,13 @@ namespace bardrix {
         ray();
 
         /// \brief Constructor for ray, initializes position and direction
-        /// \throws std::invalid_argument If the length of the vector is 0
+        /// \throws std::invalid_argument If the length of the direction is 0
         /// \param position The position of the ray
         /// \param direction The direction of the ray, it'll be normalized
         ray(const point3& position, const vector3& direction);
 
         /// \brief Constructor for ray, initializes position, direction and length
-        /// \throws std::invalid_argument If the length of the vector is 0
+        /// \throws std::invalid_argument If the length of the direction is 0
         /// \param position The position of the ray
         /// \param direction The direction of the ray, it'll be normalized
         /// \param length The length of the ray
@@ -46,7 +46,7 @@ namespace bardrix {
         NODISCARD const vector3& get_direction() const noexcept;
 
         /// \brief Set the direction of the ray, direction cannot have length of 0
-        /// \throws std::invalid_argument If the length of the vector is 0
+        /// \throws std::invalid_argument If the length of the direction is 0
         /// \param direction The new direction of the ray
         void set_direction(const vector3& direction);
 
