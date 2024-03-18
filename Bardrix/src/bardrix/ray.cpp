@@ -37,7 +37,7 @@ namespace bardrix {
     }
 
     std::ostream& ray::print(std::ostream& os) const {
-        return os << "Origin: " << position << ", Direction: " << direction_ << ", Length: " << length_;
+        return os << "Position: " << position << ", Direction: " << direction_ << ", Length: " << length_;
     }
 
 } // namespace bardrix

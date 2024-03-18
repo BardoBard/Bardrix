@@ -44,13 +44,15 @@ TEST(ray, point_at) {
     EXPECT_EQ(r.point_at(0), bardrix::point3(1, 2, 3));
     EXPECT_EQ(r.point_at(7), bardrix::point3(1, 2, 10));
     EXPECT_EQ(r.point_at(14), bardrix::point3(1, 2, 17));
-    EXPECT_EQ(r.point_at(-7), bardrix::point3(1, 2, -4));
 }
 
 /// \brief Test the point at a distance from the position with a negative distance
 TEST(ray, point_at_negative) {
     bardrix::ray r(bardrix::point3(1, 2, 3), bardrix::vector3(0, 0, 1), 7);
     EXPECT_EQ(r.point_at(-7), bardrix::point3(1, 2, 3));
+    EXPECT_EQ(r.point_at(-14), bardrix::point3(1, 2, 3));
+    EXPECT_EQ(r.point_at(-0), bardrix::point3(1, 2, 3));
+    EXPECT_EQ(r.point_at(0), bardrix::point3(1, 2, 3));
 }
 
 /// \brief Test the point at the end of the ray
@@ -64,7 +66,7 @@ TEST(ray, print) {
     bardrix::ray r(bardrix::point3(1, 2, 3), bardrix::vector3(0, 0, 1), 7);
     std::stringstream ss;
     r.print(ss);
-    EXPECT_EQ(ss.str(), "position: (1, 2, 3), Direction: (0, 0, 1), Length: 7");
+    EXPECT_EQ(ss.str(), "Position: (1, 2, 3), Direction: (0, 0, 1), Length: 7");
 }
 
 /// \brief Test the set direction method
