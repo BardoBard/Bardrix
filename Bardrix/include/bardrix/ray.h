@@ -13,35 +13,33 @@ namespace bardrix {
     /// \brief A 3D ray class
     class ray {
 
+    public:
+        /// \brief The position of the ray, the origin
+        point3 position;
+
     private:
-        point3 origin_;
+        /// \brief The direction of the ray, it's normalized
         vector3 direction_;
+
+        /// \brief The length of the ray, it cannot be less than 0
         double length_;
 
     public:
         /// \brief Default constructor for ray, (0,0,0) direction (0,0,1), length 1
         ray();
 
-        /// \brief Constructor for ray, initializes origin and direction
+        /// \brief Constructor for ray, initializes position and direction
         /// \throws std::invalid_argument If the length of the vector is 0
-        /// \param origin The origin of the ray
+        /// \param position The position of the ray
         /// \param direction The direction of the ray, it'll be normalized
-        ray(const point3& origin, const vector3& direction);
+        ray(const point3& position, const vector3& direction);
 
-        /// \brief Constructor for ray, initializes origin, direction and length
+        /// \brief Constructor for ray, initializes position, direction and length
         /// \throws std::invalid_argument If the length of the vector is 0
-        /// \param origin The origin of the ray
+        /// \param position The position of the ray
         /// \param direction The direction of the ray, it'll be normalized
         /// \param length The length of the ray
-        ray(point3 origin, const vector3& direction, double length);
-
-        /// \brief Get the origin of the ray
-        /// \return The origin of the ray
-        NODISCARD const point3& get_origin() const noexcept;
-
-        /// \brief Set the origin of the ray
-        /// \param origin The new origin of the ray
-        void set_origin(const point3& origin) noexcept;
+        ray(point3  position, const vector3& direction, double length);
 
         /// \brief Get the direction of the ray
         /// \return The direction of the ray
@@ -65,9 +63,10 @@ namespace bardrix {
         /// \return The point at the end of the ray
         NODISCARD point3 get_end() const noexcept;
 
-        /// \brief Get the point at a distance from the origin
-        /// \param distance The distance from the origin
-        /// \return The point at the distance from the origin
+        /// \brief Get the point at a distance from the position
+        /// \param distance The distance from the position
+        /// \return The point at the distance from the position
+        /// \details If the distance is less than 0, it will return the position
         NODISCARD point3 point_at(double distance) const noexcept;
 
         /// \brief Print the ray to an output stream
