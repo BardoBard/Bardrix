@@ -8,16 +8,18 @@ namespace bardrix {
 
     ray::ray() : ray(point3(), vector3(0, 0, 1), 1) {}
 
-    ray::ray(const point3& position, const vector3& direction) : ray(position, direction, direction.length()) {}
+    ray::ray(const point3& position, const vector3& direction) noexcept: ray(position, direction, direction.length()) {}
 
-    ray::ray(point3 position, const vector3& direction, double length) : position(std::move(position)),
-                                                                         direction_(direction.normalize()),
-                                                                         length_(length) {}
+    ray::ray(point3 position, const vector3& direction, double length) noexcept: position(std::move(position)),
+                                                                                 direction_(direction.normalized()),
+                                                                                 length_(length) {}
 
     const vector3& ray::get_direction() const noexcept { return direction_; }
 
-    void ray::set_direction(const vector3& direction) {
-        direction_ = direction.normalize();
+    void ray::set_direction(const vector3& direction) noexcept {
+        direction_ = direction.length_squared() == 0
+                     ? vector3(0, 0, 1)
+                     : direction.normalized();
     }
 
     double ray::get_length() const noexcept { return length_; }

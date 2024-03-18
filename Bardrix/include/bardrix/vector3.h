@@ -32,9 +32,12 @@ namespace bardrix {
         NODISCARD double length_squared() const noexcept;
 
         /// \brief Normalize the vector, making it a unit vector
-        /// \throws std::invalid_argument If the length of the vector is 0
         /// \return The normalized vector
-        NODISCARD vector3 normalize() const;
+        NODISCARD vector3 normalized() const noexcept;
+
+        /// \brief Normalizes this vector, making it a unit vector
+        /// \details If the length of the vector is 0, it will not be normalized
+        void normalize() noexcept;
 
         /// \brief Dot product of two vectors
         /// \param vec3 The other vector
@@ -48,10 +51,9 @@ namespace bardrix {
 
         /// \brief Angle between two vectors [-1, 1]
         /// \param vec3 The other vector
-        /// \throws std::invalid_argument If the length of the vector is 0
-        /// \throws std::invalid_argument If the length of the other vector is 0
         /// \note When the angle is 1, the vectors are parallel, when the angle is -1, the vectors are opposite
-        /// \details It will normalize this vector and the other vector before calculating the angle
+        /// \details This vector and the other vector will normalized before calculating the angle
+        /// \details If the length of any of the vectors is 0, it will return 1, aka orthogonal
         /// \return The angle between the two vectors [-1, 1]
         NODISCARD double angle(const vector3& vec3) const;
 
