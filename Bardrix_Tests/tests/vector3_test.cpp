@@ -33,18 +33,30 @@ TEST(vector3, length_squared) {
 }
 
 /// \brief Test the normalization of a vector3
+TEST(vector3, normalized) {
+    bardrix::vector3 v(1, 2, 3);
+    bardrix::vector3 normalized = v.normalized();
+    EXPECT_EQ(normalized, bardrix::vector3(1, 2, 3) / std::sqrt(14));
+}
+
+/// \brief Test the normalization of a vector3 with length 0
+TEST(vector3, normalized_degenerate) {
+    bardrix::vector3 v;
+    EXPECT_EQ(v.normalized(), v);
+}
+
+/// \brief Test the normalization of a vector3 with length 0
 TEST(vector3, normalize) {
     bardrix::vector3 v(1, 2, 3);
-    bardrix::vector3 normalized = v.normalize();
-    EXPECT_EQ(normalized.x, 1 / std::sqrt(14));
-    EXPECT_EQ(normalized.y, 2 / std::sqrt(14));
-    EXPECT_EQ(normalized.z, 3 / std::sqrt(14));
+    v.normalize();
+    EXPECT_EQ(v, bardrix::vector3(1, 2, 3) / std::sqrt(14));
 }
 
 /// \brief Test the normalization of a vector3 with length 0
 TEST(vector3, normalize_degenerate) {
     bardrix::vector3 v;
-    EXPECT_THROW(v.normalize(), std::invalid_argument);
+    v.normalize();
+    EXPECT_EQ(v, bardrix::vector3());
 }
 
 /// \brief Test the dot product of two vectors
@@ -106,7 +118,7 @@ TEST(vector3, angle) {
 TEST(vector3, angle_zero) {
     bardrix::vector3 v1;
     bardrix::vector3 v2(4, 5, 6);
-    EXPECT_THROW(v1.angle(v2), std::invalid_argument);
+    EXPECT_EQ(v1.angle(v2), 1); // orthogonal
 }
 
 
@@ -114,7 +126,7 @@ TEST(vector3, angle_zero) {
 TEST(vector3, angle_zero_other) {
     bardrix::vector3 v1(1, 2, 3);
     bardrix::vector3 v2;
-    EXPECT_THROW(v1.angle(v2), std::invalid_argument);
+    EXPECT_EQ(v1.angle(v2), 1); // orthogonal
 }
 
 /// \brief Test the parallel angle between two vectors

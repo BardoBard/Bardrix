@@ -2,7 +2,6 @@
 // Created by Bard on 14/03/2024.
 //
 
-#include <bardrix/bardrix.h>
 #include <bardrix/vector3.h>
 
 namespace bardrix {
@@ -20,13 +19,24 @@ namespace bardrix {
         return x * x + y * y + z * z;
     }
 
-    vector3 vector3::normalize() const {
+    vector3 vector3::normalized() const noexcept {
         double mag = length();
 
-        if (mag == 0) // Undefined behavior
-            throw std::invalid_argument("Cannot normalize a vector with length 0");
+        if (mag == 0)
+            return *this;
 
         return {x / mag, y / mag, z / mag};
+    }
+
+    void vector3::normalize() noexcept {
+        double mag = length();
+
+        if (mag == 0)
+            return;
+
+        x /= mag;
+        y /= mag;
+        z /= mag;
     }
 
     double vector3::dot(const vector3& vec3) const noexcept {
@@ -39,8 +49,9 @@ namespace bardrix {
 
     double vector3::angle(const vector3& vec3) const {
         double length_product = length() * vec3.length();
-        if (length_product == 0) // Undefined behavior
-            throw std::invalid_argument("Cannot calculate the angle between two vectors with length 0");
+
+        if (length_product == 0)
+            return 1;
 
         return dot(vec3) / length_product;
     }
@@ -48,5 +59,6 @@ namespace bardrix {
     std::ostream& vector3::print(std::ostream& os) const {
         return os << "(" << x << ", " << y << ", " << z << ")";
     }
+
 
 } // namespace bardrix
