@@ -97,6 +97,22 @@ TEST(point3, operator_plus_vector_negative) {
     EXPECT_EQ(p2, bardrix::point3(-5, -8, -11));
 }
 
+/// \brief Test the subtraction of a vector from a point
+TEST(point3, operator_vector_minus) {
+    bardrix::point3 p1(1, 2, 3);
+    bardrix::vector3 v(4, 6, 8);
+    bardrix::point3 p2 = p1 - v;
+    EXPECT_EQ(p2, bardrix::point3(-3, -4, -5));
+}
+
+/// \brief Test the subtraction of a vector from a point with negative values
+TEST(point3, operator_minus_vector_negative) {
+    bardrix::point3 p1(-1, -2, -3);
+    bardrix::vector3 v(-4, -6, -8);
+    bardrix::point3 p2 = p1 - v;
+    EXPECT_EQ(p2, bardrix::point3(3, 4, 5));
+}
+
 /// \brief Test the print method of a point3
 TEST(point3, print) {
     bardrix::point3 p(1, 2, 3);
