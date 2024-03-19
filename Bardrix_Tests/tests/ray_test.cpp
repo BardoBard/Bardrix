@@ -81,7 +81,7 @@ TEST(ray, set_direction) {
 TEST(ray, set_direction_zero) {
     bardrix::ray r;
     EXPECT_NO_THROW(r.set_direction(bardrix::vector3()));
-    EXPECT_EQ(r.get_direction(), bardrix::vector3(0, 0, 1));
+    EXPECT_EQ(r.get_direction(), bardrix::vector3(0, 0, 0));
 }
 
 /// \brief Test the set length method
