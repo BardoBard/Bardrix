@@ -17,9 +17,7 @@ namespace bardrix {
     const vector3& ray::get_direction() const noexcept { return direction_; }
 
     void ray::set_direction(const vector3& direction) noexcept {
-        direction_ = direction.length_squared() == 0
-                     ? vector3(0, 0, 0)
-                     : direction.normalized();
+        direction_ = direction.normalized();
     }
 
     double ray::get_length() const noexcept { return length_; }
