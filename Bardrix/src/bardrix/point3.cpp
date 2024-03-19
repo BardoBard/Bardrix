@@ -39,8 +39,17 @@ namespace bardrix {
         return copy;
     }
 
+    point3 point3::operator-(const vector3& vector3) const noexcept {
+        point3 copy = *this;
+        copy.x -= vector3.x;
+        copy.y -= vector3.y;
+        copy.z -= vector3.z;
+        return copy;
+    }
+
     std::ostream& point3::print(std::ostream& os) const {
         return os << "(" << x << ", " << y << ", " << z << ")";
     }
+
 
 } // namespace bardrix

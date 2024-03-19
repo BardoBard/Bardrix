@@ -45,7 +45,6 @@ namespace bardrix {
 
         /// \brief Set the direction of the ray, direction cannot have length of 0
         /// \param direction The new direction of the ray
-        /// \details If the length of the direction is 0, it will return (0,0,1) (which is the default direction)
         void set_direction(const vector3& direction) noexcept;
 
         /// \brief Get the length of the ray
