@@ -14,9 +14,6 @@ namespace bardrix {
     class vector3 : public dimension3 {
 
     public:
-        /// \brief Default constructor for vector3, (0,0,0)
-        vector3() = default;
-
         /// \brief Constructor for vector3, initializes x, y and z
         /// \param x Initial x value
         /// \param y Initial y value

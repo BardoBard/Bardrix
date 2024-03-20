@@ -25,9 +25,6 @@ namespace bardrix {
         double length_;
 
     public:
-        /// \brief Default constructor for ray, (0,0,0) direction (0,0,1), length 1
-        ray();
-
         /// \brief Constructor for ray, initializes position and direction
         /// \param position The position of the ray
         /// \param direction The direction of the ray, it'll be normalized

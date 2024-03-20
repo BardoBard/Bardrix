@@ -6,8 +6,6 @@
 
 namespace bardrix {
 
-    ray::ray() : ray(point3(), vector3(0, 0, 1), 1) {}
-
     ray::ray(const point3& position, const vector3& direction) noexcept: ray(position, direction, direction.length()) {}
 
     ray::ray(point3 position, const vector3& direction, double length) noexcept: position(std::move(position)),
