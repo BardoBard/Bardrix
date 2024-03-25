@@ -7,39 +7,39 @@
 /// \brief Test the degrees to radians
 TEST(math, degrees_to_radians) {
     EXPECT_EQ(bardrix::degrees_to_radians(0), 0);
-    EXPECT_EQ(bardrix::degrees_to_radians(90), bardrix::M_PI / 2);
-    EXPECT_EQ(bardrix::degrees_to_radians(180), bardrix::M_PI);
-    EXPECT_EQ(bardrix::degrees_to_radians(270), 3 * bardrix::M_PI / 2);
-    EXPECT_EQ(bardrix::degrees_to_radians(360), 2 * bardrix::M_PI);
+    EXPECT_EQ(bardrix::degrees_to_radians(90), bardrix::pi / 2);
+    EXPECT_EQ(bardrix::degrees_to_radians(180), bardrix::pi);
+    EXPECT_EQ(bardrix::degrees_to_radians(270), 3 * bardrix::pi / 2);
+    EXPECT_EQ(bardrix::degrees_to_radians(360), 2 * bardrix::pi);
 }
 
 /// \brief Test the degenerate cases of degrees to radians
 TEST(math, degrees_to_radians_degenerate) {
     EXPECT_EQ(bardrix::degrees_to_radians(-0), -0);
-    EXPECT_EQ(bardrix::degrees_to_radians(-90), -bardrix::M_PI / 2);
-    EXPECT_EQ(bardrix::degrees_to_radians(-180), -bardrix::M_PI);
-    EXPECT_EQ(bardrix::degrees_to_radians(-270), -3 * bardrix::M_PI / 2);
-    EXPECT_TRUE(bardrix::nearly_equal(bardrix::degrees_to_radians(4345923), 4345923 * bardrix::M_PI / 180));
-    EXPECT_TRUE(bardrix::nearly_equal(bardrix::degrees_to_radians(-239858), -239858 * bardrix::M_PI / 180));
+    EXPECT_EQ(bardrix::degrees_to_radians(-90), -bardrix::pi / 2);
+    EXPECT_EQ(bardrix::degrees_to_radians(-180), -bardrix::pi);
+    EXPECT_EQ(bardrix::degrees_to_radians(-270), -3 * bardrix::pi / 2);
+    EXPECT_TRUE(bardrix::nearly_equal(bardrix::degrees_to_radians(4345923), 4345923 * bardrix::pi / 180));
+    EXPECT_TRUE(bardrix::nearly_equal(bardrix::degrees_to_radians(-239858), -239858 * bardrix::pi / 180));
 }
 
 /// \brief Test the radians to degrees
 TEST(math, radians_to_degrees) {
     EXPECT_EQ(bardrix::radians_to_degrees(0), 0);
-    EXPECT_EQ(bardrix::radians_to_degrees(bardrix::M_PI / 2), 90);
-    EXPECT_EQ(bardrix::radians_to_degrees(bardrix::M_PI), 180);
-    EXPECT_EQ(bardrix::radians_to_degrees(3 * bardrix::M_PI / 2), 270);
-    EXPECT_EQ(bardrix::radians_to_degrees(2 * bardrix::M_PI), 360);
+    EXPECT_EQ(bardrix::radians_to_degrees(bardrix::pi / 2), 90);
+    EXPECT_EQ(bardrix::radians_to_degrees(bardrix::pi), 180);
+    EXPECT_EQ(bardrix::radians_to_degrees(3 * bardrix::pi / 2), 270);
+    EXPECT_EQ(bardrix::radians_to_degrees(2 * bardrix::pi), 360);
 }
 
 /// \brief Test the degenerate cases of radians to degrees
 TEST(math, radians_to_degrees_degenerate) {
     EXPECT_EQ(bardrix::radians_to_degrees(-0), -0);
-    EXPECT_EQ(bardrix::radians_to_degrees(-bardrix::M_PI / 2), -90);
-    EXPECT_EQ(bardrix::radians_to_degrees(-bardrix::M_PI), -180);
-    EXPECT_EQ(bardrix::radians_to_degrees(-3 * bardrix::M_PI / 2), -270);
-    EXPECT_EQ(bardrix::radians_to_degrees(4345923), 4345923 * 180 / bardrix::M_PI);
-    EXPECT_EQ(bardrix::radians_to_degrees(-239858), -239858 * 180 / bardrix::M_PI);
+    EXPECT_EQ(bardrix::radians_to_degrees(-bardrix::pi / 2), -90);
+    EXPECT_EQ(bardrix::radians_to_degrees(-bardrix::pi), -180);
+    EXPECT_EQ(bardrix::radians_to_degrees(-3 * bardrix::pi / 2), -270);
+    EXPECT_EQ(bardrix::radians_to_degrees(4345923), 4345923 * 180 / bardrix::pi);
+    EXPECT_EQ(bardrix::radians_to_degrees(-239858), -239858 * 180 / bardrix::pi);
 }
 
 /// \brief Test the nearly equal function

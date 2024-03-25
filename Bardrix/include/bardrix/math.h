@@ -9,25 +9,25 @@
 namespace bardrix {
 
     /// \brief The pi constant
-    INLINE constexpr double M_PI = 3.14159265358979323846;
+    INLINE constexpr double pi = 3.14159265358979323846;
 
     /// \brief The pi/2 constant
-    INLINE constexpr double M_PI_2 = 1.57079632679489661923;
+    INLINE constexpr double _pi_2 = 1.57079632679489661923;
 
     /// \brief The pi/4 constant
-    INLINE constexpr double M_PI_4 = 0.78539816339744830962;
+    INLINE constexpr double _pi_4 = 0.78539816339744830962;
 
     /// \brief The 1/pi constant
-    INLINE constexpr double M_1_PI = 0.31830988618379067154;
+    INLINE constexpr double _1_pi = 0.31830988618379067154;
 
     /// \brief The 2/pi constant
-    INLINE constexpr double M_2_PI = 0.63661977236758134308;
+    INLINE constexpr double _2_pi = 0.63661977236758134308;
 
     /// \brief (180 / pi) constant, used for converting radians to degrees
-    INLINE constexpr double M_180_PI = 57.295779513082323;
+    INLINE constexpr double _180_pi = 57.295779513082323;
 
     /// \brief (pi / 180) constant, used for converting degrees to radians
-    INLINE constexpr double M_PI_180 = 0.017453292519943295;
+    INLINE constexpr double _pi_180 = 0.017453292519943295;
 
     /// \brief The epsilon value used for the nearly equal function
     INLINE double epsilon = 0.0001;
@@ -39,7 +39,7 @@ namespace bardrix {
     /// \details T must be an arithmetic type, (https://en.cppreference.com/w/cpp/types/is_arithmetic)
     template<typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
     double degrees_to_radians(T degrees) noexcept {
-        return degrees * M_PI_180;
+        return degrees * _pi_180;
     }
 
     /// \brief Converts radians to degrees
@@ -49,7 +49,7 @@ namespace bardrix {
     /// \details T must be an arithmetic type, (https://en.cppreference.com/w/cpp/types/is_arithmetic)
     template<typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
     double radians_to_degrees(T radians) noexcept {
-        return radians * M_180_PI;
+        return radians * _180_pi;
     }
 
     /// \brief Checks if the number is nearly equal to another number
