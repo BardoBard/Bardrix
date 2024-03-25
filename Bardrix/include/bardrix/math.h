@@ -8,6 +8,21 @@
 
 namespace bardrix {
 
+    /// \brief The pi constant
+    INLINE constexpr double M_PI = 3.14159265358979323846;
+
+    /// \brief The pi/2 constant
+    INLINE constexpr double M_PI_2 = 1.57079632679489661923;
+
+    /// \brief The pi/4 constant
+    INLINE constexpr double M_PI_4 = 0.78539816339744830962;
+
+    /// \brief The 1/pi constant
+    INLINE constexpr double M_1_PI = 0.31830988618379067154;
+
+    /// \brief The 2/pi constant
+    INLINE constexpr double M_2_PI = 0.63661977236758134308;
+
     /// \brief (180 / pi) constant, used for converting radians to degrees
     INLINE constexpr double M_180_PI = 57.295779513082323;
 
