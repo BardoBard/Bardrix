@@ -79,13 +79,15 @@ TEST(ray, set_direction) {
 
 /// \brief Test the set direction method with a zero vector
 TEST(ray, set_direction_zero) {
-    bardrix::ray r = bardrix::ray({0, 0, 1});
-    EXPECT_NO_THROW(r.set_direction(bardrix::vector3()));
+    bardrix::ray r = bardrix::ray(bardrix::point3(1, 2, 3), bardrix::vector3(4, 5, 6));
+    EXPECT_NO_THROW(r.set_direction(bardrix::vector3(0, 0, 0)));
+
     EXPECT_EQ(r.get_direction(), bardrix::vector3(0, 0, 0));
 }
 
 /// \brief Test the set length method
 TEST(ray, set_length) {
+
     bardrix::ray r = bardrix::ray({0, 0, 1});
     r.set_length(7);
     EXPECT_EQ(r.get_length(), 7);
