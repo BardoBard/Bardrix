@@ -50,6 +50,11 @@ namespace bardrix {
         /// \return The point with the vector added
         NODISCARD point3 operator+(const vector3& vector3) const noexcept;
 
+        /// \brief Subtract a vector from a point
+        /// \param vector3 The vector to subtract
+        /// \return The point with the vector subtracted
+        NODISCARD point3 operator-(const vector3& vector3) const noexcept;
+
         /// \brief Print the point to an output stream
         /// \param os The output stream
         /// \return The output stream

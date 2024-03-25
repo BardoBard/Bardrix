@@ -81,6 +81,14 @@ TEST(point3, vector_to) {
     EXPECT_EQ(v, bardrix::vector3(-2, -4, -6));
 }
 
+/// \brief Test the vector from one point to another with the same coordinates
+TEST(point3, vector_to_degenerate) {
+    bardrix::point3 p1 = bardrix::point3(3, 4, 5);
+    bardrix::point3 p2 = bardrix::point3(3, 4, 5);
+    bardrix::vector3 v = p1.vector_to(p2);
+    EXPECT_EQ(v, bardrix::vector3(0, 0, 0));
+}
+
 /// \brief Test the addition of a vector to a point
 TEST(point3, operator_vector_plus) {
     bardrix::point3 p1(1, 2, 3);
@@ -95,6 +103,22 @@ TEST(point3, operator_plus_vector_negative) {
     bardrix::vector3 v(-4, -6, -8);
     bardrix::point3 p2 = p1 + v;
     EXPECT_EQ(p2, bardrix::point3(-5, -8, -11));
+}
+
+/// \brief Test the subtraction of a vector from a point
+TEST(point3, operator_vector_minus) {
+    bardrix::point3 p1(1, 2, 3);
+    bardrix::vector3 v(4, 6, 8);
+    bardrix::point3 p2 = p1 - v;
+    EXPECT_EQ(p2, bardrix::point3(-3, -4, -5));
+}
+
+/// \brief Test the subtraction of a vector from a point with negative values
+TEST(point3, operator_minus_vector_negative) {
+    bardrix::point3 p1(-1, -2, -3);
+    bardrix::vector3 v(-4, -6, -8);
+    bardrix::point3 p2 = p1 - v;
+    EXPECT_EQ(p2, bardrix::point3(3, 4, 5));
 }
 
 /// \brief Test the print method of a point3

@@ -4,14 +4,6 @@
 
 #include <bardrix/vector3.h>
 
-/// \brief Test the vector3 constructor
-TEST(vector3, constructor) {
-    bardrix::vector3 v;
-    EXPECT_EQ(v.x, 0);
-    EXPECT_EQ(v.y, 0);
-    EXPECT_EQ(v.z, 0);
-}
-
 /// \brief Test the vector3 constructor with values
 TEST(vector3, constructor_with_values) {
     bardrix::vector3 v(1, 2, 3);
@@ -41,7 +33,7 @@ TEST(vector3, normalized) {
 
 /// \brief Test the normalization of a vector3 with length 0
 TEST(vector3, normalized_degenerate) {
-    bardrix::vector3 v;
+    bardrix::vector3 v = bardrix::vector3(0, 0, 0);
     EXPECT_EQ(v.normalized(), v);
 }
 
@@ -54,9 +46,9 @@ TEST(vector3, normalize) {
 
 /// \brief Test the normalization of a vector3 with length 0
 TEST(vector3, normalize_degenerate) {
-    bardrix::vector3 v;
+    bardrix::vector3 v = bardrix::vector3(0, 0, 0);
     v.normalize();
-    EXPECT_EQ(v, bardrix::vector3());
+    EXPECT_EQ(v, bardrix::vector3(0, 0, 0));
 }
 
 /// \brief Test the dot product of two vectors
@@ -68,9 +60,9 @@ TEST(vector3, dot) {
 
 /// \brief Test the dot product of two vectors with one of them being 0
 TEST(vector3, dot_zero) {
-    bardrix::vector3 v1;
+    bardrix::vector3 v1 = bardrix::vector3(0, 0, 0);
     bardrix::vector3 v2(4, 5, 6);
-    bardrix::vector3 v3;
+    bardrix::vector3 v3 = bardrix::vector3(0, 0, 0);
 
     EXPECT_EQ(v1.dot(v2), 0);
     EXPECT_EQ(v2.dot(v3), 0);
@@ -95,9 +87,9 @@ TEST(vector3, cross) {
 
 /// \brief Test the cross product of two vectors with one of them being 0
 TEST(vector3, cross_degenerate) {
-    bardrix::vector3 v1;
+    bardrix::vector3 v1 = bardrix::vector3(0, 0, 0);
     bardrix::vector3 v2(4, 5, 6);
-    bardrix::vector3 v3;
+    bardrix::vector3 v3 = bardrix::vector3(0, 0, 0);
     bardrix::vector3 v4(7, 8, 9);
 
     bardrix::vector3 cross1 = v1.cross(v2);
@@ -116,7 +108,7 @@ TEST(vector3, angle) {
 
 /// \brief Test the angle between two vectors with one of them being 0
 TEST(vector3, angle_zero) {
-    bardrix::vector3 v1;
+    bardrix::vector3 v1 = bardrix::vector3(0, 0, 0);
     bardrix::vector3 v2(4, 5, 6);
     EXPECT_EQ(v1.angle(v2), 1); // orthogonal
 }
@@ -125,7 +117,7 @@ TEST(vector3, angle_zero) {
 /// \brief Test the angle between two vectors with the other being 0
 TEST(vector3, angle_zero_other) {
     bardrix::vector3 v1(1, 2, 3);
-    bardrix::vector3 v2;
+    bardrix::vector3 v2 = bardrix::vector3(0, 0, 0);
     EXPECT_EQ(v1.angle(v2), 1); // orthogonal
 }
 

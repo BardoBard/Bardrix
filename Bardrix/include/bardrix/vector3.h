@@ -14,8 +14,8 @@ namespace bardrix {
     class vector3 : public dimension3 {
 
     public:
-        /// \brief Default constructor for vector3, (0,0,0)
-        vector3() = default;
+        /// \brief Default constructor for vector3, initializes x, y and z to 0
+        vector3() noexcept = default;
 
         /// \brief Constructor for vector3, initializes x, y and z
         /// \param x Initial x value
@@ -33,6 +33,7 @@ namespace bardrix {
 
         /// \brief Normalize the vector, making it a unit vector
         /// \return The normalized vector
+        /// \details If the length of the vector is 0, it will not be normalized
         NODISCARD vector3 normalized() const noexcept;
 
         /// \brief Normalizes this vector, making it a unit vector
