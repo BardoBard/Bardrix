@@ -304,8 +304,9 @@ namespace bardrix {
         /// \return True if the two dimension3 are equal, false otherwise
         template<typename T, typename = enable_if_dimension3<T>>
         NODISCARD friend bool operator==(const T& dimension3_lhs, const T& dimension3_rhs) noexcept {
-            return dimension3_lhs.x == dimension3_rhs.x && dimension3_lhs.y == dimension3_rhs.y &&
-                   dimension3_lhs.z == dimension3_rhs.z;
+            return nearly_equal(dimension3_lhs.x, dimension3_rhs.x) &&
+                   nearly_equal(dimension3_lhs.y, dimension3_rhs.y) &&
+                   nearly_equal(dimension3_lhs.z, dimension3_rhs.z);
         }
 
         /// \brief Check if two dimension3 are different
@@ -347,8 +348,9 @@ namespace bardrix {
         /// \return True if the first dimension3 is less than or equal to the second dimension3, false otherwise
         template<typename T, typename = enable_if_dimension3<T>>
         NODISCARD friend bool operator<=(const T& dimension3_lhs, const T& dimension3_rhs) noexcept {
-            return dimension3_lhs.x <= dimension3_rhs.x && dimension3_lhs.y <= dimension3_rhs.y &&
-                   dimension3_lhs.z <= dimension3_rhs.z;
+            return less_than_or_nearly_equal(dimension3_lhs.x, dimension3_rhs.x) &&
+                   less_than_or_nearly_equal(dimension3_lhs.y, dimension3_rhs.y) &&
+                   less_than_or_nearly_equal(dimension3_lhs.z, dimension3_rhs.z);
         }
 
         /// \brief Check if a dimension3 is greater than or equal to another dimension3
@@ -358,8 +360,9 @@ namespace bardrix {
         /// \return True if the first dimension3 is greater than or equal to the second dimension3, false otherwise
         template<typename T, typename = enable_if_dimension3<T>>
         NODISCARD friend bool operator>=(const T& dimension3_lhs, const T& dimension3_rhs) noexcept {
-            return dimension3_lhs.x >= dimension3_rhs.x && dimension3_lhs.y >= dimension3_rhs.y &&
-                   dimension3_lhs.z >= dimension3_rhs.z;
+            return greater_than_or_nearly_equal(dimension3_lhs.x, dimension3_rhs.x) &&
+                   greater_than_or_nearly_equal(dimension3_lhs.y, dimension3_rhs.y) &&
+                   greater_than_or_nearly_equal(dimension3_lhs.z, dimension3_rhs.z);
         }
 
         // Increment, decrement and unary operators

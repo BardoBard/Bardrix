@@ -8,6 +8,9 @@
 #include <ostream>
 #include <cmath>
 #include <utility>
+#include <optional>
 
 #define NODISCARD [[nodiscard]]
 #define INLINE inline
+
+#include <bardrix/math.h>

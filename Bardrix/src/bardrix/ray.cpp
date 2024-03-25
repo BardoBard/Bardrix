@@ -6,6 +6,8 @@
 
 namespace bardrix {
 
+    ray::ray(const vector3& direction) noexcept: ray(point3(), direction) {}
+
     ray::ray(const point3& position, const vector3& direction) noexcept: ray(position, direction, direction.length()) {}
 
     ray::ray(point3 position, const vector3& direction, double length) noexcept: position(std::move(position)),
@@ -34,6 +36,14 @@ namespace bardrix {
 
     std::ostream& ray::print(std::ostream& os) const {
         return os << "Position: " << position << ", Direction: " << direction_ << ", Length: " << length_;
+    }
+
+    std::ostream& operator<<(std::ostream& os, const ray& r) {
+        return r.print(os);
+    }
+
+    bool ray::operator==(const ray& r) const noexcept {
+        return position == r.position && direction_ == r.direction_ && nearly_equal(length_, r.length_);
     }
 
 } // namespace bardrix

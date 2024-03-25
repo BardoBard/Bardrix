@@ -25,6 +25,10 @@ namespace bardrix {
         double length_;
 
     public:
+        /// \brief Default constructor for ray, position (0,0,0)
+        /// \param direction The direction of the ray, it'll be normalized
+        explicit ray(const vector3& direction) noexcept;
+
         /// \brief Constructor for ray, initializes position and direction
         /// \param position The position of the ray
         /// \param direction The direction of the ray, it'll be normalized
@@ -67,6 +71,17 @@ namespace bardrix {
         /// \param os The output stream
         /// \return The output stream
         std::ostream& print(std::ostream& os) const;
+
+        /// \brief Operator to print the ray to an output stream
+        /// \param os The output stream
+        /// \param r The ray to print
+        /// \return The output stream
+        friend std::ostream& operator<<(std::ostream& os, const ray& r);
+
+        /// \brief Equality operator
+        /// \param r The ray to compare
+        /// \return True if the rays are equal
+        bool operator==(const ray& r) const noexcept;
 
     }; // class ray
 

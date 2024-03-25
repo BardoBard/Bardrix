@@ -30,6 +30,7 @@ namespace bardrix {
 
         /// \brief Normalize the vector, making it a unit vector
         /// \return The normalized vector
+        /// \details If the length of the vector is 0, it will not be normalized
         NODISCARD vector3 normalized() const noexcept;
 
         /// \brief Normalizes this vector, making it a unit vector
