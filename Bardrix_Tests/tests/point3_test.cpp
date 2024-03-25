@@ -81,6 +81,14 @@ TEST(point3, vector_to) {
     EXPECT_EQ(v, bardrix::vector3(-2, -4, -6));
 }
 
+/// \brief Test the vector from one point to another with the same coordinates
+TEST(point3, vector_to_degenerate) {
+    bardrix::point3 p1 = bardrix::point3(3, 4, 5);
+    bardrix::point3 p2 = bardrix::point3(3, 4, 5);
+    bardrix::vector3 v = p1.vector_to(p2);
+    EXPECT_EQ(v, bardrix::vector3(0, 0, 0));
+}
+
 /// \brief Test the addition of a vector to a point
 TEST(point3, operator_vector_plus) {
     bardrix::point3 p1(1, 2, 3);

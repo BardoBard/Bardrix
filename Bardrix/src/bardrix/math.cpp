@@ -6,12 +6,16 @@
 
 namespace bardrix {
 
-    double degrees_to_radians(double degrees) noexcept {
-        return degrees * M_PI_180;
+    bool nearly_equal(double lhs, double rhs) noexcept {
+        return std::abs(lhs - rhs) <= epsilon;
     }
 
-    double radians_to_degrees(double radians) noexcept {
-        return radians * M_180_PI;
+    bool greater_than_or_nearly_equal(double lhs, double rhs) noexcept {
+        return lhs > rhs || nearly_equal(lhs, rhs);
+    }
+
+    bool less_than_or_nearly_equal(double lhs, double rhs) noexcept {
+        return lhs < rhs || nearly_equal(lhs, rhs);
     }
 
 } // namespace bardrix

@@ -3,18 +3,19 @@
 //
 
 #include <bardrix/camera.h>
+#include <optional>
 
 namespace bardrix {
-    camera::camera() noexcept: camera(point3(), vector3(0, 0, 1), 800, 600, 90) {}
 
+    camera::camera(const point3& position, const vector3& direction) noexcept: camera(position, direction, 800, 600,
+                                                                                      90) {}
 
     camera::camera(const point3& position, const vector3& direction,
-                   unsigned int screen_size) noexcept: camera(position, direction, screen_size, screen_size,
-                                                              90) {}
+                   unsigned int screen_size) noexcept: camera(position, direction, screen_size, screen_size, 90) {}
 
     camera::camera(point3 position, const vector3& direction,
                    unsigned int screen_width, unsigned int screen_height, unsigned int fov) noexcept:
-            position_(std::move(position)), width_(screen_width), height_(screen_height) {
+            position(std::move(position)), width(screen_width), height(screen_height) {
         set_fov(fov);
         set_direction(direction);
     }
@@ -53,23 +54,28 @@ namespace bardrix {
         update_screen_vectors();
     }
 
-    ray camera::shoot_ray(unsigned int x, unsigned int y, const double distance) const noexcept {
-        if (x >= width_ || y >= height_)
-            return {};
+    std::optional<ray> camera::shoot_ray(unsigned int x, unsigned int y, const double distance) const noexcept {
+        if (x >= width || y >= height)
+            return std::nullopt;
 
-        const double ratio_width = x / static_cast<double>(width_);
-        const double ratio_height = y / static_cast<double>(height_);
+        const double ratio_width = x / static_cast<double>(width);
+        const double ratio_height = y / static_cast<double>(height);
 
+        // horizontal and vertical vectors
         const vector3 horizontal = right_ * 2 * ratio_width;
         const vector3 vertical = up_ * 2 * ratio_height;
 
-        const point3 top_left = position_ + direction_ - right_ - up_;
+        // top left corner of the screen
+        const point3 top_left = position + direction_ - right_ + up_;
 
-        return {position_, position_.vector_to(top_left + horizontal - vertical), distance};
+        return std::make_optional(ray{position, position.vector_to(top_left + horizontal - vertical), distance});
     }
 
     void camera::look_at(const point3& point) noexcept {
-        set_direction(position_.vector_to(point));
+        if (point == position) // this is the same as the current position
+            return;
+
+        set_direction(position.vector_to(point));
     }
 
 } // namespace bardrix
