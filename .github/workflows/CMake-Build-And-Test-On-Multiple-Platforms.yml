@@ -21,12 +21,15 @@ jobs:
           - os: windows-latest
             c_compiler: cl
             cpp_compiler: cl
+            compiler_flags: "-A"
           - os: ubuntu-latest
             c_compiler: gcc
             cpp_compiler: g++
+            compiler_flags: "-m"
           - os: ubuntu-latest
             c_compiler: clang
             cpp_compiler: clang++
+            compiler_flags: "-m"
         exclude:
           - os: windows-latest
             c_compiler: gcc
@@ -50,7 +53,7 @@ jobs:
         -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
         -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
         -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}  # Use matrix build type
-        -DARCHITECTURE=${{ matrix.architecture }}   # Specify architecture
+        -DARCHITECTURE=${{ matrix.architecture }}  # Use matrix architecture
         -S ${{ github.workspace }}
 
     - name: Build
