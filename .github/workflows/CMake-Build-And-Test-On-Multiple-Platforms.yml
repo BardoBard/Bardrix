@@ -52,8 +52,8 @@ jobs:
         cmake -B ${{ steps.strings.outputs.build-output-dir }}
         -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
         -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
-        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}  # Use matrix build type
-        -DARCHITECTURE=${{ matrix.architecture }}  # Use matrix architecture
+        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+        ${{ matrix.compiler_flags }} ${{ matrix.architecture }}
         -S ${{ github.workspace }}
 
     - name: Build
@@ -63,7 +63,7 @@ jobs:
       if: runner.os == 'Windows'
       run: >
         ${{ steps.strings.outputs.build-output-dir }}\Bardrix_Tests\${{ matrix.build_type }}\Bardrix_Tests.exe
-    
+
     - name: Run tests
       if: runner.os != 'Windows'
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
