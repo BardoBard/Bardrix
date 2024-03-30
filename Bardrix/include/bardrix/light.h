@@ -17,7 +17,7 @@ namespace bardrix {
         point3 position = point3();
 
         /// \brief The color of the light
-        color color = color::white();
+        bardrix::color color = color::white();
     private:
         /// \brief The intensity of the light
         double intensity_ = 1;
