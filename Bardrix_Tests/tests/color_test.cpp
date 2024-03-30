@@ -6,7 +6,6 @@
 
 /// \brief Constructor tests
 TEST(color, constructor) {
-    std::cout << sizeof(void*) << std::endl;
     bardrix::color c1;
     EXPECT_EQ(c1.r(), 0);
     EXPECT_EQ(c1.g(), 0);
@@ -228,7 +227,7 @@ TEST(color, operator_multiply_degenerate) {
     result = c2 * -0.1;
     EXPECT_EQ(result.rgba(), 0);
 
-    result = { 2, 4, 5, 6 };
+    result = {2, 4, 5, 6};
     result *= 0;
     EXPECT_EQ(result.rgba(), 0);
 }
@@ -286,6 +285,77 @@ TEST(color, operator_divide_degenerate) {
     EXPECT_THROW(123 / c2, std::invalid_argument);
     EXPECT_THROW(-0.2 / c1, std::invalid_argument);
     EXPECT_THROW(-1 / c2, std::invalid_argument);
+}
+
+/// \brief Test the color modulo
+TEST(color, operator_modulo) {
+    bardrix::color c1(255, 255, 255, 255);
+    bardrix::color c2(4, 255, 53, 255);
+
+    bardrix::color result = c2 % 4;
+    EXPECT_EQ(result.rgba(), 0x03010300);
+
+    result = c1 % 2;
+    EXPECT_EQ(result.rgba(), 0x01010101);
+
+    result = c2 % 2;
+    EXPECT_EQ(result.rgba(), 0x01010100);
+
+    result = c2 % 3;
+    EXPECT_EQ(result.rgba(), 0x00020001);
+
+    result = {2, 4, 5, 6};
+    result = 2 % result;
+    EXPECT_EQ(result.rgba(), 0x02020200);
+
+    result = 253 % c2;
+    EXPECT_EQ(result.rgba(), 0xFD29FD01);
+
+    result = 253 % c1;
+    EXPECT_EQ(result.rgba(), 0xFDFDFDFD);
+
+    result = 53 % c2;
+    EXPECT_EQ(result.rgba(), 0x35003501);
+
+    result = 53 % c1;
+    EXPECT_EQ(result.rgba(), 0x35353535);
+}
+
+/// \brief Test the color modulo to itself
+TEST(color, operator_modulo_equal) {
+    bardrix::color c1(255, 255, 255, 255);
+    bardrix::color c2(4, 255, 53, 255);
+
+    c1 %= 2;
+    EXPECT_EQ(c1.rgba(), 0x01010101);
+
+    c2 %= 2;
+    EXPECT_EQ(c2.rgba(), 0x01010100);
+
+    c2 = bardrix::color(4, 255, 53, 255);
+    c2 %= 3;
+    EXPECT_EQ(c2.rgba(), 0x00020001);
+}
+
+/// \brief Test the color modulo by zero
+TEST(color, operator_modulo_degenerate) {
+    bardrix::color c1(255, 255, 255, 255);
+    bardrix::color c2(0, 0, 0, 0);
+
+    EXPECT_THROW(c1 % 0, std::invalid_argument);
+    EXPECT_THROW(c2 % 0, std::invalid_argument);
+
+    EXPECT_THROW(c1 %= 0, std::invalid_argument);
+    EXPECT_THROW(c2 %= 0, std::invalid_argument);
+
+    EXPECT_NO_THROW(123 % c1);
+    EXPECT_THROW(123 % c2, std::invalid_argument);
+
+    EXPECT_NO_THROW(0 % c1);
+    EXPECT_THROW(0 % c2, std::invalid_argument);
+
+    EXPECT_NO_THROW(c1 % 1);
+    EXPECT_NO_THROW(c2 % 1);
 }
 
 /// \brief Tests the color equality

@@ -116,8 +116,10 @@ namespace bardrix {
     }
 
     color color::operator/(const double scalar) const {
-        if (less_than_or_nearly_equal(scalar, 0))
+        if (nearly_equal(scalar, 0))
             throw std::invalid_argument("Division by zero");
+        if (scalar < 0)
+            throw std::invalid_argument("Division by negative number");
 
         color result = *this;
         result /= scalar;
@@ -125,8 +127,10 @@ namespace bardrix {
     }
 
     color operator/(const double scalar, const color& color) {
-        if (color.c_union_.rgba == 0 || less_than_or_nearly_equal(scalar, 0))
+        if (color.r() == 0 || color.g() == 0 || color.b() == 0 || color.a() == 0)
             throw std::invalid_argument("Division by zero");
+        if (scalar < 0)
+            throw std::invalid_argument("Division by negative number");
 
         return { static_cast<color::uchar>(scalar / color.c_union_.r_g_b_a.r <= UCHAR_MAX ? scalar /
                                                                                             color.c_union_.r_g_b_a.r
@@ -143,8 +147,10 @@ namespace bardrix {
     }
 
     color& color::operator/=(const double scalar) {
-        if (less_than_or_nearly_equal(scalar, 0))
+        if (nearly_equal(scalar, 0))
             throw std::invalid_argument("Division by zero");
+        if (scalar < 0)
+            throw std::invalid_argument("Division by negative number");
 
         c_union_.r_g_b_a.r = static_cast<color::uchar>(c_union_.r_g_b_a.r / scalar <= UCHAR_MAX ? c_union_.r_g_b_a.r /
                                                                                                   scalar : UCHAR_MAX);
@@ -157,6 +163,36 @@ namespace bardrix {
         return *this;
     }
 
+    color color::operator%(color::uchar scalar) const {
+        if (scalar == 0)
+            throw std::invalid_argument("Division by zero");
+
+        color result = *this;
+        result %= scalar;
+        return result;
+    }
+
+    color operator%(color::uchar scalar, const color& color) {
+        if (color.r() == 0 || color.g() == 0 || color.b() == 0 || color.a() == 0)
+            throw std::invalid_argument("Division by zero");
+
+        return { static_cast<color::uchar>(scalar % color.c_union_.r_g_b_a.r),
+                 static_cast<color::uchar>(scalar % color.c_union_.r_g_b_a.g),
+                 static_cast<color::uchar>(scalar % color.c_union_.r_g_b_a.b),
+                 static_cast<color::uchar>(scalar % color.c_union_.r_g_b_a.a) };
+    }
+
+    color& color::operator%=(color::uchar scalar) {
+        if (scalar == 0)
+            throw std::invalid_argument("Division by zero");
+
+        c_union_.r_g_b_a.r %= scalar;
+        c_union_.r_g_b_a.g %= scalar;
+        c_union_.r_g_b_a.b %= scalar;
+        c_union_.r_g_b_a.a %= scalar;
+        return *this;
+    }
+
     bool color::operator==(const color& other) const noexcept {
         return c_union_.r_g_b_a.r == other.c_union_.r_g_b_a.r && c_union_.r_g_b_a.g == other.c_union_.r_g_b_a.g &&
                c_union_.r_g_b_a.b == other.c_union_.r_g_b_a.b && c_union_.r_g_b_a.a == other.c_union_.r_g_b_a.a;
@@ -164,6 +200,22 @@ namespace bardrix {
 
     bool color::operator!=(const color& other) const noexcept {
         return !(*this == other);
+    }
+
+    bool color::operator<(const color& other) const noexcept {
+        return c_union_.rgba < other.c_union_.rgba;
+    }
+
+    bool color::operator<=(const color& other) const noexcept {
+        return c_union_.rgba <= other.c_union_.rgba;
+    }
+
+    bool color::operator>(const color& other) const noexcept {
+        return c_union_.rgba > other.c_union_.rgba;
+    }
+
+    bool color::operator>=(const color& other) const noexcept {
+        return c_union_.rgba >= other.c_union_.rgba;
     }
 
     std::ostream& color::print(std::ostream& os) const noexcept {

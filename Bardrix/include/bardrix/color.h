@@ -122,6 +122,7 @@ namespace bardrix {
 
         /// \brief Add a scalar to the color.
         /// \param scalar The scalar to add.
+        /// \param color The color to be added to the scalar.
         /// \return The result of the addition as a copy.
         /// \note The result is clamped to the minimum and maximum values of the color.
         friend color operator+(uchar scalar, const color& color) noexcept;
@@ -152,6 +153,7 @@ namespace bardrix {
 
         /// \brief Subtract a scalar from the color.
         /// \param scalar The scalar to subtract.
+        /// \param color The color to be subtracted from the scalar.
         /// \return The result of the subtraction as a copy.
         /// \note The result is clamped to the minimum and maximum values of the color.
         friend color operator-(uchar scalar, const color& color) noexcept;
@@ -176,6 +178,7 @@ namespace bardrix {
 
         /// \brief Multiply a scalar by the color.
         /// \param scalar The scalar to multiply by.
+        /// \param color The color to be multiplied by the scalar.
         /// \return The result of the multiplication as a copy.
         /// \note The result is clamped to the minimum and maximum values of the color.
         friend color operator*(double scalar, const color& color) noexcept;
@@ -195,8 +198,10 @@ namespace bardrix {
 
         /// \brief Divide a scalar by the color.
         /// \param scalar The scalar to divide by.
+        /// \param color The color to be divided by the scalar.
         /// \return The result of the division as a copy.
-        /// \throws std::invalid_argument if the scalar is zero or less.
+        /// \throws std::invalid_argument if any of the elements of color are 0.
+        /// \throws std::invalid_argument if the scalar is less than 0.
         /// \note The result is clamped to the minimum and maximum values of the color.
         friend color operator/(double scalar, const color& color);
 
@@ -207,6 +212,24 @@ namespace bardrix {
         /// \note The result is clamped to the minimum and maximum values of the color.
         color& operator/=(double scalar);
 
+        /// \brief Modulo operation on the color.
+        /// \param scalar The scalar to modulo by.
+        /// \return The result of the modulo operation as a copy.
+        /// \throws std::invalid_argument if the scalar is zero.
+        NODISCARD color operator%(uchar scalar) const;
+
+        /// \brief Modulo operation on the color.
+        /// \param scalar The scalar to modulo by.
+        /// \param color The color to be modulo by the scalar.
+        /// \return The result of the modulo operation as a copy.
+        /// \throws std::invalid_argument if any of the elements of color are 0.
+        friend color operator%(uchar scalar, const color& color);
+
+        /// \brief Modulo operation on the current color.
+        /// \param scalar The scalar to modulo by.
+        /// \return The current color after the modulo operation, by reference.
+        /// \throws std::invalid_argument if the scalar is zero.
+        color& operator%=(uchar scalar);
 
         /// \brief Check if two colors are equal.
         /// \param other The color to compare with.
@@ -221,6 +244,30 @@ namespace bardrix {
         /// \example color(255, 255, 255, 255) != color(255, 255, 255, 255) // false
         /// \example color(255, 255, 255, 255) != color(255, 255, 255, 0) // true
         NODISCARD bool operator!=(const color& other) const noexcept;
+
+        /// \brief Check if the current color is less than another color.
+        /// \param other The color to compare with.
+        /// \return True if the current color is less than the other color, false otherwise.
+        /// \example color(0, 0, 0, 0) < color(255, 255, 255, 255) // true
+        NODISCARD bool operator<(const color& other) const noexcept;
+
+        /// \brief Check if the current color is less than or equal to another color.
+        /// \param other The color to compare with.
+        /// \return True if the current color is less than or equal to the other color, false otherwise.
+        /// \example color(0, 0, 0, 0) <= color(255, 255, 255, 255) // true
+        NODISCARD bool operator<=(const color& other) const noexcept;
+
+        /// \brief Check if the current color is greater than another color.
+        /// \param other The color to compare with.
+        /// \return True if the current color is greater than the other color, false otherwise.
+        /// \example color(255, 255, 255, 255) > color(0, 0, 0, 0) // true
+        NODISCARD bool operator>(const color& other) const noexcept;
+
+        /// \brief Check if the current color is greater than or equal to another color.
+        /// \param other The color to compare with.
+        /// \return True if the current color is greater than or equal to the other color, false otherwise.
+        /// \example color(255, 255, 255, 255) >= color(0, 0, 0, 0) // true
+        NODISCARD bool operator>=(const color& other) const noexcept;
 
         /// \brief Print the color to an output stream.
         /// \param os The output stream to print to.

@@ -198,7 +198,7 @@ namespace bardrix {
         /// \return A copy of the dimension3 with the result of the division
         template<typename T, typename = enable_if_dimension3<T>>
         NODISCARD friend T operator/(const T& dimension3, double n) {
-            if (n == 0)
+            if (nearly_equal(n, 0))
                 throw std::invalid_argument("Division by zero");
 
             T result = dimension3;
@@ -214,7 +214,7 @@ namespace bardrix {
         /// \return A copy of the dimension3 with the result of the division
         template<typename T, typename = enable_if_dimension3<T>>
         NODISCARD friend T operator/(double n, const T& dimension3) {
-            if (dimension3.x == 0 || dimension3.y == 0 || dimension3.z == 0)
+            if (nearly_equal(dimension3.x, 0) || nearly_equal(dimension3.y, 0) || nearly_equal(dimension3.z, 0))
                 throw std::invalid_argument("Division by zero");
 
             T result = dimension3;
@@ -232,7 +232,7 @@ namespace bardrix {
         /// \return A reference to the dimension3 with the result of the division
         template<typename T, typename = enable_if_dimension3<T>>
         friend T operator/=(T& dimension3, double n) {
-            if (n == 0)
+            if (nearly_equal(n, 0))
                 throw std::invalid_argument("Division by zero");
 
             dimension3.x /= n;
@@ -250,7 +250,7 @@ namespace bardrix {
         /// \return A copy of the dimension3 with the result of the modulus
         template<typename T, typename = enable_if_dimension3<T>>
         NODISCARD friend T operator%(const T& dimension3, double n) {
-            if (n == 0)
+            if (nearly_equal(n, 0))
                 throw std::invalid_argument("Division by zero");
 
             T result = dimension3;
@@ -267,7 +267,7 @@ namespace bardrix {
         /// \return A copy of the dimension3 with the result of the modulus
         template<typename T, typename = enable_if_dimension3<T>>
         NODISCARD friend T operator%(double n, const T& dimension3) {
-            if (dimension3.x == 0 || dimension3.y == 0 || dimension3.z == 0)
+            if (nearly_equal(dimension3.x, 0) || nearly_equal(dimension3.y, 0) || nearly_equal(dimension3.z, 0))
                 throw std::invalid_argument("Division by zero");
 
             T result = dimension3;
@@ -286,7 +286,7 @@ namespace bardrix {
         /// \return A reference to the dimension3 with the result of the modulus
         template<typename T, typename = enable_if_dimension3<T>>
         friend T operator%=(T& dimension3, double n) {
-            if (n == 0)
+            if (nearly_equal(n, 0))
                 throw std::invalid_argument("Division by zero");
 
             dimension3.x = std::fmod(dimension3.x, n);
