@@ -11,6 +11,7 @@
 namespace bardrix {
 
     /// \brief A 3D ray class
+    /// \details A ray is defined by a position and a direction, it also has a length
     class ray {
 
     public:
