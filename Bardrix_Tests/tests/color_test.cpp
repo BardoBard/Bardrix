@@ -375,6 +375,83 @@ TEST(color, operator_equal) {
     EXPECT_FALSE(c1 == c2);
 }
 
+/// \brief Tests the less than operator
+TEST(color, operator_less_than) {
+    bardrix::color c1(255, 255, 255, 255);
+    bardrix::color c2(4, 255, 53, 255);
+    bardrix::color c3(4, 255, 53, 255);
+
+    EXPECT_FALSE(c1 < c1);
+    EXPECT_FALSE(c2 < c2);
+    EXPECT_FALSE(c3 < c3);
+
+    EXPECT_FALSE(c2 < c3);
+    EXPECT_FALSE(c3 < c2);
+
+    EXPECT_FALSE(c1 < c2);
+    EXPECT_FALSE(c1 < c3);
+
+    EXPECT_TRUE(c2 < c1);
+    EXPECT_TRUE(c3 < c1);
+}
+
+/// \brief Tests the greater than operator
+TEST(color, operator_greater_than) {
+    bardrix::color c1(255, 255, 255, 255);
+    bardrix::color c2(4, 255, 53, 255);
+    bardrix::color c3(4, 255, 53, 255);
+
+    EXPECT_FALSE(c1 > c1);
+    EXPECT_FALSE(c2 > c2);
+    EXPECT_FALSE(c3 > c3);
+
+    EXPECT_FALSE(c2 > c3);
+    EXPECT_FALSE(c3 > c2);
+
+    EXPECT_TRUE(c1 > c2);
+    EXPECT_TRUE(c1 > c3);
+}
+
+/// \brief Tests the less than or equal operator
+TEST(color, operator_less_than_or_equal) {
+    bardrix::color c1(255, 255, 255, 255);
+    bardrix::color c2(4, 255, 53, 255);
+    bardrix::color c3(4, 255, 53, 255);
+
+    EXPECT_TRUE(c1 <= c1);
+    EXPECT_TRUE(c2 <= c2);
+    EXPECT_TRUE(c3 <= c3);
+
+    EXPECT_TRUE(c2 <= c3);
+    EXPECT_TRUE(c3 <= c2);
+
+    EXPECT_FALSE(c1 <= c2);
+    EXPECT_FALSE(c1 <= c3);
+
+    EXPECT_TRUE(c2 <= c1);
+    EXPECT_TRUE(c3 <= c1);
+}
+
+/// \brief Tests the greater than or equal operator
+TEST(color, operator_greater_than_or_equal) {
+    bardrix::color c1(255, 255, 255, 255);
+    bardrix::color c2(4, 255, 53, 255);
+    bardrix::color c3(4, 255, 53, 255);
+
+    EXPECT_TRUE(c1 >= c1);
+    EXPECT_TRUE(c2 >= c2);
+    EXPECT_TRUE(c3 >= c3);
+
+    EXPECT_TRUE(c2 >= c3);
+    EXPECT_TRUE(c3 >= c2);
+
+    EXPECT_TRUE(c1 >= c2);
+    EXPECT_TRUE(c1 >= c3);
+
+    EXPECT_FALSE(c2 >= c1);
+    EXPECT_FALSE(c3 >= c1);
+}
+
 /// \brief Tests the color inequality
 TEST(color, operator_not_equal) {
     bardrix::color c1(255, 255, 255, 255);

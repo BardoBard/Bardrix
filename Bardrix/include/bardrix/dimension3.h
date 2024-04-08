@@ -35,7 +35,6 @@ namespace bardrix {
         /// \param dimension3_lhs Dimension3 to add
         /// \param dimension3_rhs Dimension3 to add
         /// \return A copy of the dimension3 with the result of the addition
-
         template<typename T, typename = enable_if_dimension3<T>>
         NODISCARD friend T operator+(const T& dimension3_lhs, const T& dimension3_rhs) noexcept {
             T result = dimension3_lhs;
@@ -194,7 +193,7 @@ namespace bardrix {
         /// \tparam T Type of the dimension3, must be a derived class of dimension3
         /// \param dimension3 Dimension3 to divide
         /// \param n Value to divide (scalar)
-        /// \throws std::invalid_argument if n is 0
+        /// \throws std::invalid_argument If n is 0
         /// \return A copy of the dimension3 with the result of the division
         template<typename T, typename = enable_if_dimension3<T>>
         NODISCARD friend T operator/(const T& dimension3, double n) {
@@ -210,7 +209,7 @@ namespace bardrix {
         /// \tparam T Type of the dimension3, must be a derived class of dimension3
         /// \param n Value to divide (scalar)
         /// \param dimension3 Dimension3 to divide
-        /// \throws std::invalid_argument if n is 0
+        /// \throws std::invalid_argument If any of the dimension3 values is 0
         /// \return A copy of the dimension3 with the result of the division
         template<typename T, typename = enable_if_dimension3<T>>
         NODISCARD friend T operator/(double n, const T& dimension3) {
@@ -228,7 +227,7 @@ namespace bardrix {
         /// \tparam T Type of the dimension3, must be a derived class of dimension3
         /// \param dimension3 Dimension3 containing the result
         /// \param n Value to divide (scalar)
-        /// \throws std::invalid_argument if n is 0
+        /// \throws std::invalid_argument If n is 0
         /// \return A reference to the dimension3 with the result of the division
         template<typename T, typename = enable_if_dimension3<T>>
         friend T operator/=(T& dimension3, double n) {
@@ -245,7 +244,7 @@ namespace bardrix {
         /// \tparam T Type of the dimension3, must be a derived class of dimension3
         /// \param dimension3 Dimension3 to calculate the modulus
         /// \param n Value to calculate the modulus
-        /// \throws std::invalid_argument if n is 0
+        /// \throws std::invalid_argument If n is 0
         /// \note It used the std::fmod function to calculate the modulus
         /// \return A copy of the dimension3 with the result of the modulus
         template<typename T, typename = enable_if_dimension3<T>>
@@ -263,7 +262,7 @@ namespace bardrix {
         /// \param n Value to calculate the modulus
         /// \note It used the std::fmod function to calculate the modulus
         /// \param dimension3 Dimension3 to calculate the modulus
-        /// \throws std::invalid_argument if any of the dimension3 values is 0
+        /// \throws std::invalid_argument If any of the dimension3 values is 0
         /// \return A copy of the dimension3 with the result of the modulus
         template<typename T, typename = enable_if_dimension3<T>>
         NODISCARD friend T operator%(double n, const T& dimension3) {
@@ -281,7 +280,7 @@ namespace bardrix {
         /// \tparam T Type of the dimension3, must be a derived class of dimension3
         /// \param dimension3 Dimension3 to calculate the modulus
         /// \param n Value to calculate the modulus
-        /// \throws std::invalid_argument if n is 0
+        /// \throws std::invalid_argument If n is 0
         /// \note It used the std::fmod function to calculate the modulus
         /// \return A reference to the dimension3 with the result of the modulus
         template<typename T, typename = enable_if_dimension3<T>>
