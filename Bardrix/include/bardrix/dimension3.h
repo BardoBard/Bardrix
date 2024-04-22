@@ -448,7 +448,9 @@ namespace bardrix {
         /// \param os Output stream
         /// \param dimension3 Dimension3 to output
         /// \return A reference to the output stream
-        friend std::ostream& operator<<(std::ostream& os, const dimension3& dimension3);
+        friend std::ostream& operator<<(std::ostream& os, const dimension3& dimension3){
+            return dimension3.print(os);
+        }
 
     }; // class dimension3
 
