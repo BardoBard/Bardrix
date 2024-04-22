@@ -64,15 +64,16 @@ namespace bardrix {
     }
 
     quaternion quaternion::operator*(const quaternion& q) const noexcept {
-        const double real = (x * q.x - y * q.y - z * q.z - w * q.w);
-        const double i = (x * q.y + y * q.x + z * q.w - w * q.z);
-        const double j = (x * q.z - y * q.w + z * q.x + w * q.y);
-        const double k = (x * q.w + y * q.z - z * q.y + w * q.x);
-        return {real, i, j, k};
+        return {
+            w * q.x + x * q.w + y * q.z - z * q.y, // i
+            w * q.y - x * q.z + y * q.w + z * q.x, // j
+            w * q.z + x * q.y - y * q.x + z * q.w, // k
+            w * q.w - x * q.x - y * q.y - z * q.z  // real
+        };
     }
 
     std::ostream& quaternion::print(std::ostream& os) const {
-        return os << "quaternion(" << x << ", " << y << ", " << z << ", " << w << ")";
+        return os << "quaternion(" << x << "i, " << y << "j, " << z << "k, " << w << ")";
     }
 
 } // bardrix

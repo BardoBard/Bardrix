@@ -13,6 +13,7 @@ namespace bardrix {
 
     /// \brief A quaternion class
     /// \details This class inherits from dimension4
+    /// \note x, y and z are the imaginary parts and w is the real part
     /// \cite https://en.wikipedia.org/wiki/Quaternion
     class quaternion : public dimension4 {
     public:
@@ -26,10 +27,10 @@ namespace bardrix {
         quaternion() noexcept;
 
         /// \brief Constructor for quaternion, initializes x, y, z and w
-        /// \param x Initial x value
-        /// \param y Initial y value
-        /// \param z Initial z value
-        /// \param w Initial w value
+        /// \param x Initial imaginary i value
+        /// \param y Initial imaginary j value
+        /// \param z Initial imaginary k value
+        /// \param w Initial real value
         quaternion(double x, double y, double z, double w) noexcept;
 
         /// \brief Calculates the conjugation of the quaternion
@@ -76,13 +77,26 @@ namespace bardrix {
         /// \return The Hamilton product of the two quaternions
         /// \note formula: quaternion(a, b, c, d) * quaternion(e, f, g, h) = quaternion(a*e - b*f - c*g - d*h, a*f + b*e + c*h - d*g, a*g - b*h + c*e + d*f, a*h + b*g - c*f + d*e)
         /// \details The Hamilton product of two quaternions is defined as:
-        /// \example quaternion(1, 2, 3, 4) * quaternion(5, 6, 7, 8) == quaternion(-60, 12, 30, 24)
+        /// \example quaternion(1, 2, 3, 4) * quaternion(5, 6, 7, 8) == quaternion(24, 48, 48, -6)
         NODISCARD quaternion operator*(const quaternion& q) const noexcept;
 
-        template<class T, std::enable_if_t<std::is_base_of_v<dimension3, T>>, T>
-        NODISCARD static T rotate_radians(const T& dim3, const vector3& rotation_vector, double theta) noexcept{
-//            if (dim3
-//                throw exception::zero_exception("dim3 must not be (0,0,0)");
+        /// \brief Rotates a 3D object around an axis by an angle in radians
+        /// \tparam T The type of the point, e.g. point3, vector3, etc.
+        /// \param dim3 The 3D object to rotate
+        /// \param rotation_vector The axis to rotate around
+        /// \param theta The angle in radians
+        /// \return The rotated 3D object
+        /// \details The rotation is done using quaternions
+        /// \details If all the components of the given 3D object or rotation vector are 0, it will return the same 3D object (unmodified)
+        /// \example quaternion::rotate_radians(point3(1, 2, 3), vector3(1, 0, 0), bardrix::pi) == point3(1, -2, -3)
+        template<class T>
+        NODISCARD static auto rotate_radians(const T& dim3, const vector3& rotation_vector,
+                                             double theta) noexcept -> dimension3::enable_if_dimension3<T, T> {
+            if (dim3 == 0 || rotation_vector == 0)
+                return dim3;
+
+            if (nearly_equal(theta, 0))
+                return dim3;
 
             theta /= 2;
 
@@ -91,25 +105,71 @@ namespace bardrix {
             const double sin = std::sin(theta);
 
             //get unitvector
-            const auto unit_vector = rotation_vector.normalized() * 20;
+            const vector3 unit_vector = rotation_vector.normalized() * sin;
 
             //quaternion
-            const quaternion q = quaternion(cos, unit_vector.x, unit_vector.y, unit_vector.z);
+            const quaternion q = quaternion(unit_vector.x, unit_vector.y, unit_vector.z, cos);
 
             //conjugated quaternion of Q
             const quaternion con_q = q.conjugated();
 
             //quaternion from given point
-            const quaternion p = quaternion(0, dim3.x, dim3.y, dim3.z);
+            const quaternion p = quaternion(dim3.x, dim3.y, dim3.z, 0);
 
-            const quaternion result = con_q * p * q;
+            const quaternion result = (con_q * p) * q;
 
-            return {result.y, result.z, result.w};
+            return {result.x, result.y, result.z};
+        }
+
+        /// \brief Rotates a 3D object around an axis by an angle in degrees
+        /// \tparam T The type of the point, e.g. point3, vector3, etc.
+        /// \param dim3 The 3D object to rotate
+        /// \param rotation_vector The axis to rotate around
+        /// \param theta The angle in degrees
+        /// \return The rotated 3D object
+        /// \details The rotation is done using quaternions
+        /// \details If all the components of the given 3D object or rotation vector are 0, it will return the same 3D object (unmodified)
+        /// \example quaternion::rotate_degrees(point3(1, 2, 3), vector3(1, 0, 0), 180) == point3(1, -2, -3)
+        template<class T>
+        NODISCARD static auto rotate_degrees(const T& dim3, const vector3& rotation_vector,
+                                             double theta) noexcept -> dimension3::enable_if_dimension3<T, T> {
+            return rotate_radians(dim3, rotation_vector, degrees_to_radians(theta));
+        }
+
+        /// \brief Mirrors a 3D object around an axis
+        /// \tparam T The type of the point, e.g. point3, vector3, etc.
+        /// \param dim3 The 3D object to mirror
+        /// \param mirror_vector The axis to mirror around
+        /// \return The mirrored 3D object
+        /// \details The mirroring is done using quaternions
+        /// \details If all the components of the given 3D object or rotation vector are 0, it will return the same 3D object (unmodified)
+        /// \example quaternion::mirror(point3(1, 2, 3), vector3(1, 0, 0)) == point3(-1, 2, 3)
+        template<class T>
+        NODISCARD static auto mirror(const T& dim3, const vector3& mirror_vector) noexcept -> dimension3::enable_if_dimension3<T, T> {
+            if (dim3 == 0 || mirror_vector == 0)
+                return dim3;
+
+            //get unitvector (aka normalized vector)
+            const vector3 unit_vector = mirror_vector.normalized();
+
+            //quaternion
+            const quaternion q = quaternion( unit_vector.x, unit_vector.y, unit_vector.z, 0);
+
+            //conjugated quaternion of Q
+            const quaternion con_q = q.conjugated();
+
+            //quaternion from given point
+            const quaternion p = quaternion(dim3.x, dim3.y, dim3.z, 0);
+
+            const quaternion result = (con_q * p) * q;
+
+            return {result.x, result.y, result.z};
         }
 
         /// \brief Print the quaternion to an output stream
         /// \param os The output stream
         /// \return The output stream
+        /// \example std::cout << quaternion(1, 2, 3, 4) prints quaternion(1i, 2j, 3k, 4)
         std::ostream& print(std::ostream& os) const override;
 
     }; // quaternion

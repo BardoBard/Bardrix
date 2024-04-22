@@ -2,6 +2,8 @@
 // Created by Bard on 04/04/2024.
 //
 
+#include <bardrix/vector3.h>
+#include <bardrix/point3.h>
 #include <bardrix/quaternion.h>
 
 /// \brief Test the quaternion constructor
@@ -127,12 +129,141 @@ TEST(quaternion, multiply) {
     bardrix::quaternion q_zero(0, 0, 0, 0);
     bardrix::quaternion q1(1, 2, 3, 4);
     bardrix::quaternion q2(5, 6, 7, 8);
-    bardrix::quaternion q3(-60, 12, 30, 24);
+    bardrix::quaternion q3(24, 48, 48, -6);
     EXPECT_EQ(q1 * q2, q3);
     EXPECT_EQ(q_zero * q1, q_zero);
 
     q1 = bardrix::quaternion(-53, 0, 34, 12);
     q2 = bardrix::quaternion(34, 17, 63, 23);
-    q3 = bardrix::quaternion(-4220, -875, -1979, -1389);
+    q3 = bardrix::quaternion(-1389, 4699, 637, -64);
     EXPECT_EQ(q1 * q2, q3);
+}
+
+/// \brief Test the rotation of a quaternion
+TEST(quaternion, rotation_theta_test) {
+    bardrix::vector3 rotation_vector = {1, 2, 3};
+    bardrix::vector3 vector = {4, 5, 6};
+    bardrix::point3 point = {4, 5, 6};
+
+    double theta = 90.0;
+    bardrix::vector3 result = bardrix::quaternion::rotate_degrees(vector, rotation_vector, theta);
+    bardrix::point3 result_point = bardrix::quaternion::rotate_degrees(point, rotation_vector, theta);
+    ASSERT_EQ(result, bardrix::vector3(3.0875, 2.9678, 7.6589));
+    ASSERT_EQ(result_point, bardrix::point3(3.0875, 2.9678, 7.6589));
+
+    theta = 180.0;
+    result = bardrix::quaternion::rotate_degrees(vector, rotation_vector, theta);
+    result_point = bardrix::quaternion::rotate_degrees(point, rotation_vector, theta);
+    ASSERT_EQ(result, bardrix::vector3(0.5714, 4.1428, 7.7143));
+    ASSERT_EQ(result_point, bardrix::point3(0.5714, 4.1428, 7.7143));
+
+    theta = 270.0;
+    result = bardrix::quaternion::rotate_degrees(vector, rotation_vector, theta);
+    result_point = bardrix::quaternion::rotate_degrees(point, rotation_vector, theta);
+    ASSERT_EQ(result, bardrix::vector3(1.4839, 6.175, 6.0553));
+    ASSERT_EQ(result_point, bardrix::point3(1.4839, 6.175, 6.0553));
+
+    theta = 360.0;
+    result = bardrix::quaternion::rotate_degrees(vector, rotation_vector, theta);
+    result_point = bardrix::quaternion::rotate_degrees(point, rotation_vector, theta);
+    ASSERT_EQ(result, vector);
+    ASSERT_EQ(result_point, point);
+}
+
+/// \brief Test the rotation of a quaternion with degenerate cases
+TEST(quaternion, rotation_degeneratie_position){
+    bardrix::vector3 rotation_vector = {1, 2, 3};
+    bardrix::vector3 rotation_vector_neg = {-11, 31, 0};
+    bardrix::point3 point = {0, 0, 0};
+    bardrix::point3 point_neg = {-24,34,-12};
+    double theta = 90.0;
+
+    bardrix::point3 result = bardrix::quaternion::rotate_degrees(point, rotation_vector, theta);
+    ASSERT_EQ(result, bardrix::point3(0, 0, 0));
+
+    result = bardrix::quaternion::rotate_degrees(point_neg, rotation_vector, theta);
+    ASSERT_EQ(result, bardrix::point3(34.2463, 17.1785, -20.2011));
+}
+
+/// \brief Test the rotation of a quaternion with zero theta
+TEST(quaternion, rotation_vector_zero_theta_test) {
+    bardrix::vector3 rotation_vector = bardrix::vector3(1, 2, 3);
+    bardrix::vector3 vector = bardrix::vector3(4, 5, 6);
+    double theta = 0;
+
+    bardrix::vector3 result = bardrix::quaternion::rotate_degrees(vector, rotation_vector, theta);
+
+    ASSERT_EQ(result, vector);
+}
+
+/// \brief Test the rotation of a quaternion with negative theta
+TEST(quaternion, rotation_vector_negative_theta_test) {
+    bardrix::vector3 rotation_vector = {1, 2, 3};
+    bardrix::vector3 vector = {4, 5, 6};
+    double theta = -90.0;
+
+    bardrix::vector3 result = bardrix::quaternion::rotate_degrees(vector, rotation_vector, theta);
+
+    ASSERT_EQ(result, bardrix::vector3(1.4839, 6.175, 6.05536));
+}
+
+/// \brief Test degenerate cases of the rotation of a quaternion
+TEST(quaternion, rotation_degenerate_test) {
+    bardrix::vector3 rotation_vector = {0, 0, 0};
+    bardrix::vector3 vector = {4, 5, 6};
+    double theta = 90.0;
+
+    bardrix::vector3 result = bardrix::quaternion::rotate_degrees(vector, rotation_vector, theta);
+
+    ASSERT_EQ(result, vector);
+}
+
+/// \brief Test degenerate cases of the rotation of a quaternion
+TEST(quaternion, rotation_degenerate_test2) {
+    bardrix::vector3 rotation_vector = {1, 2, 3};
+    bardrix::vector3 vector = {0, 0, 0};
+    double theta = 90.0;
+
+    bardrix::vector3 result = bardrix::quaternion::rotate_degrees(vector, rotation_vector, theta);
+
+    ASSERT_EQ(result, vector);
+}
+
+/// \brief Test the mirror of a quaternion
+TEST(quaternion, mirror) {
+    bardrix::vector3 rotation_vector = {1, 2, 3};
+    bardrix::vector3 vector = {4, 5, 6};
+
+    bardrix::vector3 result = bardrix::quaternion::mirror(vector, rotation_vector);
+    ASSERT_EQ(result, bardrix::vector3(0.5714, 4.1428, 7.7143));
+}
+
+/// \brief Test the mirror of a quaternion with degenerate cases
+TEST(quaternion, mirror_degenerate) {
+    bardrix::vector3 rotation_vector = {1, 2, 3};
+    bardrix::vector3 vector = {0, 0, 0};
+
+    bardrix::vector3 result = bardrix::quaternion::mirror(vector, rotation_vector);
+    ASSERT_EQ(result, 0);
+}
+
+/// \brief Test the mirror of a quaternion with degenerate cases
+TEST(quaternion, mirror_degenerate2) {
+    bardrix::vector3 rotation_vector = {0, 0, 0};
+    bardrix::vector3 vector = {4, 5, 6};
+
+    bardrix::vector3 result = bardrix::quaternion::mirror(vector, rotation_vector);
+    ASSERT_EQ(result, vector);
+
+    rotation_vector = {-23,52,0};
+    result = bardrix::quaternion::mirror(vector, rotation_vector);
+    ASSERT_EQ(result, bardrix::vector3(-6.3903, 0.40426, -6));
+}
+
+/// \brief Test the print method of a quaternion
+TEST(quaternion, print) {
+    bardrix::quaternion q(1, 2, 3, 4);
+    std::stringstream ss;
+    q.print(ss);
+    EXPECT_EQ(ss.str(), "quaternion(1i, 2j, 3k, 4)");
 }

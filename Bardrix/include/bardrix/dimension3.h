@@ -13,13 +13,14 @@ namespace bardrix {
     /// \details This class implements the basic operations for 3 dimensions (+, +=, -, -=, *, *=, /, /=, %, %=, ==, !=, <, >, <=, >=, -, ++, --, <<)
     class dimension3 {
 
-    protected:
+    public:
         /// \brief A template to check if a type is a derived class of dimension3
         /// \tparam T Type to check
-        /// \note Usage: template<typename T, typename = enable_if_dimension3<T>>
+        /// \tparam Result Type to return if T is a derived class of dimension3
+        /// \note Usage: template<typename T>
         /// \note Example: Add<std::string>(20) -> error
-        template<typename T>
-        using enable_if_dimension3 = std::enable_if_t<std::is_base_of_v<dimension3, T>>;
+        template<typename T, typename Result>
+        using enable_if_dimension3 = std::enable_if_t<std::is_base_of_v<dimension3, T>, Result>;
 
     public:
         double x{}, y{}, z{};
@@ -35,8 +36,8 @@ namespace bardrix {
         /// \param dimension3_lhs Dimension3 to add
         /// \param dimension3_rhs Dimension3 to add
         /// \return A copy of the dimension3 with the result of the addition
-        template<typename T, typename = enable_if_dimension3<T>>
-        NODISCARD friend T operator+(const T& dimension3_lhs, const T& dimension3_rhs) noexcept {
+        template<typename T>
+        NODISCARD friend auto operator+(const T& dimension3_lhs, const T& dimension3_rhs) noexcept -> enable_if_dimension3<T, T> {
             T result = dimension3_lhs;
             result += dimension3_rhs;
             return result;
@@ -47,8 +48,8 @@ namespace bardrix {
         /// \param n Value to add
         /// \param dimension3 Dimension3 to add
         /// \return A copy of the dimension3 with the result of the addition
-        template<typename T, typename = enable_if_dimension3<T>>
-        NODISCARD friend T operator+(double n, const T& dimension3) noexcept {
+        template<typename T>
+        NODISCARD friend auto operator+(double n, const T& dimension3) noexcept -> enable_if_dimension3<T, T> {
             return dimension3 + n;
         }
 
@@ -57,8 +58,8 @@ namespace bardrix {
         /// \param dimension3 Dimension3 to add
         /// \param n Value to add
         /// \return A copy of the dimension3 with the result of the addition
-        template<typename T, typename = enable_if_dimension3<T>>
-        NODISCARD friend T operator+(const T& dimension3, double n) noexcept {
+        template<typename T>
+        NODISCARD friend auto operator+(const T& dimension3, double n) noexcept -> enable_if_dimension3<T, T> {
             T result = dimension3;
             result += n;
             return result;
@@ -69,8 +70,8 @@ namespace bardrix {
         /// \param dimension3_lhs Dimension3 containing the result
         /// \param dimension3_rhs Dimension3 to add
         /// \return A reference to the dimension3 with the result of the addition
-        template<typename T, typename = enable_if_dimension3<T>>
-        friend T operator+=(T& dimension3_lhs, const T& dimension3_rhs) noexcept {
+        template<typename T>
+        friend auto operator+=(T& dimension3_lhs, const T& dimension3_rhs) noexcept -> enable_if_dimension3<T, const T&> {
             dimension3_lhs.x += dimension3_rhs.x;
             dimension3_lhs.y += dimension3_rhs.y;
             dimension3_lhs.z += dimension3_rhs.z;
@@ -82,8 +83,8 @@ namespace bardrix {
         /// \param dimension3 Dimension3 containing the result
         /// \param n Value to add
         /// \return A reference to the dimension3 with the result of the addition
-        template<typename T, typename = enable_if_dimension3<T>>
-        friend T operator+=(T& dimension3, double n) noexcept {
+        template<typename T>
+        friend auto operator+=(T& dimension3, double n) noexcept -> enable_if_dimension3<T, const T&> {
             dimension3.x += n;
             dimension3.y += n;
             dimension3.z += n;
@@ -95,8 +96,8 @@ namespace bardrix {
         /// \param dimension3_lhs Dimension3 to subtract
         /// \param dimension3_rhs Dimension3 to subtract
         /// \return A copy of the dimension3 with the result of the subtraction
-        template<typename T, typename = enable_if_dimension3<T>>
-        NODISCARD friend T operator-(const T& dimension3_lhs, const T& dimension3_rhs) noexcept {
+        template<typename T>
+        NODISCARD friend auto operator-(const T& dimension3_lhs, const T& dimension3_rhs) noexcept -> enable_if_dimension3<T, T> {
             T result = dimension3_lhs;
             result -= dimension3_rhs;
             return result;
@@ -107,8 +108,8 @@ namespace bardrix {
         /// \param n Value to subtract
         /// \param dimension3 Dimension3 to subtract
         /// \return A copy of the dimension3 with the result of the subtraction
-        template<typename T, typename = enable_if_dimension3<T>>
-        NODISCARD friend T operator-(double n, const T& dimension3) noexcept {
+        template<typename T>
+        NODISCARD friend auto operator-(double n, const T& dimension3) noexcept -> enable_if_dimension3<T, T> {
             T result = dimension3;
             result.x = n - dimension3.x;
             result.y = n - dimension3.y;
@@ -121,8 +122,8 @@ namespace bardrix {
         /// \param dimension3 Dimension3 to subtract
         /// \param n Value to subtract
         /// \return A copy of the dimension3 with the result of the subtraction
-        template<typename T, typename = enable_if_dimension3<T>>
-        NODISCARD friend T operator-(const T& dimension3, double n) noexcept {
+        template<typename T>
+        NODISCARD friend auto operator-(const T& dimension3, double n) noexcept -> enable_if_dimension3<T, T> {
             T result = dimension3;
             result -= n;
             return result;
@@ -133,8 +134,8 @@ namespace bardrix {
         /// \param dimension3_lhs Dimension3 containing the result
         /// \param dimension3_rhs Dimension3 to subtract
         /// \return A reference to the dimension3 with the result of the subtraction
-        template<typename T, typename = enable_if_dimension3<T>>
-        friend T operator-=(T& dimension3_lhs, const T& dimension3_rhs) noexcept {
+        template<typename T>
+        friend auto operator-=(T& dimension3_lhs, const T& dimension3_rhs) noexcept -> enable_if_dimension3<T, const T&> {
             dimension3_lhs.x -= dimension3_rhs.x;
             dimension3_lhs.y -= dimension3_rhs.y;
             dimension3_lhs.z -= dimension3_rhs.z;
@@ -146,8 +147,8 @@ namespace bardrix {
         /// \param dimension3 Dimension3 containing the result
         /// \param n Value to subtract
         /// \return A reference to the dimension3 with the result of the subtraction
-        template<typename T, typename = enable_if_dimension3<T>>
-        friend T operator-=(T& dimension3, double n) noexcept {
+        template<typename T>
+        friend auto operator-=(T& dimension3, double n) noexcept -> enable_if_dimension3<T, const T&> {
             dimension3.x -= n;
             dimension3.y -= n;
             dimension3.z -= n;
@@ -159,8 +160,8 @@ namespace bardrix {
         /// \param dimension3 Dimension3 to multiply
         /// \param n Value to multiply (scalar)
         /// \return A copy of the dimension3 with the result of the multiplication
-        template<typename T, typename = enable_if_dimension3<T>>
-        NODISCARD friend T operator*(const T& dimension3, double n) noexcept {
+        template<typename T>
+        NODISCARD friend auto operator*(const T& dimension3, double n) noexcept -> enable_if_dimension3<T, T> {
             T result = dimension3;
             result *= n;
             return result;
@@ -171,8 +172,8 @@ namespace bardrix {
         /// \param n Value to multiply (scalar)
         /// \param dimension3 Dimension3 to multiply
         /// \return A copy of the dimension3 with the result of the multiplication
-        template<typename T, typename = enable_if_dimension3<T>>
-        NODISCARD friend T operator*(double n, const T& dimension3) noexcept {
+        template<typename T>
+        NODISCARD friend auto operator*(double n, const T& dimension3) noexcept -> enable_if_dimension3<T, T> {
             return dimension3 * n;
         }
 
@@ -181,8 +182,8 @@ namespace bardrix {
         /// \param dimension3 Dimension3 containing the result
         /// \param n Value to multiply (scalar)
         /// \return A reference to the dimension3 with the result of the multiplication
-        template<typename T, typename = enable_if_dimension3<T>>
-        friend T operator*=(T& dimension3, double n) noexcept {
+        template<typename T>
+        friend auto operator*=(T& dimension3, double n) noexcept -> enable_if_dimension3<T, const T&> {
             dimension3.x *= n;
             dimension3.y *= n;
             dimension3.z *= n;
@@ -195,8 +196,8 @@ namespace bardrix {
         /// \param n Value to divide (scalar)
         /// \throws std::invalid_argument If n is 0
         /// \return A copy of the dimension3 with the result of the division
-        template<typename T, typename = enable_if_dimension3<T>>
-        NODISCARD friend T operator/(const T& dimension3, double n) {
+        template<typename T>
+        NODISCARD friend auto operator/(const T& dimension3, double n) -> enable_if_dimension3<T, T> {
             if (nearly_equal(n, 0))
                 throw std::invalid_argument("Division by zero");
 
@@ -211,8 +212,8 @@ namespace bardrix {
         /// \param dimension3 Dimension3 to divide
         /// \throws std::invalid_argument If any of the dimension3 values is 0
         /// \return A copy of the dimension3 with the result of the division
-        template<typename T, typename = enable_if_dimension3<T>>
-        NODISCARD friend T operator/(double n, const T& dimension3) {
+        template<typename T>
+        NODISCARD friend auto operator/(double n, const T& dimension3) -> enable_if_dimension3<T, T> {
             if (nearly_equal(dimension3.x, 0) || nearly_equal(dimension3.y, 0) || nearly_equal(dimension3.z, 0))
                 throw std::invalid_argument("Division by zero");
 
@@ -229,8 +230,8 @@ namespace bardrix {
         /// \param n Value to divide (scalar)
         /// \throws std::invalid_argument If n is 0
         /// \return A reference to the dimension3 with the result of the division
-        template<typename T, typename = enable_if_dimension3<T>>
-        friend T operator/=(T& dimension3, double n) {
+        template<typename T>
+        friend auto operator/=(T& dimension3, double n) -> enable_if_dimension3<T, const T&> {
             if (nearly_equal(n, 0))
                 throw std::invalid_argument("Division by zero");
 
@@ -247,8 +248,8 @@ namespace bardrix {
         /// \throws std::invalid_argument If n is 0
         /// \note It used the std::fmod function to calculate the modulus
         /// \return A copy of the dimension3 with the result of the modulus
-        template<typename T, typename = enable_if_dimension3<T>>
-        NODISCARD friend T operator%(const T& dimension3, double n) {
+        template<typename T>
+        NODISCARD friend auto operator%(const T& dimension3, double n) -> enable_if_dimension3<T, T> {
             if (nearly_equal(n, 0))
                 throw std::invalid_argument("Division by zero");
 
@@ -264,8 +265,8 @@ namespace bardrix {
         /// \param dimension3 Dimension3 to calculate the modulus
         /// \throws std::invalid_argument If any of the dimension3 values is 0
         /// \return A copy of the dimension3 with the result of the modulus
-        template<typename T, typename = enable_if_dimension3<T>>
-        NODISCARD friend T operator%(double n, const T& dimension3) {
+        template<typename T>
+        NODISCARD friend auto operator%(double n, const T& dimension3) -> enable_if_dimension3<T, T> {
             if (nearly_equal(dimension3.x, 0) || nearly_equal(dimension3.y, 0) || nearly_equal(dimension3.z, 0))
                 throw std::invalid_argument("Division by zero");
 
@@ -283,8 +284,8 @@ namespace bardrix {
         /// \throws std::invalid_argument If n is 0
         /// \note It used the std::fmod function to calculate the modulus
         /// \return A reference to the dimension3 with the result of the modulus
-        template<typename T, typename = enable_if_dimension3<T>>
-        friend T operator%=(T& dimension3, double n) {
+        template<typename T>
+        friend auto operator%=(T& dimension3, double n) -> enable_if_dimension3<T, const T&> {
             if (nearly_equal(n, 0))
                 throw std::invalid_argument("Division by zero");
 
@@ -301,11 +302,21 @@ namespace bardrix {
         /// \param dimension3_lhs Dimension3 to compare
         /// \param dimension3_rhs Dimension3 to compare
         /// \return True if the two dimension3 are equal, false otherwise
-        template<typename T, typename = enable_if_dimension3<T>>
-        NODISCARD friend bool operator==(const T& dimension3_lhs, const T& dimension3_rhs) noexcept {
+        template<typename T>
+        NODISCARD friend auto operator==(const T& dimension3_lhs, const T& dimension3_rhs) noexcept -> enable_if_dimension3<T, bool> {
             return nearly_equal(dimension3_lhs.x, dimension3_rhs.x) &&
                    nearly_equal(dimension3_lhs.y, dimension3_rhs.y) &&
                    nearly_equal(dimension3_lhs.z, dimension3_rhs.z);
+        }
+
+        /// \brief Check if dimension3 is equal to a value
+        /// \tparam T Type of the dimension3, must be a derived class of dimension3
+        /// \param dimension3 Dimension3 to compare
+        /// \param n Value to compare
+        /// \return True if the dimension3 is equal to the value, false otherwise
+        template<typename T>
+        NODISCARD friend auto operator==(const T& dimension3, double n) noexcept -> enable_if_dimension3<T, bool> {
+            return nearly_equal(dimension3.x, n) && nearly_equal(dimension3.y, n) && nearly_equal(dimension3.z, n);
         }
 
         /// \brief Check if two dimension3 are different
@@ -313,8 +324,8 @@ namespace bardrix {
         /// \param dimension3_lhs Dimension3 to compare
         /// \param dimension3_rhs Dimension3 to compare
         /// \return True if the two dimension3 are different, false otherwise
-        template<typename T, typename = enable_if_dimension3<T>>
-        NODISCARD friend bool operator!=(const T& dimension3_lhs, const T& dimension3_rhs) noexcept {
+        template<typename T>
+        NODISCARD friend auto operator!=(const T& dimension3_lhs, const T& dimension3_rhs) noexcept -> enable_if_dimension3<T, bool> {
             return !(dimension3_lhs == dimension3_rhs);
         }
 
@@ -323,8 +334,8 @@ namespace bardrix {
         /// \param dimension3_lhs Dimension3 to compare
         /// \param dimension3_rhs Dimension3 to compare
         /// \return True if the first dimension3 is less than the second dimension3, false otherwise
-        template<typename T, typename = enable_if_dimension3<T>>
-        NODISCARD friend bool operator<(const T& dimension3_lhs, const T& dimension3_rhs) noexcept {
+        template<typename T>
+        NODISCARD friend auto operator<(const T& dimension3_lhs, const T& dimension3_rhs) noexcept -> enable_if_dimension3<T, bool> {
             return dimension3_lhs.x < dimension3_rhs.x && dimension3_lhs.y < dimension3_rhs.y &&
                    dimension3_lhs.z < dimension3_rhs.z;
         }
@@ -334,8 +345,8 @@ namespace bardrix {
         /// \param dimension3_lhs Dimension3 to compare
         /// \param dimension3_rhs Dimension3 to compare
         /// \return True if the first dimension3 is greater than the second dimension3, false otherwise
-        template<typename T, typename = enable_if_dimension3<T>>
-        NODISCARD friend bool operator>(const T& dimension3_lhs, const T& dimension3_rhs) noexcept {
+        template<typename T>
+        NODISCARD friend auto operator>(const T& dimension3_lhs, const T& dimension3_rhs) noexcept -> enable_if_dimension3<T, bool> {
             return dimension3_lhs.x > dimension3_rhs.x && dimension3_lhs.y > dimension3_rhs.y &&
                    dimension3_lhs.z > dimension3_rhs.z;
         }
@@ -345,8 +356,8 @@ namespace bardrix {
         /// \param dimension3_lhs Dimension3 to compare
         /// \param dimension3_rhs Dimension3 to compare
         /// \return True if the first dimension3 is less than or equal to the second dimension3, false otherwise
-        template<typename T, typename = enable_if_dimension3<T>>
-        NODISCARD friend bool operator<=(const T& dimension3_lhs, const T& dimension3_rhs) noexcept {
+        template<typename T>
+        NODISCARD friend auto operator<=(const T& dimension3_lhs, const T& dimension3_rhs) noexcept -> enable_if_dimension3<T, bool> {
             return less_than_or_nearly_equal(dimension3_lhs.x, dimension3_rhs.x) &&
                    less_than_or_nearly_equal(dimension3_lhs.y, dimension3_rhs.y) &&
                    less_than_or_nearly_equal(dimension3_lhs.z, dimension3_rhs.z);
@@ -357,8 +368,8 @@ namespace bardrix {
         /// \param dimension3_lhs Dimension3 to compare
         /// \param dimension3_rhs Dimension3 to compare
         /// \return True if the first dimension3 is greater than or equal to the second dimension3, false otherwise
-        template<typename T, typename = enable_if_dimension3<T>>
-        NODISCARD friend bool operator>=(const T& dimension3_lhs, const T& dimension3_rhs) noexcept {
+        template<typename T>
+        NODISCARD friend auto operator>=(const T& dimension3_lhs, const T& dimension3_rhs) noexcept -> enable_if_dimension3<T, bool> {
             return greater_than_or_nearly_equal(dimension3_lhs.x, dimension3_rhs.x) &&
                    greater_than_or_nearly_equal(dimension3_lhs.y, dimension3_rhs.y) &&
                    greater_than_or_nearly_equal(dimension3_lhs.z, dimension3_rhs.z);
@@ -370,8 +381,8 @@ namespace bardrix {
         /// \tparam T Type of the dimension3, must be a derived class of dimension3
         /// \param dimension3 Dimension3 to invert
         /// \return A copy of the dimension3 with the inverted sign
-        template<typename T, typename = enable_if_dimension3<T>>
-        NODISCARD friend T operator-(const T& dimension3) noexcept {
+        template<typename T>
+        NODISCARD friend auto operator-(const T& dimension3) noexcept -> enable_if_dimension3<T, T> {
             T result = dimension3;
             result.x = -result.x;
             result.y = -result.y;
@@ -383,8 +394,8 @@ namespace bardrix {
         /// \tparam T Type of the dimension3, must be a derived class of dimension3
         /// \param dimension3 Dimension3 to increment
         /// \return A reference to the dimension3 after the increment
-        template<typename T, typename = enable_if_dimension3<T>>
-        friend T& operator++(T& dimension3) noexcept {
+        template<typename T>
+        friend auto operator++(T& dimension3) noexcept -> enable_if_dimension3<T, T&> {
             ++dimension3.x;
             ++dimension3.y;
             ++dimension3.z;
@@ -395,8 +406,8 @@ namespace bardrix {
         /// \tparam T Type of the dimension3, must be a derived class of dimension3
         /// \param dimension3 Dimension3 to increment
         /// \return A copy of the dimension3 before the increment
-        template<typename T, typename = enable_if_dimension3<T>>
-        NODISCARD friend T operator++(T& dimension3, int) noexcept {
+        template<typename T>
+        NODISCARD friend auto operator++(T& dimension3, int) noexcept -> enable_if_dimension3<T, T> {
             T result = dimension3;
             ++dimension3;
             return result;
@@ -406,8 +417,8 @@ namespace bardrix {
         /// \tparam T Type of the dimension3, must be a derived class of dimension3
         /// \param dimension3 Dimension3 to decrement
         /// \return A reference to the dimension3 after the decrement
-        template<typename T, typename = enable_if_dimension3<T>>
-        friend T& operator--(T& dimension3) noexcept {
+        template<typename T>
+        friend auto operator--(T& dimension3) noexcept -> enable_if_dimension3<T, T&> {
             --dimension3.x;
             --dimension3.y;
             --dimension3.z;
@@ -419,8 +430,8 @@ namespace bardrix {
         /// \tparam T Type of the dimension3, must be a derived class of dimension3
         /// \param dimension3 Dimension3 to decrement
         /// \return A copy of the dimension3 before the decrement
-        template<typename T, typename = enable_if_dimension3<T>>
-        NODISCARD friend T operator--(T& dimension3, int) noexcept {
+        template<typename T>
+        NODISCARD friend auto operator--(T& dimension3, int) noexcept -> enable_if_dimension3<T, T> {
             T result = dimension3;
             --dimension3;
             return result;
@@ -434,14 +445,10 @@ namespace bardrix {
         virtual std::ostream& print(std::ostream& os) const = 0;
 
         /// \brief Output a dimension3 to an output stream (dim3, y, z)
-        /// \tparam T Type of the dimension3, must be a derived class of dimension3
         /// \param os Output stream
         /// \param dimension3 Dimension3 to output
         /// \return A reference to the output stream
-        template<typename T, typename = enable_if_dimension3<T>>
-        friend std::ostream& operator<<(std::ostream& os, const T& dimension3) {
-            return dimension3.print(os);
-        }
+        friend std::ostream& operator<<(std::ostream& os, const dimension3& dimension3);
 
     }; // class dimension3
 

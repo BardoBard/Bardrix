@@ -249,6 +249,19 @@ TEST(dimension3, equal) {
     ASSERT_FALSE(dim3 == dim3_negative);
 }
 
+/// \brief Test the equality of dimension3 and n, using the == operator
+TEST(dimension3, equal_scalar) {
+    dim3_test dim3{1, 2, 3};
+    double scalar = 2;
+
+    dim3_test dim3_zero{0, 0, 0};
+    double scalar_zero = 0;
+
+    // Test the equality of dimension3 and n
+    ASSERT_FALSE(dim3 == scalar);
+    ASSERT_TRUE(dim3_zero == scalar_zero);
+}
+
 /// \brief Test the inequality of two dimension3, using the != operator
 TEST(dimension3, not_equal) {
     dim3_test dim3{1, 2, 3};
