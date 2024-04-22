@@ -69,6 +69,7 @@ include(FetchContent) # Include the FetchContent module
 FetchContent_Declare(
         Bardrix
         GIT_REPOSITORY https://github.com/bardobard/Bardrix.git
+#       GIT_TAG comes here # e.g. v0.0.4
 )
 
 FetchContent_MakeAvailable(Bardrix)
@@ -79,6 +80,8 @@ add_executable(${PROJECT_NAME} main.cpp)
 # Add bardrix library
 target_link_libraries(${PROJECT_NAME} Bardrix)
 ```
+
+The git tag is optional, you can use it to specify a version of the project you want to use.
 
 ## NuGet
 

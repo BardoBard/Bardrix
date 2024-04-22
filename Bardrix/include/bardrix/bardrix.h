@@ -9,6 +9,7 @@
 #include <cmath>
 #include <utility>
 #include <optional>
+#include <climits>
 
 #define NODISCARD [[nodiscard]]
 #define INLINE inline
