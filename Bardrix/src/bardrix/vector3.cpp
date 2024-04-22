@@ -5,6 +5,7 @@
 #include <bardrix/vector3.h>
 
 namespace bardrix {
+
     vector3::vector3(const double x, const double y, const double z) {
         this->x = x;
         this->y = y;
