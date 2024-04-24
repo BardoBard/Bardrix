@@ -21,18 +21,18 @@ namespace bardrix {
     }
 
     vector3 vector3::normalized() const noexcept {
-        double mag = length();
+        const double mag = length();
 
-        if (mag == 0)
+        if (nearly_equal(mag, 0))
             return *this;
 
         return {x / mag, y / mag, z / mag};
     }
 
     void vector3::normalize() noexcept {
-        double mag = length();
+        const double mag = length();
 
-        if (mag == 0)
+        if (nearly_equal(mag, 0))
             return;
 
         x /= mag;
@@ -49,9 +49,9 @@ namespace bardrix {
     }
 
     double vector3::angle(const vector3& vec3) const {
-        double length_product = length() * vec3.length();
+        const double length_product = length() * vec3.length();
 
-        if (length_product == 0)
+        if (nearly_equal(length_product, 0))
             return 1;
 
         return dot(vec3) / length_product;

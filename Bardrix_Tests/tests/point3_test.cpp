@@ -64,8 +64,13 @@ TEST(point3, midpoint) {
 TEST(point3, midpoint_degenerate) {
     bardrix::point3 p1;
     bardrix::point3 p2;
+    bardrix::point3 p3(-1, -2, -3);
+
     bardrix::point3 mid = p1.midpoint(p2);
     EXPECT_EQ(mid, bardrix::point3(0, 0, 0));
+
+    mid = p1.midpoint(p3);
+    EXPECT_EQ(mid, bardrix::point3(-0.5, -1, -1.5));
 }
 
 /// \brief Test the vector from one point to another
