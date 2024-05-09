@@ -2,7 +2,7 @@
 
 In this section we'll provide explanations and examples of how to use the library.
 
-## Example 1: Basic Usage
+## 1. Example: Basic Usage
 
 Within this library `vector3` and `point3` are provided, which are used to represent 3D vectors and points respectively.
 The following example demonstrates how to use these classes.
@@ -80,7 +80,7 @@ std::cout << "p1 vector -> p2: " << p1.vector_to(p2) << '\n';
 A point must generally be used as a position in 3D space, and a vector must be used as a direction in 3D space. \
 This distinction is important, as it will help you understand how to use these classes in your raytracing applications.
 
-## Example 2: Raytracing
+## 2. Example: Raytracing
 
 Raytracing is a technique to render realistic scenes by simulating the way light interacts with objects in a scene. \
 You'd need a `camera` object to start raytracing, which is provided by this library.
