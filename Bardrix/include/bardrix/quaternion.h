@@ -6,8 +6,8 @@
 
 #include <bardrix/bardrix.h>
 #include <bardrix/dimension4.h>
-#include "dimension3.h"
-#include "vector3.h"
+#include <bardrix/dimension3.h>
+#include <bardrix/vector3.h>
 
 namespace bardrix {
 
@@ -143,7 +143,7 @@ namespace bardrix {
         /// \return The mirrored 3D object
         /// \details The mirroring is done using quaternions
         /// \details If all the components of the given 3D object or rotation vector are 0, it will return the same 3D object (unmodified)
-        /// \example quaternion::mirror(point3(1, 2, 3), vector3(1, 0, 0)) == point3(-1, 2, 3)
+        /// \example quaternion::mirror(point3(1, 2, 3), vector3(1, 0, 0)) == point3(1, -2, -3)
         template<class T>
         NODISCARD static auto mirror(const T& dim3, const vector3& mirror_vector) noexcept -> dimension3::enable_if_dimension3<T, T> {
             if (dim3 == 0 || mirror_vector == 0)

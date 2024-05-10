@@ -1,6 +1,7 @@
 [![stars](https://img.shields.io/github/stars/bardobard/Bardrix.svg)](https://github.com/bardobard/Bardrix/stars)
 ![license](https://img.shields.io/github/license/Bardobard/Bardrix.svg)
 [![issues](https://img.shields.io/github/issues/bardobard/Bardrix.svg)](https://github.com/bardobard/Bardrix/issues)
+[![Stand With Ukraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/badges/StandWithUkraine.svg)](https://stand-with-ukraine.pp.ua)
 
 [![nuget](https://img.shields.io/nuget/v/Bardio.Bardrix.svg)](https://www.nuget.org/packages/Bardio.Bardrix/)
 [![nuget-downloads](https://img.shields.io/nuget/dt/Bardio.Bardrix.svg)](https://www.nuget.org/packages/Bardio.Bardrix/)

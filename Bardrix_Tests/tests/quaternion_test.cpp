@@ -174,15 +174,18 @@ TEST(quaternion, rotation_theta_test) {
 TEST(quaternion, rotation_degeneratie_position){
     bardrix::vector3 rotation_vector = {1, 2, 3};
     bardrix::vector3 rotation_vector_neg = {-11, 31, 0};
-    bardrix::point3 point = {0, 0, 0};
+    bardrix::point3 point_zero = { 0, 0, 0};
     bardrix::point3 point_neg = {-24,34,-12};
     double theta = 90.0;
 
-    bardrix::point3 result = bardrix::quaternion::rotate_degrees(point, rotation_vector, theta);
+    bardrix::point3 result = bardrix::quaternion::rotate_degrees(point_zero, rotation_vector, theta);
     ASSERT_EQ(result, bardrix::point3(0, 0, 0));
 
     result = bardrix::quaternion::rotate_degrees(point_neg, rotation_vector, theta);
     ASSERT_EQ(result, bardrix::point3(34.2463, 17.1785, -20.2011));
+
+    result = bardrix::quaternion::rotate_degrees(point_neg, rotation_vector_neg, theta);
+    ASSERT_EQ(result, bardrix::point3(-2.09013, 41.7745, -11.2483));
 }
 
 /// \brief Test the rotation of a quaternion with zero theta
@@ -236,6 +239,15 @@ TEST(quaternion, mirror) {
 
     bardrix::vector3 result = bardrix::quaternion::mirror(vector, rotation_vector);
     ASSERT_EQ(result, bardrix::vector3(0.5714, 4.1428, 7.7143));
+}
+
+/// \brief Test the mirror of a quaternion
+TEST(quaternion, mirror2) {
+    bardrix::vector3 rotation_vector = {1, 0,0};
+    bardrix::vector3 vector = {1, 2, 3};
+
+    bardrix::vector3 result = bardrix::quaternion::mirror(vector, rotation_vector);
+    ASSERT_EQ(result, bardrix::vector3(1, -2, -3));
 }
 
 /// \brief Test the mirror of a quaternion with degenerate cases
