@@ -43,7 +43,7 @@ namespace bardrix {
 
     public:
         /// \brief The color of the material
-        color color = color::white();
+        class color color = color::white();
 
         /// \brief Default constructor for material
         /// \note The default material is white with no ambient, full diffuse, no specular and no shininess
