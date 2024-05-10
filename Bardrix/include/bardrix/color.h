@@ -70,7 +70,7 @@ namespace bardrix {
         color_union c_union_{};
 
     public:
-        /// \brief Construct a color with all components set to zero (black).
+        /// \brief Construct a color with all components set to zero (r: 0, g: 0, b: 0, a: 0).
         color() = default;
 
         /// \brief Construct a color from red, green, blue and alpha components.
