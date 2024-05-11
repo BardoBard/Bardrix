@@ -15,6 +15,16 @@ TEST(material, default_constructor) {
     EXPECT_EQ(material.get_shininess(), 0);
 }
 
+TEST(material, constructor_ambient_diffuse_shininess) {
+    bardrix::material material = bardrix::material(0.1, 0.2, 0.3);
+
+    EXPECT_EQ(material.color, bardrix::color::white());
+    EXPECT_EQ(material.get_ambient(), 0.1);
+    EXPECT_EQ(material.get_diffuse(), 0.2);
+    EXPECT_EQ(material.get_specular(), 0.8);
+    EXPECT_EQ(material.get_shininess(), 0.3);
+}
+
 /// \brief Test the material constructor
 TEST(material, constructor) {
     bardrix::material material = bardrix::material(bardrix::color::red(), 0.1, 0.2, 0.3);
