@@ -15,6 +15,11 @@ namespace bardrix {
     /// \details This class represents a material, which is used to define the appearance of an object
     /// \note This is but a base class, it can be inherited to create more complex materials
     class material {
+
+    public:
+        /// \brief The color of the material
+        class color color = color::white();
+
     private:
         /// \brief The ambient coefficient, between 0 and 1
         ///        Ambient light is the light that is already present in the scene, think of it as the minimum light level
@@ -42,18 +47,23 @@ namespace bardrix {
         double shininess_ = 0;
 
     public:
-        /// \brief The color of the material
-        class color color = color::white();
-
         /// \brief Default constructor for material
         /// \note The default material is white with no ambient, full diffuse, no specular and no shininess
         material() = default;
+
+        /// \brief Constructor for material
+        /// \param ambient The ambient coefficient
+        /// \param diffuse The diffuse coefficient, the specular coefficient will be set to 1 - diffuse
+        /// \param shininess The shininess coefficient
+        /// \example material material(0.5, 0.1, 0.5); -> color = white, ambient = 0.5, diffuse = 0.1, specular = 0.9, shininess = 0.5
+        material(double ambient, double diffuse, double shininess);
 
         /// \brief Constructor for material
         /// \param color The color of the material
         /// \param ambient The ambient coefficient
         /// \param diffuse The diffuse coefficient, the specular coefficient will be set to 1 - diffuse
         /// \param shininess The shininess coefficient
+        /// \example material material(color::red(), 0.5, 0.1, 0.5); -> color = red, ambient = 0.5, diffuse = 0.1, specular = 0.9, shininess = 0.5
         material(const bardrix::color& color, double ambient, double diffuse, double shininess);
 
         /// \brief Gets the ambient coefficient
@@ -117,6 +127,10 @@ namespace bardrix {
         /// \return The position of the shape
         NODISCARD virtual const point3& get_position() const = 0;
 
+        /// \brief Sets the position of the shape
+        /// \param position The position to set
+        virtual void set_position(const point3& position) = 0;
+
         /// \brief Intersection of a ray with the shape
         /// \param ray The ray to intersect with
         /// \return The intersection point, if any
@@ -129,7 +143,7 @@ namespace bardrix {
 
         /// \brief Gets the material of the shape
         /// \return The material of the shape
-        NODISCARD virtual material get_material() const = 0;
+        NODISCARD virtual const material& get_material() const = 0;
 
         /// \brief Sets the material of the shape
         /// \param material The material to set

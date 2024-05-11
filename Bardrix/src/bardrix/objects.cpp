@@ -6,7 +6,9 @@
 
 namespace bardrix {
 
-    material::material(const bardrix::color& color, double ambient, double diffuse, double shininess) : color(color) {
+    material::material(const double ambient, const double diffuse, const double shininess) : material(color::white(), ambient, diffuse, shininess) {}
+
+    material::material(const bardrix::color& color, const double ambient, const double diffuse, const double shininess) : color(color) {
         set_ambient(ambient);
         set_diffuse(diffuse);
         set_shininess(shininess);
@@ -33,4 +35,5 @@ namespace bardrix {
     double material::get_shininess() const { return shininess_; }
 
     void material::set_shininess(const double shininess) { shininess_ = std::clamp(shininess, 0.0, 1.0); }
-}
+
+} // namespace bardrix
