@@ -40,14 +40,14 @@ TEST(vector3, normalized_degenerate) {
 /// \brief Test the normalization of a vector3 with length 0
 TEST(vector3, normalize) {
     bardrix::vector3 v(1, 2, 3);
-    v.normalize();
+    EXPECT_EQ(v.normalize(), bardrix::vector3(1, 2, 3) / std::sqrt(14));
     EXPECT_EQ(v, bardrix::vector3(1, 2, 3) / std::sqrt(14));
 }
 
 /// \brief Test the normalization of a vector3 with length 0
 TEST(vector3, normalize_degenerate) {
     bardrix::vector3 v = bardrix::vector3(0, 0, 0);
-    v.normalize();
+    EXPECT_EQ(v.normalize(), bardrix::vector3(0, 0, 0));
     EXPECT_EQ(v, bardrix::vector3(0, 0, 0));
 }
 

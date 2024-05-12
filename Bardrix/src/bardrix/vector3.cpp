@@ -29,15 +29,17 @@ namespace bardrix {
         return {x / mag, y / mag, z / mag};
     }
 
-    void vector3::normalize() noexcept {
+    vector3& vector3::normalize() noexcept {
         const double mag = length();
 
         if (nearly_equal(mag, 0))
-            return;
+            return *this;
 
         x /= mag;
         y /= mag;
         z /= mag;
+
+        return *this;
     }
 
     double vector3::dot(const vector3& vec3) const noexcept {

@@ -46,4 +46,6 @@ namespace bardrix {
         return position == r.position && direction_ == r.direction_ && nearly_equal(length_, r.length_);
     }
 
+    bool ray::operator!=(const ray& r) const noexcept { return !(*this == r); }
+
 } // namespace bardrix

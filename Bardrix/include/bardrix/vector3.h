@@ -31,14 +31,19 @@ namespace bardrix {
         /// \return The length of the vector squared
         NODISCARD double length_squared() const noexcept;
 
+        /// \brief Normalizes this vector, making it a unit vector
+        /// \return A reference to this vector
+        /// \details If the length of the vector is 0, it will not be normalized
+        /// \example vector3(0, 0, 0).normalize() == vector3(0, 0, 0)
+        /// \example vector3(1, 2, 3).normalize() == vector3(0.267, 0.534, 0.802)
+        vector3& normalize() noexcept;
+
         /// \brief Normalize the vector, making it a unit vector
         /// \return The normalized vector
         /// \details If the length of the vector is 0, it will not be normalized
+        /// \example vector3(0, 0, 0).normalize() == vector3(0, 0, 0)
+        /// \example vector3(1, 2, 3).normalize() == vector3(0.267, 0.534, 0.802)
         NODISCARD vector3 normalized() const noexcept;
-
-        /// \brief Normalizes this vector, making it a unit vector
-        /// \details If the length of the vector is 0, it will not be normalized
-        void normalize() noexcept;
 
         /// \brief Dot product of two vectors
         /// \param vec3 The other vector
