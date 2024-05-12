@@ -52,3 +52,55 @@ instead of `n`.
     2. C++ standard library.
     3. Other libraries.
 6. **Use `#include <bardrix/...>`** for internal libraries.
+7. **Put** all external header files in `bardrix.h` as this is the main file.
+
+### 3.2. Class Conventions
+
+## 4. Testing Conventions
+### 4.1. General Testing Conventions
+1. Use Google Test v1.14.0 for unit testing.
+2. When writing new tests name the file `foo_bar_test.cpp` where `foo_bar` is the name of the file being tested.
+3. Any standard library headers should be included in the pch.h file.
+4. Any internal headers should be included in the test file where they are needed.
+
+- Example:
+  ```cpp
+  #include <bardrix/class_name.h>
+  
+  /// \brief Test case for the function_name method.
+  TEST(class_name, function_name_description) {
+      // Test code here
+  }
+  ```
+  - Here the description could be something like `degenerate_case` or `boundary_condition`.
+  - Documentation comments are required for each test case.
+
+## 5. Documentation Conventions
+### 5.1. General Documentation Conventions
+1. Use Markdown for README files and other documentation files.
+2. Whenever adding or updating any code update the [Bardrix Reference](Bardrix_Reference.md) file.
+
+## 5. Code Documentation Conventions
+1. Use Doxygen style comments for documenting functions, classes, members, etc.
+   - Use `/// \` style for the documentation, no other style is allowed.
+   - Example:
+     ```cpp
+     /// \brief This is a function that does something.
+     /// \param x Explanation of the first parameter.
+     /// \param y Explanation of the second parameter.
+     /// \return Explanation of the return value.
+     /// \example Example usage of the function.
+     /// \details Detailed explanation of the function.
+     /// \note Additional notes.
+     /// \exception Exception that can be thrown.
+     int foo(int x, int y);
+     ```
+2. Include examples where appropriate to illustrate usage.
+3. Include notes and exceptions where appropriate to provide additional information.
+
+## 6. Commit Message Conventions
+1. Reference issues or pull requests when appropriate.
+2. Use title and comment for commit messages.
+
+## 7. Branch Naming Conventions
+### 7.1. General Branch Naming Conventions
