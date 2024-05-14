@@ -60,7 +60,7 @@ namespace bardrix {
     }
 
     std::optional<vector3> vector3::reflection(const vector3& normal) const {
-        // cannot reflect a vector with length 0 or a normal with length 0
+        // Cannot reflect a vector with length 0 or a normal with length 0
         if (*this == 0 || normal == 0)
             return std::nullopt;
 
@@ -84,6 +84,7 @@ namespace bardrix {
         if (*this == 0 || normal == 0)
             return std::nullopt;
 
+        // Cannot devide by 0
         if (nearly_equal(medium2, 0))
             return std::nullopt;
 
@@ -103,7 +104,6 @@ namespace bardrix {
         if (sin_theta2_squared > 1.0)
             return std::nullopt;
 
-        // Calculate the refracted vector direction
         return (normalized_vector * ratio + normalized_normal *
                                             (ratio * cos_theta1 - std::sqrt(1.0 - sin_theta2_squared)));
     }
