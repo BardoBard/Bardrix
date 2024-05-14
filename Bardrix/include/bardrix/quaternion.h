@@ -34,9 +34,10 @@ namespace bardrix {
         quaternion(double x, double y, double z, double w) noexcept;
 
         /// \brief Calculates the conjugation of the quaternion
+        /// \return A reference to this quaternion
         /// \details The conjugation of a quaternion is the same as the negation of the vector part of the quaternion
         /// \example quaternion(1, 2, 3, 4).conjugated() == quaternion(-1, -2, -3, 4)
-        void conjugate() noexcept;
+        quaternion& conjugate() noexcept;
 
         /// \brief Calculates the conjugation of the quaternion
         /// \return The conjugated quaternion
@@ -45,9 +46,10 @@ namespace bardrix {
         NODISCARD quaternion conjugated() const noexcept;
 
         /// \brief Calculates the reciprocal of this quaternion
+        /// \return A reference to this quaternion
         /// \details The reciprocal of a quaternion is the conjugate of the quaternion divided by the length^2 of the quaternion
         /// \example quaternion(1, 2, 3, 4).reciprocal() == quaternion(-0.033, -0.066, -0.1, 0.13)
-        void reciprocal() noexcept;
+        quaternion& reciprocal() noexcept;
 
         /// \brief Calculates the reciprocal of the quaternion
         /// \return The reciprocal quaternion
@@ -62,9 +64,10 @@ namespace bardrix {
         NODISCARD double length() const noexcept;
 
         /// \brief Normalizes this quaternion
+        /// \return A reference to this quaternion
         /// \details If the length of the quaternion is 0, it will not be normalized
         /// \example quaternion(1, 2, 3, 4).normalize() == quaternion(0.18, 0.37, 0.55, 0.73)
-        void normalize() noexcept;
+        quaternion& normalize() noexcept;
 
         /// \brief Normalizes the quaternion
         /// \return The normalized quaternion
