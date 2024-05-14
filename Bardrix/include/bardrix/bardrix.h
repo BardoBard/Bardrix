@@ -10,6 +10,7 @@
 #include <utility>
 #include <optional>
 #include <climits>
+#include <algorithm>
 
 #define NODISCARD [[nodiscard]]
 #define INLINE inline

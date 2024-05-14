@@ -101,6 +101,24 @@ TEST(ray, set_length_negative) {
 }
 
 /// \brief Test the equality operator
+TEST(ray, operator_equal) {
+    bardrix::ray r1 = bardrix::ray({0, 0, 1});
+    bardrix::ray r2 = bardrix::ray({0, 0, 1});
+    bardrix::ray r3 = bardrix::ray({0, 1, 1});
+    EXPECT_TRUE(r1 == r2);
+    EXPECT_FALSE(r1 == r3);
+}
+
+/// \brief Test the inequality operator
+TEST(ray, operator_not_equal) {
+    bardrix::ray r1 = bardrix::ray({0, 0, 1});
+    bardrix::ray r2 = bardrix::ray({0, 0, 1});
+    bardrix::ray r3 = bardrix::ray({0, 1, 1});
+    EXPECT_FALSE(r1 != r2);
+    EXPECT_TRUE(r1 != r3);
+}
+
+/// \brief Test the equality operator
 TEST(ray, operator_stream) {
     bardrix::ray r = bardrix::ray({0, 0, 1});
     std::stringstream ss;

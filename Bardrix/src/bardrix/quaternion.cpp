@@ -14,25 +14,27 @@ namespace bardrix {
         this->w = w;
     }
 
-    void quaternion::conjugate() noexcept {
+    quaternion& quaternion::conjugate() noexcept {
         x = -x;
         y = -y;
         z = -z;
+        return *this;
     }
 
     quaternion quaternion::conjugated() const noexcept {
         return {-x, -y, -z, w};
     }
 
-    void quaternion::reciprocal() noexcept {
+    quaternion& quaternion::reciprocal() noexcept {
         double n = length();
-        if (nearly_equal(n, 0)) return;
+        if (nearly_equal(n, 0)) return *this;
 
         conjugate();
         x /= n * n;
         y /= n * n;
         z /= n * n;
         w /= n * n;
+        return *this;
     }
 
     quaternion quaternion::reciprocated() const noexcept {
@@ -46,14 +48,15 @@ namespace bardrix {
         return std::sqrt(x * x + y * y + z * z + w * w);
     }
 
-    void quaternion::normalize() noexcept {
+    quaternion& quaternion::normalize() noexcept {
         double n = length();
-        if (nearly_equal(n, 0)) return;
+        if (nearly_equal(n, 0)) return *this;
 
         x /= n;
         y /= n;
         z /= n;
         w /= n;
+        return *this;
     }
 
     quaternion quaternion::normalized() const noexcept {

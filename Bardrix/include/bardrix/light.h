@@ -42,12 +42,12 @@ namespace bardrix {
 
         /// \brief Get the intensity of the light
         /// \return The intensity of the light
-        NODISCARD double get_intensity() const noexcept { return intensity_; }
+        NODISCARD double get_intensity() const noexcept;
 
         /// \brief Set the intensity of the light
         /// \param intensity The new intensity of the light
         /// \details If the intensity is less than 0, it will be set to 0
-        void set_intensity(double intensity) noexcept { this->intensity_ = less_than_or_nearly_equal(intensity, 0) ? 0 : intensity; }
+        void set_intensity(double intensity) noexcept;
 
         /// \brief Calculates the inverse square law
         /// \param point The point to calculate the inverse square law from

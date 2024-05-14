@@ -13,23 +13,40 @@ namespace bardrix {
     /// \note The color components are unsigned.
     class color {
     public:
+        /// \brief White color (255, 255, 255, 255).
+        /// \return The color white.
         NODISCARD INLINE static color white() noexcept { return { 255, 255, 255, 255 }; }
 
+        /// \brief Black color (0, 0, 0, 255).
+        /// \return The color black.
         NODISCARD INLINE static color black() noexcept { return { 0, 0, 0, 255 }; }
 
+        /// \brief Red color (255, 0, 0, 255).
+        /// \return The color red.
         NODISCARD INLINE static color red() noexcept { return { 255, 0, 0, 255 }; }
 
+        /// \brief Green color (0, 255, 0, 255).
+        /// \return The color green.
         NODISCARD INLINE static color green() noexcept { return { 0, 255, 0, 255 }; }
 
+        /// \brief Blue color (0, 0, 255, 255).
+        /// \return The color blue.
         NODISCARD INLINE static color blue() noexcept { return { 0, 0, 255, 255 }; }
 
+        /// \brief Yellow color (255, 255, 0, 255).
+        /// \return The color yellow.
         NODISCARD INLINE static color yellow() noexcept { return { 255, 255, 0, 255 }; }
 
+        /// \brief Cyan color (0, 255, 255, 255).
+        /// \return The color cyan.
         NODISCARD INLINE static color cyan() noexcept { return { 0, 255, 255, 255 }; }
 
+        /// \brief Magenta color (255, 0, 255, 255).
+        /// \return The color magenta.
         NODISCARD INLINE static color magenta() noexcept { return { 255, 0, 255, 255 }; }
 
     private:
+        /// \brief Unsigned char type-definition.
         typedef unsigned char uchar;
 
         /// \brief A union to represent the color as an unsigned integer or as separate components.
@@ -49,10 +66,11 @@ namespace bardrix {
         };
 
     private:
+        /// \brief This union represents the color as an unsigned integer or as separate components.
         color_union c_union_{};
 
     public:
-        /// \brief Construct a color with all components set to zero (black).
+        /// \brief Construct a color with all components set to zero (r: 0, g: 0, b: 0, a: 0).
         color() = default;
 
         /// \brief Construct a color from red, green, blue and alpha components.

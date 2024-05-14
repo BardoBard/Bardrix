@@ -18,6 +18,7 @@ TEST(quaternion, constructor) {
 /// \brief Test the identity quaternion
 TEST(quaternion, identity) {
     bardrix::quaternion q = bardrix::quaternion::identity();
+
     EXPECT_EQ(q, bardrix::quaternion(0, 0, 0, 1));
 }
 
@@ -25,7 +26,7 @@ TEST(quaternion, identity) {
 TEST(quaternion, conjugate) {
     bardrix::quaternion q(1, 2, 3, 4);
 
-    q.conjugate();
+    EXPECT_EQ(q.conjugate(), bardrix::quaternion(-1, -2, -3, 4));
     EXPECT_EQ(q, bardrix::quaternion(-1, -2, -3, 4));
 }
 
@@ -41,8 +42,17 @@ TEST(quaternion, conjugated) {
 /// \brief Test the quaternion reciprocal
 TEST(quaternion, reciprocal) {
     bardrix::quaternion q(1, 2, 3, 4);
-    q.reciprocal();
+
+    EXPECT_EQ(q.reciprocal(), bardrix::quaternion(-0.0333, -0.0666, -0.1, 0.1333));
     EXPECT_EQ(q, bardrix::quaternion(-0.0333, -0.0666, -0.1, 0.1333));
+}
+
+/// \brief Test the quaternion reciprocal with zero length
+TEST(quaternion, reciprocal_zero) {
+    bardrix::quaternion q(0, 0, 0, 0);
+
+    EXPECT_EQ(q.reciprocal(), bardrix::quaternion(0, 0, 0, 0));
+    EXPECT_EQ(q, bardrix::quaternion(0, 0, 0, 0));
 }
 
 /// \brief Test the quaternion reciprocal
@@ -54,16 +64,10 @@ TEST(quaternion, reciprocated) {
     EXPECT_EQ(q2.reciprocated(), bardrix::quaternion(1, 2, 3, 4));
 }
 
-/// \brief Test the quaternion reciprocal with zero length
-TEST(quaternion, reciprocal_zero) {
-    bardrix::quaternion q(0, 0, 0, 0);
-    q.reciprocal();
-    EXPECT_EQ(q, bardrix::quaternion(0, 0, 0, 0));
-}
-
 /// \brief Test the length of a quaternion
 TEST(quaternion, length) {
     bardrix::quaternion q(1, 2, 3, 4);
+
     EXPECT_NEAR(q.length(), 5.477225575051661, 0.0001);
 }
 
@@ -71,6 +75,7 @@ TEST(quaternion, length) {
 TEST(quaternion, length_degenerate) {
     bardrix::quaternion q(0, 0, 0, 0);
     bardrix::quaternion q2(-1, -2, -3, -4);
+
     EXPECT_NEAR(q.length(), 0, 0.0001);
     EXPECT_NEAR(q2.length(), 5.477225575051661, 0.0001);
 }
@@ -81,13 +86,13 @@ TEST(quaternion, normalize) {
     bardrix::quaternion q2(0.182574, 0.365148, 0.547723, 0.730297);
     bardrix::quaternion q3(-1, -2, -3, -4);
 
-    q.normalize();
+    EXPECT_EQ(q.normalize(), bardrix::quaternion(0.182574, 0.365148, 0.547723, 0.730297));
     EXPECT_EQ(q, bardrix::quaternion(0.182574, 0.365148, 0.547723, 0.730297));
 
-    q2.normalize();
+    EXPECT_EQ(q2.normalize(), bardrix::quaternion(0.182574, 0.365148, 0.547723, 0.730297));
     EXPECT_EQ(q2, bardrix::quaternion(0.182574, 0.365148, 0.547723, 0.730297));
 
-    q3.normalize();
+    EXPECT_EQ(q3.normalize(), bardrix::quaternion(-0.182574, -0.365148, -0.547723, -0.730297));
     EXPECT_EQ(q3, bardrix::quaternion(-0.182574, -0.365148, -0.547723, -0.730297));
 }
 
@@ -105,7 +110,8 @@ TEST(quaternion, normalized) {
 /// \brief Test the normalization of a quaternion with zero length
 TEST(quaternion, normalize_zero) {
     bardrix::quaternion q(0, 0, 0, 0);
-    q.normalize();
+
+    EXPECT_EQ(q.normalize(), bardrix::quaternion(0, 0, 0, 0));
     EXPECT_EQ(q, bardrix::quaternion(0, 0, 0, 0));
 }
 
@@ -174,15 +180,18 @@ TEST(quaternion, rotation_theta_test) {
 TEST(quaternion, rotation_degeneratie_position){
     bardrix::vector3 rotation_vector = {1, 2, 3};
     bardrix::vector3 rotation_vector_neg = {-11, 31, 0};
-    bardrix::point3 point = {0, 0, 0};
+    bardrix::point3 point_zero = { 0, 0, 0};
     bardrix::point3 point_neg = {-24,34,-12};
     double theta = 90.0;
 
-    bardrix::point3 result = bardrix::quaternion::rotate_degrees(point, rotation_vector, theta);
+    bardrix::point3 result = bardrix::quaternion::rotate_degrees(point_zero, rotation_vector, theta);
     ASSERT_EQ(result, bardrix::point3(0, 0, 0));
 
     result = bardrix::quaternion::rotate_degrees(point_neg, rotation_vector, theta);
     ASSERT_EQ(result, bardrix::point3(34.2463, 17.1785, -20.2011));
+
+    result = bardrix::quaternion::rotate_degrees(point_neg, rotation_vector_neg, theta);
+    ASSERT_EQ(result, bardrix::point3(-2.09013, 41.7745, -11.2483));
 }
 
 /// \brief Test the rotation of a quaternion with zero theta
@@ -236,6 +245,15 @@ TEST(quaternion, mirror) {
 
     bardrix::vector3 result = bardrix::quaternion::mirror(vector, rotation_vector);
     ASSERT_EQ(result, bardrix::vector3(0.5714, 4.1428, 7.7143));
+}
+
+/// \brief Test the mirror of a quaternion
+TEST(quaternion, mirror2) {
+    bardrix::vector3 rotation_vector = {1, 0,0};
+    bardrix::vector3 vector = {1, 2, 3};
+
+    bardrix::vector3 result = bardrix::quaternion::mirror(vector, rotation_vector);
+    ASSERT_EQ(result, bardrix::vector3(1, -2, -3));
 }
 
 /// \brief Test the mirror of a quaternion with degenerate cases
