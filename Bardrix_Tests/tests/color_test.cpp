@@ -43,13 +43,13 @@ TEST(color, invert) {
     bardrix::color c1(255, 255, 255, 255);
     bardrix::color c2(4, 255, 53, 255);
 
-    EXPECT_EQ((~c1).rgba(), 0xFF000000) << "Expected: 0xFF000000, got: " << std::hex << (~c1).rgba();
-    EXPECT_EQ(c1.inverted().rgba(), 0xFF000000) << "Expected: 0xFF000000, got: " << std::hex << c1.inverted().rgba();
-    EXPECT_EQ(c1.invert().rgba(), 0xFF000000) << "Expected: 0xFF000000, got: " << std::hex << c1.invert().rgba();
+    EXPECT_EQ((~c1).rgba(), 0xFF000000);
+    EXPECT_EQ(c1.inverted().rgba(), 0xFF000000);
+    EXPECT_EQ(c1.invert().rgba(), 0xFF000000);
 
-    EXPECT_EQ((~c2).rgba(), 0xFFCA00FB) << "Expected: 0xFFCA00FB, got: " << std::hex << (~c2).rgba();
-    EXPECT_EQ(c2.inverted().rgba(), 0xFFCA00FB) << "Expected: 0xFFCA00FB, got: " << std::hex << c2.inverted().rgba();
-    EXPECT_EQ(c2.invert().rgba(), 0xFFCA00FB) << "Expected: 0xFFCA00FB, got: " << std::hex << c2.invert().rgba();
+    EXPECT_EQ((~c2).rgba(), 0xFFCA00FB);
+    EXPECT_EQ(c2.inverted().rgba(), 0xFFCA00FB);
+    EXPECT_EQ(c2.invert().rgba(), 0xFFCA00FB);
 }
 
 /// \brief Test grayscale of colors
