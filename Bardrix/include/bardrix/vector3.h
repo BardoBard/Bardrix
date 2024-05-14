@@ -74,7 +74,7 @@ namespace bardrix {
         /// \details n is the normal
         /// \details d is the vector
         /// \see https://math.stackexchange.com/a/4019883
-        NODISCARD std::optional<vector3> reflect(const vector3& normal) const;
+        NODISCARD std::optional<vector3> reflection(const vector3& normal) const;
 
         /// \brief Calculates the refraction of this vector through a normal
         ///        The result will be an outgoing normalized vector
@@ -86,7 +86,7 @@ namespace bardrix {
         /// \note There mustn't be total internal reflection
         /// \see https://en.wikipedia.org/wiki/Refractive_index
         /// \see https://en.wikipedia.org/wiki/Snell%27s_law#Vector_form
-        NODISCARD std::optional<vector3> refract(const vector3& normal, double refractive_ratio) const;
+        NODISCARD std::optional<vector3> refraction(const vector3& normal, double refractive_ratio) const;
 
         /// \brief Calculates the refraction of this vector through a normal
         ///        The result will be an outgoing normalized vector
@@ -99,7 +99,7 @@ namespace bardrix {
         /// \note There mustn't be total internal reflection
         /// \see https://en.wikipedia.org/wiki/Refractive_index
         /// \see https://en.wikipedia.org/wiki/Snell%27s_law#Vector_form
-        NODISCARD std::optional<vector3> refract(const vector3& normal, double medium1, double medium2) const;
+        NODISCARD std::optional<vector3> refraction(const vector3& normal, double medium1, double medium2) const;
 
         /// \brief Print the vector to an output stream
         /// \param os The output stream

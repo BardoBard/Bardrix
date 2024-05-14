@@ -207,7 +207,7 @@ Copy and move constructors are implicitly defined.
         - **Returns** the angle between the two vectors between [-1, 1].
         - When the angle is 1, the vectors are parallel, when the angle is -1, the vectors are opposite.
         - The arccos can be taken from the result to get the angle in radians.
-    - `reflect(normal : vector3)`
+    - `reflection(normal : vector3)`
         - [Reflects](Mathematics.md#reflection) the vector about a normal vector.
         - The normal and vector will be normalized for you.
         - **Returns** a new vector, the reflected vector will have a length of 1.
@@ -215,8 +215,8 @@ Copy and move constructors are implicitly defined.
         - **Degenerate cases**:
             - The vector and normal vector must have a length greater than zero.
             - The vector has to be pointing towards the normal vector.
-    - `refract(normal : vector3, refractive_ratio : double)`
-    - `refract(normal : vector3, medium1 : double, medium2 : double)`
+    - `refraction(normal : vector3, refractive_ratio : double)`
+    - `refraction(normal : vector3, medium1 : double, medium2 : double)`
         - [Refracts](Mathematics.md#refraction) the vector through a normal vector.
         - The normal and vector will be normalized for you.
         - **Returns** a new vector, the refracted vector will have a length of 1.

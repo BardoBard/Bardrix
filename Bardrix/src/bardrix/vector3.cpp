@@ -59,7 +59,7 @@ namespace bardrix {
         return dot(vec3) / length_product;
     }
 
-    std::optional<vector3> vector3::reflect(const vector3& normal) const {
+    std::optional<vector3> vector3::reflection(const vector3& normal) const {
         // cannot reflect a vector with length 0 or a normal with length 0
         if (*this == 0 || normal == 0)
             return std::nullopt;
@@ -76,15 +76,11 @@ namespace bardrix {
         return -(normalized_normal * (2 * dot) - normalized_vector);
     }
 
-    std::ostream& vector3::print(std::ostream& os) const {
-        return os << "(" << x << ", " << y << ", " << z << ")";
+    std::optional<vector3> vector3::refraction(const vector3& normal, double refractive_ratio) const {
+        return refraction(normal, refractive_ratio, 1);
     }
 
-    std::optional<vector3> vector3::refract(const vector3& normal, double refractive_ratio) const {
-        return refract(normal, refractive_ratio, 1);
-    }
-
-    std::optional<vector3> vector3::refract(const vector3& normal, const double medium1, const double medium2) const {
+    std::optional<vector3> vector3::refraction(const vector3& normal, const double medium1, const double medium2) const {
         if (*this == 0 || normal == 0)
             return std::nullopt;
 
@@ -110,6 +106,10 @@ namespace bardrix {
         // Calculate the refracted vector direction
         return (normalized_vector * ratio + normalized_normal *
                                             (ratio * cos_theta1 - std::sqrt(1.0 - sin_theta2_squared)));
+    }
+
+    std::ostream& vector3::print(std::ostream& os) const {
+        return os << "(" << x << ", " << y << ", " << z << ")";
     }
 
 } // namespace bardrix

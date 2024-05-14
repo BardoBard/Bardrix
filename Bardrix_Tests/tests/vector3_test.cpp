@@ -143,55 +143,55 @@ TEST(vector3, angle_orthogonal) {
 }
 
 /// \brief Test the reflection of a vector
-TEST(vector3, reflect) {
+TEST(vector3, reflection) {
     bardrix::vector3 v1(1, 2, 3);
     bardrix::vector3 normal(0, 0, 1);
 
-    std::optional<bardrix::vector3> result = v1.reflect(normal);
+    std::optional<bardrix::vector3> result = v1.reflection(normal);
     EXPECT_TRUE(result.has_value());
     ASSERT_TRUE(bardrix::nearly_equal(result->length_squared(), 1));
     EXPECT_EQ(result.value(), bardrix::vector3(1, 2, -3).normalized());
 }
 
 /// \brief Test the reflection of a vector with the vector behind the normal and other degenerate cases
-TEST(vector3, reflect_degenerate) {
+TEST(vector3, reflection_degenerate) {
     bardrix::vector3 v1(1, 2, 3);
     bardrix::vector3 normal(0, 0, -1);
 
-    std::optional<bardrix::vector3> reflected = v1.reflect(normal);
+    std::optional<bardrix::vector3> reflected = v1.reflection(normal);
     EXPECT_FALSE(reflected.has_value());
 
     bardrix::vector3 v_zero(0, 0, 0);
     bardrix::vector3 normal_zero(0, 0, 0);
 
-    std::optional<bardrix::vector3> reflected_zero = v_zero.reflect({ 0, 0, 1 });
-    std::optional<bardrix::vector3> reflected_normal_zero = v1.reflect(normal_zero);
+    std::optional<bardrix::vector3> reflected_zero = v_zero.reflection({ 0, 0, 1 });
+    std::optional<bardrix::vector3> reflected_normal_zero = v1.reflection(normal_zero);
 
     EXPECT_FALSE(reflected_zero.has_value());
     EXPECT_FALSE(reflected_normal_zero.has_value());
 }
 
 /// \brief Refraction of a vector
-TEST(vector3, refract) {
+TEST(vector3, refraction) {
     bardrix::vector3 v1(1, 2, 3);
     bardrix::vector3 normal(0, 0, 1);
 
     double refractive_index1 = 1;     // vacuum
     double refractive_index2 = 2.419; // diamond
 
-    std::optional<bardrix::vector3> result = v1.refract(normal, refractive_index1, refractive_index2);
+    std::optional<bardrix::vector3> result = v1.refraction(normal, refractive_index1, refractive_index2);
     EXPECT_TRUE(result.has_value());
     ASSERT_TRUE(bardrix::nearly_equal(result->length_squared(), 1));
     EXPECT_EQ(result.value(), bardrix::vector3(0.1105, 0.2209, -0.969));
 }
 
 /// \brief Refraction of a vector
-TEST(vector3, refract2) {
+TEST(vector3, refraction2) {
     const bardrix::vector3 v1 = { 0.707107, -0.707107, 0.0 }; // already normalized
     const bardrix::vector3 normal = { 0.0, 1.0, 0.0 };
     const double refractive_ratio = 0.9;
 
-    const auto result = v1.refract(normal, refractive_ratio);
+    const auto result = v1.refraction(normal, refractive_ratio);
 
     ASSERT_TRUE(result.has_value());
     ASSERT_TRUE(bardrix::nearly_equal(result->length_squared(), 1));
@@ -199,13 +199,13 @@ TEST(vector3, refract2) {
 }
 
 /// \brief Refraction of a vector
-TEST(vector3, refract3) {
+TEST(vector3, refraction3) {
     const bardrix::vector3 v1 = { 1.191752, 1, 0 }; // 50 degrees
     const bardrix::vector3 normal = { 0.0, 1.0, 0.0 };
     const double refractive_ratio_2 = 1.2;
 
     // calculate refraction
-    const auto result = v1.refract(normal, refractive_ratio_2);
+    const auto result = v1.refraction(normal, refractive_ratio_2);
     std::cout << *result << std::endl;
 
     ASSERT_TRUE(result.has_value());
@@ -218,40 +218,40 @@ TEST(vector3, refract3) {
 }
 
 /// \biref Degenerate cases for refraction
-TEST(vector3, refract_degenerate) {
+TEST(vector3, refraction_degenerate) {
     bardrix::vector3 v1(1, 2, 3);
     bardrix::vector3 normal(0, 0, 1);
 
     // approaching total internal reflection
-    EXPECT_FALSE(v1.refract(normal, 1.67333, 1).has_value());
-    EXPECT_TRUE(v1.refract(normal, 1.67332, 1).has_value());
+    EXPECT_FALSE(v1.refraction(normal, 1.67333, 1).has_value());
+    EXPECT_TRUE(v1.refraction(normal, 1.67332, 1).has_value());
 
     // approaching total internal reflection
-    EXPECT_FALSE(v1.refract(normal, 1.67333).has_value());
-    EXPECT_TRUE(v1.refract(normal, 1.67332).has_value());
+    EXPECT_FALSE(v1.refraction(normal, 1.67333).has_value());
+    EXPECT_TRUE(v1.refraction(normal, 1.67332).has_value());
 
     // large values for medium 2
-    EXPECT_TRUE(v1.refract(normal, 1, 241).has_value());
-    EXPECT_TRUE(v1.refract(normal, 1, 1000).has_value());
+    EXPECT_TRUE(v1.refraction(normal, 1, 241).has_value());
+    EXPECT_TRUE(v1.refraction(normal, 1, 1000).has_value());
 
     // negative
-    EXPECT_FALSE(v1.refract(normal, -1, 1).has_value());
-    EXPECT_FALSE(v1.refract(normal, 1, -1).has_value());
-    EXPECT_FALSE(v1.refract(normal, -1).has_value());
-    EXPECT_TRUE(v1.refract(normal, 1).has_value());
+    EXPECT_FALSE(v1.refraction(normal, -1, 1).has_value());
+    EXPECT_FALSE(v1.refraction(normal, 1, -1).has_value());
+    EXPECT_FALSE(v1.refraction(normal, -1).has_value());
+    EXPECT_TRUE(v1.refraction(normal, 1).has_value());
 
     // zero
-    EXPECT_FALSE(v1.refract(normal, 0, 2).has_value());
-    EXPECT_FALSE(v1.refract(normal, 2, 0).has_value());
+    EXPECT_FALSE(v1.refraction(normal, 0, 2).has_value());
+    EXPECT_FALSE(v1.refraction(normal, 2, 0).has_value());
 
-    EXPECT_FALSE(v1.refract(normal, 0).has_value());
-    EXPECT_TRUE(v1.refract(normal, 0.1).has_value());
+    EXPECT_FALSE(v1.refraction(normal, 0).has_value());
+    EXPECT_TRUE(v1.refraction(normal, 0.1).has_value());
 
     bardrix::vector3 v_zero(0, 0, 0);
     bardrix::vector3 normal_zero(0, 0, 0);
 
-    EXPECT_FALSE(v_zero.refract({ 0, 0, 1 }, 1, 1).has_value()); // zero vector
-    EXPECT_FALSE(v1.refract(normal_zero, 1, 1).has_value());     // zero normal
+    EXPECT_FALSE(v_zero.refraction({ 0, 0, 1 }, 1, 1).has_value()); // zero vector
+    EXPECT_FALSE(v1.refraction(normal_zero, 1, 1).has_value());     // zero normal
 }
 
 /// \brief Test the << operator for vector3

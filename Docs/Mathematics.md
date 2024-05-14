@@ -280,7 +280,7 @@ $$
 
 Like mentioned in the [dot product](#dot-product), only here we normalize both vectors first.
 
-## [Reflection](https://github.com/search?q=repo%3ABardoBard%2FBardrix+path%3A**%2Fvector3.h+reflect&type=code)
+## [Reflection](https://github.com/search?q=repo%3ABardoBard%2FBardrix+path%3A**%2Fvector3.h+reflection&type=code)
 
 Reflection is a way to calculate the direction of a vector after it bounces off a surface. \
 This is used for calculating the direction of a vector after it hits a surface.
@@ -301,7 +301,7 @@ normal is pointing away from the incoming vector. \
 This is not necessary, but it's important to know that the normal should be pointing towards the incoming vector. \
 Perhaps turn the normal around if this is the case.
 
-## [Refraction](https://github.com/search?q=repo%3ABardoBard%2FBardrix+path%3A**%2Fvector3.h+refract&type=code)
+## [Refraction](https://github.com/search?q=repo%3ABardoBard%2FBardrix+path%3A**%2Fvector3.h+refraction&type=code)
 
 Refraction is a way to calculate the direction of a vector after it passes through a surface. \
 This can be anything from glass, water, air, etc.
@@ -323,7 +323,7 @@ $$
 $$
 
 This is just a simple dot product between the normal and the incoming vector. \
-The reason why it's inverted is because we want the angle between the normal and the incoming vector, not the outgoing.
+The reason why it's inverted is that we want the angle between the normal and the incoming vector, not the outgoing.
 
 $$
 \sin\theta_2 = \sqrt{1 - r^2 * (1 - (\cos\theta_1)^2)}
@@ -390,7 +390,7 @@ $$
 ## [Distance](https://github.com/search?q=repo%3ABardoBard%2FBardrix+path%3A**%2Fpoint3.h+distance&type=code)
 
 We can calculate the distance between two points. \
-This might be useful for calculating the distance between two objects, or a whole lot of other things.
+This might be useful for calculating the distance between two objects, or a lot of other things.
 
 $$
 d =
