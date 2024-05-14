@@ -32,7 +32,7 @@ Symbols used in this document:
 | $\triangleq$    | Equivalent by definition                                                 | Equivalent means that the left side is equal to the right side.                               |
 | $\Rightarrow$   | Logical consequence                                                      | Logical consequence means that the properties of the right side are true for the left side.   |
 
-# [Generic 3D object](https://github.com/BardoBard/BardCore/blob/master/BardCore/include/BardCore/interfaces/dimension3.h)
+# [Generic 3D object](https://github.com/BardoBard/Bardrix/blob/master/Bardrix/include/bardrix/dimension3.h)
 
 Let's start with definitions, don't be intimidated by the math, it's not as hard as it looks. \
 Later on in the examples you'll see that it's actually quite simple.
@@ -52,7 +52,7 @@ name.
 Usually with 3D objects we use $\mathbb{R}^3$, which means that the components are real numbers, but also in 3D space. \
 I'll be using the notation $\mathbb{R}^3$ a lot, so it's important to understand what it means.
 
-## [3D addition](https://github.com/search?q=repo%3ABardoBard%2FBardCore+path%3A**%2Fdimension3.h+operator%2B&type=code)
+## [3D addition](https://github.com/search?q=repo%3ABardoBard%2FBardrix+path%3A**%2Fdimension3.h+operator%2B&type=code)
 
 We can add two $\mathbb{R}^3$ objects together, this is called addition. Here the $x_1$ $y_1$ $z_1$ get added to $x_2$
 $y_2$ $z_2$
@@ -77,7 +77,7 @@ z_1 + z_2 \\
 \end{bmatrix}
 $$
 
-## [3D subtraction](https://github.com/search?q=repo%3ABardoBard%2FBardCore+path%3A**%2Fdimension3.h+operator-&type=code)
+## [3D subtraction](https://github.com/search?q=repo%3ABardoBard%2FBardrix+path%3A**%2Fdimension3.h+operator-&type=code)
 
 We can also subtract $\mathbb{R}^3$ objects from each other, this is called subtraction.
 
@@ -100,7 +100,7 @@ z_1 - z_2 \\
 \end{bmatrix}
 $$
 
-## [3D multiplication](https://github.com/search?q=repo%3ABardoBard%2FBardCore+path%3A**%2Fdimension3.h+operator*&type=code)
+## [3D multiplication](https://github.com/search?q=repo%3ABardoBard%2FBardrix+path%3A**%2Fdimension3.h+operator*&type=code)
 
 An $\mathbb{R}^3$ can't be multiplied by another $\mathbb{R}^3$, there is no definition for that. \
 However, we can multiply an $\mathbb{R}^3$ by a number, this number is called a scalar.
@@ -119,7 +119,7 @@ z_1 * n \\
 \end{bmatrix}
 $$
 
-## [3D division](https://github.com/search?q=repo%3ABardoBard%2FBardCore+path%3A**%2Fdimension3.h+operator/&type=code)
+## [3D division](https://github.com/search?q=repo%3ABardoBard%2FBardrix+path%3A**%2Fdimension3.h+operator/&type=code)
 
 Just like multiplication, we have to use scalar division.
 
@@ -139,12 +139,12 @@ $$
 
 ---
 
-# [Vector operations](https://github.com/BardoBard/BardCore/blob/master/BardCore/include/BardCore/math/vector3d.h)
+# [Vector operations](https://github.com/BardoBard/Bardrix/blob/master/Bardrix/include/bardrix/vector3.h)
 
 Vectors start at the origin and points to a position in space. \
 Vectors are written with a little arrow on top of the name, like this: $\vec{v}$.
 
-## [Magnitude/Length](https://github.com/search?q=repo%3ABardoBard%2FBardCore+path%3A**%2Fvector3d.h+length&type=code)
+## [Magnitude/Length](https://github.com/search?q=repo%3ABardoBard%2FBardrix+path%3A**%2Fvector3.h+length&type=code)
 
 Vectors have a few operations that are unique to them. \
 One of them is calculating the magnitude of a vector, this is also called the length of a vector.
@@ -168,7 +168,7 @@ $$
 
 It's important to understand that the result of the magnitude of a vector is the size of the vector, which is a number.
 
-## [Normalization](https://github.com/search?q=repo%3ABardoBard%2FBardCore+path%3A**%2Fvector3d.h+normalize&type=code)
+## [Normalization](https://github.com/search?q=repo%3ABardoBard%2FBardrix+path%3A**%2Fvector3.h+normalize&type=code)
 
 Now that we know how to calculate the magnitude of a vector, we can normalize a vector.
 
@@ -193,7 +193,7 @@ $$
 
 Now if we calculate the magnitude of a normalized vector, we get 1.
 
-## [Dot product](https://github.com/search?q=repo%3ABardoBard%2FBardCore+path%3A**%2Fvector3d.h+dot&type=code)
+## [Dot product](https://github.com/search?q=repo%3ABardoBard%2FBardrix+path%3A**%2Fvector3.h+dot&type=code)
 
 The dot product is a way to calculate the angle between two vectors. \
 The dot product is also called the scalar product.
@@ -226,7 +226,7 @@ The dot product is a scalar, meaning that it's a number.
 
 Dot product is sometimes written as $(\vec{v}_1 , \vec{v}_2)$ instead of $\vec{v}_1 \cdot \vec{v}_2$.
 
-## [Cross product](https://github.com/search?q=repo%3ABardoBard%2FBardCore+path%3A**%2Fvector3d.h+cross&type=code)
+## [Cross product](https://github.com/search?q=repo%3ABardoBard%2FBardrix+path%3A**%2Fvector3.h+cross&type=code)
 
 The cross product is a way to calculate a vector that is perpendicular $\perp$ ($90\degree$) to two other vectors. \
 Naturally this means that the cross product is a vector.
@@ -254,7 +254,7 @@ You can see the notation is a literal cross sign.
 
 Cross product is sometimes written as $[\vec{v}_1 , \vec{v}_2]$ instead of $\vec{v}_1 \times \vec{v}_2$.
 
-## [Angle between vectors](https://github.com/search?q=repo%3ABardoBard%2FBardCore+path%3A**%2Fvector3d.h+angle&type=code)
+## [Angle between vectors](https://github.com/search?q=repo%3ABardoBard%2FBardrix+path%3A**%2Fvector3.h+angle&type=code)
 
 Now that we know how to calculate the dot product, we can calculate the angle between two vectors. \
 The angle between two vectors is the same as the angle between two lines.
@@ -280,7 +280,7 @@ $$
 
 Like mentioned in the [dot product](#dot-product), only here we normalize both vectors first.
 
-## [Reflection](https://github.com/search?q=repo%3ABardoBard%2FBardCore+path%3A**%2Fvector3d.h+reflection&type=code)
+## [Reflection](https://github.com/search?q=repo%3ABardoBard%2FBardrix+path%3A**%2Fvector3.h+reflect&type=code)
 
 Reflection is a way to calculate the direction of a vector after it bounces off a surface. \
 This is used for calculating the direction of a vector after it hits a surface.
@@ -301,7 +301,7 @@ normal is pointing away from the incoming vector. \
 This is not necessary, but it's important to know that the normal should be pointing towards the incoming vector. \
 Perhaps turn the normal around if this is the case.
 
-## [Refraction](https://github.com/search?q=repo%3ABardoBard%2FBardCore+path%3A**%2Fvector3d.h+refraction&type=code)
+## [Refraction](https://github.com/search?q=repo%3ABardoBard%2FBardrix+path%3A**%2Fvector3.h+refract&type=code)
 
 Refraction is a way to calculate the direction of a vector after it passes through a surface. \
 This can be anything from glass, water, air, etc.
@@ -336,18 +336,18 @@ This means that we've got an internal reflection, which we can already calculate
 This means that if $\sin\theta_2 \geq 1$ then we throw it away:
 
 $$
-Ref_r\(\vec{v}_1, \vec{v}_n\, r\) = r * \hat{v}_1 + \(r * \cos\theta_1 - \sqrt{1 - r^2 * (1 - (\cos\theta_1)^2)}\) *
-\hat{v}_n \Rightarrow \lbrace\sin\theta_2 < 1\rbrace
+Ref_r\(\vec{v}_1, \vec{v}_n\, r\) = r * \hat{v}_1 + \hat{v}_n * \(r * \cos\theta_1 - \sqrt{1 - (\sin\theta_2))}\)
+\Rightarrow \lbrace\sin\theta_2 < 1\rbrace
 $$
 
 This is the final definition, here we calculate the refraction vector.
 
-# [Point operations](https://github.com/BardoBard/BardCore/blob/master/BardCore/include/BardCore/math/point3d.h)
+# [Point operations](https://github.com/BardoBard/Bardrix/blob/master/Bardrix/include/bardrix/point3.h)
 
 Points are very similar to vectors, but they don't have a direction. \
 Points are written with a capital letter, like this: $P$.
 
-## [Point to vector](https://github.com/search?q=repo%3ABardoBard%2FBardCore+path%3A**%2Fpoint3d.h+get_vector&type=code)
+## [Point to vector](https://github.com/search?q=repo%3ABardoBard%2FBardrix+path%3A**%2Fpoint3.h+vector_to&type=code)
 
 We can convert a point to a vector, this is done by subtracting the origin from the point.
 
@@ -373,7 +373,7 @@ $$
 Important to understand that we're creating a vector that points from $P_2$ to $P_1$. \
 The subtraction is the same as any $\mathbb{R}^3$ subtraction.
 
-## [Center](https://github.com/search?q=repo%3ABardoBard%2FBardCore+path%3A**%2Fpoint3d.h+center&type=code)
+## [Center](https://github.com/search?q=repo%3ABardoBard%2FBardrix+path%3A**%2Fpoint3.h+midpoint&type=code)
 
 We can calculate the center of two points, this is done by adding the two points together and dividing by 2. \
 This is a pretty simple operation.
@@ -387,7 +387,7 @@ P_{center} = \frac{P_1 + P_2}{2} =
 \end{bmatrix}
 $$
 
-## [Distance](https://github.com/search?q=repo%3ABardoBard%2FBardCore+path%3A**%2Fpoint3d.h+distance&type=code)
+## [Distance](https://github.com/search?q=repo%3ABardoBard%2FBardrix+path%3A**%2Fpoint3.h+distance&type=code)
 
 We can calculate the distance between two points. \
 This might be useful for calculating the distance between two objects, or a whole lot of other things.

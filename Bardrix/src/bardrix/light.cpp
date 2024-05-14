@@ -11,7 +11,9 @@ namespace bardrix {
         set_intensity(intensity);
     }
 
-    void light::set_intensity(double intensity) noexcept { this->intensity_ = less_than_or_nearly_equal(intensity, 0) ? 0 : intensity; }
+    void light::set_intensity(double intensity) noexcept {
+        this->intensity_ = less_than_or_nearly_equal(intensity, 0) ? 0 : intensity;
+    }
 
     double light::get_intensity() const noexcept { return intensity_; }
 

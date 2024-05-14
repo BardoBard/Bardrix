@@ -45,7 +45,7 @@ namespace bardrix {
         /// \return The color magenta.
         NODISCARD INLINE static color magenta() noexcept { return { 255, 0, 255, 255 }; }
 
-    private:
+    protected:
         /// \brief Unsigned char type-definition.
         typedef unsigned char uchar;
 
@@ -53,9 +53,12 @@ namespace bardrix {
         /// \note This way we can access the color as a whole or as separate components.
         union color_union {
         public:
+            /// \brief The color as separate components.
             struct {
                 uchar r, g, b, a;
             } r_g_b_a;
+
+            /// \brief The color as an unsigned integer; AABBCCDD -> r = DD, g = CC, b = BB, a = AA.
             unsigned rgba;
 
             color_union() : rgba{ 0 } {}
@@ -65,7 +68,7 @@ namespace bardrix {
             explicit color_union(unsigned rgba) : rgba{ rgba } {}
         };
 
-    private:
+    protected:
         /// \brief This union represents the color as an unsigned integer or as separate components.
         color_union c_union_{};
 
@@ -85,46 +88,71 @@ namespace bardrix {
         /// \note The color is represented as an unsigned integer, where r g b a are the starting bytes respectively, AABBCCDD -> r = DD, g = CC, b = BB, a = AA.
         explicit color(unsigned rgba);
 
-
         /// \brief Get the red component of the color.
         /// \return The red component of the color.
-        NODISCARD uchar r() const noexcept { return c_union_.r_g_b_a.r; }
+        NODISCARD uchar r() const noexcept;
 
         /// \brief Get the green component of the color.
         /// \return The green component of the color.
-        NODISCARD uchar g() const noexcept { return c_union_.r_g_b_a.g; }
+        NODISCARD uchar g() const noexcept;
 
         /// \brief Get the blue component of the color.
         /// \return The blue component of the color.
-        NODISCARD uchar b() const noexcept { return c_union_.r_g_b_a.b; }
+        NODISCARD uchar b() const noexcept;
 
         /// \brief Get the alpha component of the color.
         /// \return The alpha component of the color.
-        NODISCARD uchar a() const noexcept { return c_union_.r_g_b_a.a; }
+        NODISCARD uchar a() const noexcept;
 
         /// \brief Set the red component of the color.
         /// \param r The red component of the color.
-        void r(uchar r) noexcept { c_union_.r_g_b_a.r = r; }
+        void r(uchar r) noexcept;
 
         /// \brief Set the green component of the color.
         /// \param g The green component of the color.
-        void g(uchar g) noexcept { c_union_.r_g_b_a.g = g; }
+        void g(uchar g) noexcept;
 
         /// \brief Set the blue component of the color.
         /// \param b The blue component of the color.
-        void b(uchar b) noexcept { c_union_.r_g_b_a.b = b; }
+        void b(uchar b) noexcept;
 
         /// \brief Set the alpha component of the color.
         /// \param a The alpha component of the color.
-        void a(uchar a) noexcept { c_union_.r_g_b_a.a = a; }
+        void a(uchar a) noexcept;
 
         /// \brief Get the color as an unsigned integer.
         /// \return The color as an unsigned integer.
-        NODISCARD unsigned rgba() const noexcept { return c_union_.rgba; }
+        NODISCARD unsigned rgba() const noexcept;
 
         /// \brief Set the color as an unsigned integer.
         /// \param rgba The color as an unsigned integer.
-        void rgba(unsigned rgba) noexcept { c_union_.rgba = rgba; }
+        void rgba(unsigned rgba) noexcept;
+
+        /// \brief Inverts this color.
+        /// \details The inversion is calculated as (r,g,b) => (255 - r, 255 - g, 255 - b).
+        /// \return A reference to the current color after the inversion.
+        /// \example color(255, 0, 0, 255).invert() // (0, 255, 255, 255)
+        color& invert() noexcept;
+
+        /// \brief Inverts the color.
+        /// \details The inversion is calculated as (r,g,b) => (255 - r, 255 - g, 255 - b).
+        /// \return A copy of the color after the inversion.
+        /// \example color(255, 0, 0, 255).inverted() // (0, 255, 255, 255)
+        NODISCARD color inverted() const noexcept;
+
+        /// \brief Grayscales the color.
+        /// \return A reference to the current color after the grayscale.
+        /// \details The grayscale is calculated as (r,g,b) => 0.299 * r + 0.587 * g + 0.114 * b.
+        /// \example color(255, 0, 0, 255).grayscale() // (76, 76, 76, 255)
+        /// \see https://en.wikipedia.org/wiki/Grayscale#Converting_color_to_grayscale
+        color& grayscale() noexcept;
+
+        /// \brief Grayscales the color.
+        /// \return A copy of the color after the grayscale.
+        /// \details The grayscale is calculated as (r,g,b) => 0.299 * r + 0.587 * g + 0.114 * b.
+        /// \example color(255, 0, 0, 255).grayscaled() // (76, 76, 76, 255)
+        /// \see https://en.wikipedia.org/wiki/Grayscale#Converting_color_to_grayscale
+        NODISCARD color grayscaled() const noexcept;
 
         /// \brief Add two colors.
         /// \param other The color to add.
@@ -248,6 +276,12 @@ namespace bardrix {
         /// \return The current color after the modulo operation, by reference.
         /// \throws std::invalid_argument if the scalar is zero.
         color& operator%=(uchar scalar);
+
+        /// \brief Inverts the color; only the r, g, b components are inverted, the alpha component remains the same.
+        /// \details The inversion is calculated as (r,g,b) => (255 - r, 255 - g, 255 - b).
+        /// \return The inverted color as a copy.
+        /// \example ~color(255, 0, 0, 255) // (0, 255, 255, 255)
+        NODISCARD color operator~() const noexcept;
 
         /// \brief Check if two colors are equal.
         /// \param other The color to compare with.
