@@ -3,6 +3,7 @@
     <metadata>
         <title>Bardrix - A Math Library</title>
         <projectUrl>https://github.com/BardoBard/Bardrix/</projectUrl>
+        <repository type="github" url="https://github.com/BardoBard/Bardrix/"/>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
 
         <!-- Required elements-->
