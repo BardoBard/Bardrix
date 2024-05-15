@@ -9,14 +9,16 @@
         <id>Bardio.Bardrix</id>
         <version>$Version$</version>
         <authors>Bardio</authors>
-        <description>Bardrix is a math library mainly used for raytracing.</description>
+        <description>Bardrix is a math library mainly used for raytracing. Supporting C++ 17 or above.</description>
 
         <!-- Optional elements -->
+        <owners>Bardio</owners>
+        <language>en-US</language>
         <license type="file">LICENSE.txt</license>
         <readme>README.md</readme>
         <icon>Docs\Images\bardio_icon.png</icon>
 
-        <tags>math raytracing educational</tags>
+        <tags>native math raytracing educational</tags>
         <releaseNotes>$ReleaseNotes$</releaseNotes>
     </metadata>
     <files>
