@@ -6,9 +6,61 @@
 
 namespace bardrix {
 
+    // Constructors
+
     color::color(unsigned int rgba) : c_union_{ rgba } {}
 
     color::color(color::uchar r, color::uchar g, color::uchar b, color::uchar a) : c_union_{ r, g, b, a } {}
+
+    // Getters/Setter
+
+    color::uchar color::r() const noexcept { return c_union_.r_g_b_a.r; }
+
+    color::uchar color::g() const noexcept { return c_union_.r_g_b_a.g; }
+
+    color::uchar color::b() const noexcept { return c_union_.r_g_b_a.b; }
+
+    color::uchar color::a() const noexcept { return c_union_.r_g_b_a.a; }
+
+    void color::r(color::uchar r) noexcept { c_union_.r_g_b_a.r = r; }
+
+    void color::g(color::uchar g) noexcept { c_union_.r_g_b_a.g = g; }
+
+    void color::b(color::uchar b) noexcept { c_union_.r_g_b_a.b = b; }
+
+    void color::a(color::uchar a) noexcept { c_union_.r_g_b_a.a = a; }
+
+    unsigned color::rgba() const noexcept { return c_union_.rgba; }
+
+    void color::rgba(unsigned int rgba) noexcept { c_union_.rgba = rgba; }
+
+    // Methods
+
+    color& color::invert() noexcept {
+        return *this = ~*this;
+    }
+
+    color color::inverted() const noexcept {
+        return ~*this;
+    }
+
+    color& color::grayscale() noexcept {
+        // Grayscale formula: 0.299 * R + 0.587 * G + 0.114 * B
+        auto gray = static_cast<color::uchar>(std::round(0.299 * c_union_.r_g_b_a.r + 0.587 * c_union_.r_g_b_a.g + 0.114 * c_union_.r_g_b_a.b));
+        c_union_.r_g_b_a.r = gray;
+        c_union_.r_g_b_a.g = gray;
+        c_union_.r_g_b_a.b = gray;
+        return *this;
+    }
+
+    color color::grayscaled() const noexcept {
+        // Grayscale formula: 0.299 * R + 0.587 * G + 0.114 * B
+        color gray = *this;
+        gray.grayscale();
+        return gray;
+    }
+
+    // Operators
 
     color color::operator+(const color& other) const noexcept {
         color result = *this;
@@ -116,11 +168,6 @@ namespace bardrix {
     }
 
     color color::operator/(const double scalar) const {
-        if (nearly_equal(scalar, 0))
-            throw std::invalid_argument("Division by zero");
-        if (scalar < 0)
-            throw std::invalid_argument("Division by negative number");
-
         color result = *this;
         result /= scalar;
         return result;
@@ -191,6 +238,10 @@ namespace bardrix {
         c_union_.r_g_b_a.b %= scalar;
         c_union_.r_g_b_a.a %= scalar;
         return *this;
+    }
+
+    color color::operator~() const noexcept {
+        return color(c_union_.rgba ^ 0x00FFFFFF);
     }
 
     bool color::operator==(const color& other) const noexcept {

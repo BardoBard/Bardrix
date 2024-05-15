@@ -16,15 +16,11 @@ namespace bardrix {
 
     const vector3& ray::get_direction() const noexcept { return direction_; }
 
-    void ray::set_direction(const vector3& direction) noexcept {
-        direction_ = direction.normalized();
-    }
+    void ray::set_direction(const vector3& direction) noexcept { direction_ = direction.normalized(); }
 
     double ray::get_length() const noexcept { return length_; }
 
-    void ray::set_length(double length) noexcept {
-        length_ = (length < 0) ? 0 : length;
-    }
+    void ray::set_length(double length) noexcept { length_ = (length < 0) ? 0 : length; }
 
     point3 ray::get_end() const noexcept { return point_at(length_); }
 
@@ -38,12 +34,12 @@ namespace bardrix {
         return os << "Position: " << position << ", Direction: " << direction_ << ", Length: " << length_;
     }
 
-    std::ostream& operator<<(std::ostream& os, const ray& r) {
-        return r.print(os);
-    }
+    std::ostream& operator<<(std::ostream& os, const ray& r) { return r.print(os); }
 
     bool ray::operator==(const ray& r) const noexcept {
         return position == r.position && direction_ == r.direction_ && nearly_equal(length_, r.length_);
     }
+
+    bool ray::operator!=(const ray& r) const noexcept { return !(*this == r); }
 
 } // namespace bardrix

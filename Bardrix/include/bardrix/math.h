@@ -29,7 +29,7 @@ namespace bardrix {
     /// \brief (pi / 180) constant, used for converting degrees to radians
     INLINE constexpr double _pi_180 = 0.017453292519943295;
 
-    /// \brief The epsilon value used for the nearly equal function
+    /// \brief The epsilon value used for the nearly equal functions
     INLINE double epsilon = 0.0001;
 
     /// \brief Converts degrees to radians

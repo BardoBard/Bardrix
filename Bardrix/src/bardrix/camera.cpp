@@ -72,7 +72,7 @@ namespace bardrix {
     }
 
     void camera::look_at(const point3& point) noexcept {
-        if (point == position) // this is the same as the current position
+        if (point == position)
             return;
 
         set_direction(position.vector_to(point));

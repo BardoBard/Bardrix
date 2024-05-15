@@ -82,7 +82,14 @@ namespace bardrix {
         /// \brief Equality operator
         /// \param r The ray to compare
         /// \return True if the rays are equal
+        /// \example ray(point3(1, 2, 3), vector3(1, 0, 0)) == ray(point3(1, 2, 3), vector3(1, 0, 0)) -> true
         bool operator==(const ray& r) const noexcept;
+
+        /// \brief Inequality operator
+        /// \param r The ray to compare
+        /// \return True if the rays are not equal
+        /// \example ray(point3(1, 2, 3), vector3(1, 0, 0)) != ray(point3(1, 2, 3), vector3(0, 1, 0)) -> true
+        bool operator!=(const ray& r) const noexcept;
 
     }; // class ray
 

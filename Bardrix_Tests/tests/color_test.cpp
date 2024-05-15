@@ -38,22 +38,64 @@ TEST(color, constructor) {
     EXPECT_EQ(c1.rgba(), 0xFFFFFFFF);
 }
 
+/// \brief Test the inverse color
+TEST(color, invert) {
+    bardrix::color c1(255, 255, 255, 255);
+    bardrix::color c2(4, 255, 53, 255);
+
+    EXPECT_EQ((~c1).rgba(), 0xFF000000);
+    EXPECT_EQ(c1.inverted().rgba(), 0xFF000000);
+    EXPECT_EQ(c1.invert().rgba(), 0xFF000000);
+
+    EXPECT_EQ((~c2).rgba(), 0xFFCA00FB);
+    EXPECT_EQ(c2.inverted().rgba(), 0xFFCA00FB);
+    EXPECT_EQ(c2.invert().rgba(), 0xFFCA00FB);
+}
+
+/// \brief Test grayscale of colors
+TEST(color, grayscale) {
+    EXPECT_EQ(bardrix::color(255, 0, 0, 255).grayscale().rgba(), 0xFF4C4C4C); // Red
+    EXPECT_EQ(bardrix::color(0, 255, 0, 255).grayscale().rgba(), 0xFF969696); // Green
+    EXPECT_EQ(bardrix::color(0, 0, 255, 255).grayscale().rgba(), 0xFF1D1D1D); // Blue
+    EXPECT_EQ(bardrix::color(255, 255, 255, 255).grayscale().rgba(), 0xFFFFFFFF); // White
+    EXPECT_EQ(bardrix::color(0, 0, 0, 255).grayscale().rgba(), 0xFF000000); // Black
+    EXPECT_EQ(bardrix::color(255, 255, 0, 255).grayscale().rgba(), 0xFFE2E2E2); // Yellow
+    EXPECT_EQ(bardrix::color(255, 0, 255, 255).grayscale().rgba(), 0xFF696969); // Magenta (nice)
+    EXPECT_EQ(bardrix::color(0, 255, 255, 255).grayscale().rgba(), 0xFFB3B3B3); // Cyan
+    EXPECT_EQ(bardrix::color(128, 0, 0, 255).grayscale().rgba(), 0xFF262626); // Maroon
+    EXPECT_EQ(bardrix::color(34, 12, 72, 255).grayscale().rgba(), 0xFF191919); // Random
+}
+
+/// \brief Test grayscale of colors
+TEST(color, grayscaled) {
+    EXPECT_EQ(bardrix::color(255, 0, 0, 255).grayscaled().rgba(), 0xFF4C4C4C); // Red
+    EXPECT_EQ(bardrix::color(0, 255, 0, 255).grayscaled().rgba(), 0xFF969696); // Green
+    EXPECT_EQ(bardrix::color(0, 0, 255, 255).grayscaled().rgba(), 0xFF1D1D1D); // Blue
+    EXPECT_EQ(bardrix::color(255, 255, 255, 255).grayscaled().rgba(), 0xFFFFFFFF); // White
+    EXPECT_EQ(bardrix::color(0, 0, 0, 255).grayscaled().rgba(), 0xFF000000); // Black
+    EXPECT_EQ(bardrix::color(255, 255, 0, 255).grayscaled().rgba(), 0xFFE2E2E2); // Yellow
+    EXPECT_EQ(bardrix::color(255, 0, 255, 255).grayscaled().rgba(), 0xFF696969); // Magenta (nice)
+    EXPECT_EQ(bardrix::color(0, 255, 255, 255).grayscaled().rgba(), 0xFFB3B3B3); // Cyan
+    EXPECT_EQ(bardrix::color(128, 0, 0, 255).grayscaled().rgba(), 0xFF262626); // Maroon
+    EXPECT_EQ(bardrix::color(34, 12, 72, 255).grayscaled().rgba(), 0xFF191919); // Random
+}
+
 /// \brief Test the color addition
 TEST(color, operator_plus) {
     bardrix::color c1(255, 255, 255, 255);
     bardrix::color c2(4, 255, 53, 255);
 
-    bardrix::color c3 = c1 + c2;
-    EXPECT_EQ(c3.rgba(), 0xFFFFFFFF);
+    bardrix::color result = c1 + c2;
+    EXPECT_EQ(result.rgba(), 0xFFFFFFFF);
 
-    c3 = c1 + c1;
-    EXPECT_EQ(c3.rgba(), 0xFFFFFFFF);
+    result = c1 + c1;
+    EXPECT_EQ(result.rgba(), 0xFFFFFFFF);
 
-    c3 = c2 + c2;
-    EXPECT_EQ(c3.rgba(), 0xFF6AFF08);
+    result = c2 + c2;
+    EXPECT_EQ(result.rgba(), 0xFF6AFF08);
 
-    c3 = c1 + c2 + c2;
-    EXPECT_EQ(c3.rgba(), 0xFFFFFFFF);
+    result = c1 + c2 + c2;
+    EXPECT_EQ(result.rgba(), 0xFFFFFFFF);
 }
 
 /// \brief Test the color addition with a scalar
@@ -227,7 +269,7 @@ TEST(color, operator_multiply_degenerate) {
     result = c2 * -0.1;
     EXPECT_EQ(result.rgba(), 0);
 
-    result = {2, 4, 5, 6};
+    result = { 2, 4, 5, 6 };
     result *= 0;
     EXPECT_EQ(result.rgba(), 0);
 }
@@ -304,7 +346,7 @@ TEST(color, operator_modulo) {
     result = c2 % 3;
     EXPECT_EQ(result.rgba(), 0x00020001);
 
-    result = {2, 4, 5, 6};
+    result = { 2, 4, 5, 6 };
     result = 2 % result;
     EXPECT_EQ(result.rgba(), 0x02020200);
 
