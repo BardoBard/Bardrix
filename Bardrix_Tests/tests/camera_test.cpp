@@ -5,6 +5,17 @@
 #include <bardrix/camera.h>
 
 /// \brief Test the default constructor
+TEST(camera, default_constructor) {
+    bardrix::camera camera = bardrix::camera();
+
+    EXPECT_EQ(camera.position, bardrix::point3(0, 0, 0));
+    EXPECT_EQ(camera.get_direction(), bardrix::vector3(0, 0, 1));
+    EXPECT_EQ(camera.get_fov(), 90);
+    EXPECT_EQ(camera.get_width(), 800);
+    EXPECT_EQ(camera.get_height(), 600);
+}
+
+/// \brief Test the default constructor
 TEST(camera, constructor) {
     bardrix::camera camera = bardrix::camera(bardrix::point3{0, 0, 0}, bardrix::vector3{0, 0, 0});
 

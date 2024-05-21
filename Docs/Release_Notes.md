@@ -27,6 +27,11 @@ Updated `shoot_ray(unsigned, unsigned, double)` in [camera](../Bardrix/include/b
 instead of `unsigned` for `x` and `y`. This changes does affect the api; due to the fact that now you've got to
 call `shoot_ray(int, int, double)`.
 
+### Minor Changes
+
+Added default constructor to [camera](../Bardrix/include/bardrix/camera.h) with position `(0, 0, 0)`, direction
+`(0, 0, 1)`, width `800`, height `600` and fov `90`.
+
 ## Test Changes
 
 Added extra tests for `camera` to test the new changes. \

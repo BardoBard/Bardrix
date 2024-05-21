@@ -46,6 +46,13 @@ namespace bardrix {
         void update_screen_vectors() noexcept;
 
     public:
+        /// \brief Default constructor for camera
+        /// \details The position will be (0,0,0)
+        /// \details The direction will be (0,0,1)
+        /// \details The fov will be 90 degrees
+        /// \details The screen size will be 800x600
+        camera() noexcept = default;
+
         /// \brief Constructor for camera, initializes position and direction
         /// \param position The position of the camera
         /// \param direction The direction of the camera, it'll be normalized
