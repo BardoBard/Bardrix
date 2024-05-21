@@ -206,7 +206,6 @@ TEST(vector3, refraction3) {
 
     // calculate refraction
     const auto result = v1.refraction(normal, refractive_ratio_2);
-    std::cout << *result << std::endl;
 
     ASSERT_TRUE(result.has_value());
     ASSERT_TRUE(bardrix::nearly_equal(result->length_squared(), 1));

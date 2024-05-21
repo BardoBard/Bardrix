@@ -11,8 +11,8 @@ TEST(camera, constructor) {
     EXPECT_EQ(camera.position, bardrix::point3(0, 0, 0));
     EXPECT_EQ(camera.get_direction(), bardrix::vector3(0, 0, 1)); // Default direction
     EXPECT_EQ(camera.get_fov(), 90);
-    EXPECT_EQ(camera.width, 800);
-    EXPECT_EQ(camera.height, 600);
+    EXPECT_EQ(camera.get_width(), 800);
+    EXPECT_EQ(camera.get_height(), 600);
 }
 
 /// \brief Test the constructor with values
@@ -22,8 +22,8 @@ TEST(camera, constructor_with_values) {
     EXPECT_EQ(camera.position, bardrix::point3(1, 2, 3));
     EXPECT_EQ(camera.get_direction(), bardrix::vector3(4, 5, 6).normalized());
     EXPECT_EQ(camera.get_fov(), 45);
-    EXPECT_EQ(camera.width, 360);
-    EXPECT_EQ(camera.height, 240);
+    EXPECT_EQ(camera.get_width(), 360);
+    EXPECT_EQ(camera.get_height(), 240);
 }
 
 TEST(camera, constructor_with_values_2) {
@@ -32,8 +32,8 @@ TEST(camera, constructor_with_values_2) {
     EXPECT_EQ(camera.position, bardrix::point3(1, 2, 3));
     EXPECT_EQ(camera.get_direction(), bardrix::vector3(4, 5, 6).normalized());
     EXPECT_EQ(camera.get_fov(), 90);
-    EXPECT_EQ(camera.width, 360);
-    EXPECT_EQ(camera.height, 360);
+    EXPECT_EQ(camera.get_width(), 360);
+    EXPECT_EQ(camera.get_height(), 360);
 }
 
 /// \brief Test the constructor with degenerate values
@@ -43,16 +43,16 @@ TEST(camera, constructor_degenerate) {
     EXPECT_EQ(camera.position, bardrix::point3(0, 0, 0));
     EXPECT_EQ(camera.get_direction(), bardrix::vector3(0, 0, 1)); // Default direction
     EXPECT_EQ(camera.get_fov(), 0);
-    EXPECT_EQ(camera.width, 0);
-    EXPECT_EQ(camera.height, 0);
+    EXPECT_EQ(camera.get_width(), 0);
+    EXPECT_EQ(camera.get_height(), 0);
 
     camera = bardrix::camera(bardrix::point3{1, 2, 3}, bardrix::vector3{-20, 0, 0}, 425, 2423, 180);
 
     EXPECT_EQ(camera.position, bardrix::point3(1, 2, 3));
     EXPECT_EQ(camera.get_direction(), bardrix::vector3(-20, 0, 0).normalized());
     EXPECT_EQ(camera.get_fov(), 179);
-    EXPECT_EQ(camera.width, 425);
-    EXPECT_EQ(camera.height, 2423);
+    EXPECT_EQ(camera.get_width(), 425);
+    EXPECT_EQ(camera.get_height(), 2423);
 }
 
 /// \brief Test the set_direction method
@@ -75,6 +75,29 @@ TEST(camera, set_fov) {
 
     camera.set_fov(180);
     EXPECT_EQ(camera.get_fov(), 179);
+}
+
+
+/// \brief Test the set_width method
+TEST(camera, set_width) {
+    bardrix::camera camera = bardrix::camera(bardrix::point3{0, 0, 0}, bardrix::vector3{0, 0, 0});
+
+    camera.set_width(800);
+    EXPECT_EQ(camera.get_width(), 800);
+
+    camera.set_width(-1);
+    EXPECT_EQ(camera.get_width(), 0);
+}
+
+/// \brief Test the set_height method
+TEST(camera, set_height) {
+    bardrix::camera camera = bardrix::camera(bardrix::point3{0, 0, 0}, bardrix::vector3{0, 0, 0});
+
+    camera.set_height(600);
+    EXPECT_EQ(camera.get_height(), 600);
+
+    camera.set_height(-1);
+    EXPECT_EQ(camera.get_height(), 0);
 }
 
 /// \brief Test the shoot_ray method
@@ -157,22 +180,29 @@ TEST(camera, shoot_ray_degenerate) {
     ray = camera.shoot_ray(0, 0, 1);
     EXPECT_TRUE(ray.has_value());
 
-    camera.width = 0;
+    camera.set_width(0);
 
     ray = camera.shoot_ray(0, 0, 1);
     EXPECT_FALSE(ray.has_value());
 
-    camera.width = 800;
-    camera.height = 0;
+    camera.set_width(800);
+    camera.set_height(0);
 
     ray = camera.shoot_ray(0, 0, 1);
     EXPECT_FALSE(ray.has_value());
 
-    camera.height = 600;
+    camera.set_height(600);
     camera.set_fov(0);
 
     ray = camera.shoot_ray(0, 0, 1);
     EXPECT_TRUE(ray.has_value());
+
+    camera.set_fov(90);
+    ray = camera.shoot_ray(-1, 0, 1);
+    EXPECT_FALSE(ray.has_value());
+
+    ray = camera.shoot_ray(0, -1, 1);
+    EXPECT_FALSE(ray.has_value());
 }
 
 /// \brief Test the look_at method
