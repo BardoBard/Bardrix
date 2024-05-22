@@ -138,7 +138,15 @@ The sphere is a simple object in 3D space. It has a position, radius and color. 
 The color is a simple RGBA color, where each value is between 0 and 255.
 
 ```cpp
-#include <bardrix/sphere.h>
+class sphere : public bardrix::shape {
+protected:
+    /// \brief Radius of the sphere
+    double radius_;
+
+public:
+    /// \brief Center of the sphere
+    bardrix::point3 position;
+};
 ```
 
-```cpp
+Here we can see the base variables of the sphere.
