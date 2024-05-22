@@ -668,3 +668,53 @@ It has red, green, blue, and alpha components.
         - The output will be in the format (r, g, b, a)
 
 ### Camera
+
+A class that represents a camera in 3D space. \
+It has a position, direction, field of view and width/height of the image.
+
+- Constructors:
+    - Default constructor
+        - Initializes the camera to (0, 0, 0) with a direction of (0, 0, 1), a field of view of 90 degrees, and a width
+          and height of 800x600.
+    - Parameterized constructor
+        - Initializes the camera to the given position, direction and screen_size.
+        - Initializes the camera to the given position, direction, field of view, width and height.
+- Setters/Getters:
+    - `set_direction(direction : vector3)`
+        - Sets the direction of the camera.
+        - The direction will be normalized for you.
+    - `set_fov(fov : unsigned int)`
+        - Sets the field of view of the camera in degrees.
+        - **Degenerate cases**:
+            - If the field of view is greater than or equal  180, it will be set to 179; as this is the limit.
+    - `set_width(width : unsigned int)`
+        - Sets the width of the camera image.
+        - **Degenerate cases**:
+            - If the width is less than zero, it will be set to zero.
+    - `set_height(height : unsigned int)`
+        - Sets the height of the camera image.
+        - **Degenerate cases**:
+            - If the height is less than zero, it will be set to zero.
+    - `get_direction()`
+        - **Returns** the normalized direction of the camera.
+    - `get_fov()`
+        - **Returns** the field of view of the camera in degrees.
+    - `get_width()`
+        - **Returns** the width of the camera image.
+    - `get_height()`
+        - **Returns** the height of the camera image.
+- Methods:
+    - `look_at(point : point3)`
+        - Changes the direction of the camera to look at the given point.
+        - **Degenerate cases**:
+            - If the point is the same as the position, it will not change the direction.
+    - `shoot_ray(x : int, y : int, distance : double)`
+        - Shoots a ray from the camera at the given pixel coordinates.
+        - **Returns** the ray that was shot from the camera, if the ray is invalid, it will return an std::nullopt.
+        - **Degenerate cases**:
+            - If the x or y is greater than or equal to the width or height.
+            - If the x or y is less than 0.
+- Operators:
+    - `<<`
+        - Outputs the components of the camera to the output stream (Position: (x,y,z), Direction (x,y,z), width, height, fov).
+        - **Returns** a reference to the output stream.

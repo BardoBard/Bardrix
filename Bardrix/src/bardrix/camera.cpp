@@ -7,24 +7,28 @@
 
 namespace bardrix {
 
+
+    camera::camera() noexcept : camera({ 0, 0, 0 }, { 0, 0, 1 }) {}
+
     camera::camera(const point3& position, const vector3& direction) noexcept: camera(position, direction, 800, 600,
                                                                                       90) {}
 
     camera::camera(const point3& position, const vector3& direction,
-                   unsigned int screen_size) noexcept: camera(position, direction, screen_size, screen_size, 90) {}
+                   int screen_size) noexcept: camera(position, direction, screen_size, screen_size, 90) {}
 
-    camera::camera(point3 position, const vector3& direction,
-                   unsigned int screen_width, unsigned int screen_height, unsigned int fov) noexcept:
-            position(std::move(position)), width(screen_width), height(screen_height) {
+    camera::camera(point3 position, const vector3& direction, int screen_width, int screen_height,
+                   unsigned int fov) noexcept: position(std::move(position)) {
         set_fov(fov);
         set_direction(direction);
+        set_width(screen_width);
+        set_height(screen_height);
     }
 
     void camera::update_screen_vectors() noexcept {
-        vector3 arbitrary_vector = {1, 0, 0}; //random vector
+        vector3 arbitrary_vector = { 1, 0, 0 }; //random vector
         if (direction_ == arbitrary_vector)
             //other random vector, if direction is the same as the first random vector
-            arbitrary_vector = {0, 1, 0};
+            arbitrary_vector = { 0, 1, 0 };
 
         const vector3 cross_factor = direction_.cross(arbitrary_vector).normalized();
 
@@ -54,12 +58,20 @@ namespace bardrix {
         update_screen_vectors();
     }
 
-    std::optional<ray> camera::shoot_ray(unsigned int x, unsigned int y, const double distance) const noexcept {
-        if (x >= width || y >= height)
+    void camera::set_height(int height) noexcept { this->height_ = height < 0 ? 0 : height; }
+
+    int camera::get_height() const noexcept { return height_; }
+
+    void camera::set_width(int width) noexcept { this->width_ = width < 0 ? 0 : width; }
+
+    int camera::get_width() const noexcept { return width_; }
+
+    std::optional<ray> camera::shoot_ray(int x, int y, const double distance) const noexcept {
+        if (x >= width_ || y >= height_ || x < 0 || y < 0)
             return std::nullopt;
 
-        const double ratio_width = x / static_cast<double>(width);
-        const double ratio_height = y / static_cast<double>(height);
+        const double ratio_width = x / static_cast<double>(width_);
+        const double ratio_height = y / static_cast<double>(height_);
 
         // horizontal and vertical vectors
         const vector3 horizontal = right_ * 2 * ratio_width;
@@ -76,6 +88,11 @@ namespace bardrix {
             return;
 
         set_direction(position.vector_to(point));
+    }
+
+    std::ostream& operator<<(std::ostream& os, const camera& camera) noexcept {
+        return os << "Position: " << camera.position << ", Direction: " << camera.direction_ << ", " << camera.width_
+                  << ", " << camera.height_ << ", " << camera.fov_degrees_;
     }
 
 } // namespace bardrix

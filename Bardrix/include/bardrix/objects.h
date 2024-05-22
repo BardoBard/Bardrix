@@ -18,7 +18,7 @@ namespace bardrix {
 
     public:
         /// \brief The color of the material
-        class color color = color::white();
+        class bardrix::color color = bardrix::color::white();
 
     private:
         /// \brief The ambient coefficient, between 0 and 1
@@ -125,29 +125,29 @@ namespace bardrix {
     public:
         /// \brief Gets the position of the shape
         /// \return The position of the shape
-        NODISCARD virtual const point3& get_position() const = 0;
+        NODISCARD virtual const bardrix::point3& get_position() const = 0;
 
         /// \brief Sets the position of the shape
         /// \param position The position to set
-        virtual void set_position(const point3& position) = 0;
+        virtual void set_position(const bardrix::point3& position) = 0;
 
         /// \brief Intersection of a ray with the shape
         /// \param ray The ray to intersect with
         /// \return The intersection point, if any
-        NODISCARD virtual std::optional<point3> intersection(const ray& ray) const = 0;
+        NODISCARD virtual std::optional<bardrix::point3> intersection(const bardrix::ray& ray) const = 0;
 
         /// \brief Gets the normal of the shape at a point
         /// \param point The point to get the normal at
         /// \return The normal of the shape at the point
-        NODISCARD virtual vector3 normal_at(const point3& point) const = 0;
+        NODISCARD virtual bardrix::vector3 normal_at(const bardrix::point3& point) const = 0;
 
         /// \brief Gets the material of the shape
         /// \return The material of the shape
-        NODISCARD virtual const material& get_material() const = 0;
+        NODISCARD virtual const bardrix::material& get_material() const = 0;
 
         /// \brief Sets the material of the shape
         /// \param material The material to set
-        virtual void set_material(const material& material) = 0;
+        virtual void set_material(const bardrix::material& material) = 0;
 
         /// \brief Virtual destructor for shape
         virtual ~shape() = default;
