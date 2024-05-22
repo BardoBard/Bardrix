@@ -11,7 +11,7 @@ namespace bardrix {
                                                                                       90) {}
 
     camera::camera(const point3& position, const vector3& direction,
-                   unsigned int screen_size) noexcept: camera(position, direction, screen_size, screen_size, 90) {}
+                   int screen_size) noexcept: camera(position, direction, screen_size, screen_size, 90) {}
 
     camera::camera(point3 position, const vector3& direction, int screen_width, int screen_height,
                    unsigned int fov) noexcept:

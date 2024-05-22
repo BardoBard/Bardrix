@@ -67,7 +67,7 @@ namespace bardrix {
         /// \param screen_size The size of the screen, it'll be the width and height
         /// \details The fov will be 90 degrees by default
         /// \details If the direction is (0,0,0), it will be set to (0,0,1)
-        camera(const bardrix::point3& position, const bardrix::vector3& direction, unsigned int screen_size) noexcept;
+        camera(const bardrix::point3& position, const bardrix::vector3& direction, int screen_size) noexcept;
 
         /// \brief Constructor for camera, initializes position, direction, screen size (width and height) and fov
         /// \param position The position of the camera

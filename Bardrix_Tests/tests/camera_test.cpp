@@ -126,7 +126,7 @@ TEST(camera, shoot_ray) {
 TEST(camera, shoot_ray_2) {
 
     // Setup
-    unsigned int screen_size = 100;
+    int screen_size = 100;
     bardrix::point3 position = bardrix::point3{-1, 2, 0};
     bardrix::vector3 direction = bardrix::vector3{9, 65, 24}.normalized();
     double distance = 7;
@@ -152,7 +152,7 @@ TEST(camera, shoot_ray_2) {
 TEST(camera, shoot_ray_3) {
 
     // Setup
-    unsigned int screen_size = 342;
+    int screen_size = 342;
     bardrix::point3 position = bardrix::point3{53, 42, -1};
     bardrix::vector3 direction = bardrix::vector3{1, 0, 0}.normalized();
     double distance = 7;
@@ -242,6 +242,6 @@ TEST(camera, operator) {
     std::stringstream stream;
     stream << camera;
 
-    std::string expected = "Camera: Position: (0, 0, 0), Direction: (0, 0, 1), 800, 600, 90";
+    std::string expected = "Position: (0, 0, 0), Direction: (0, 0, 1), 800, 600, 90";
     EXPECT_EQ(stream.str(), expected);
 }
