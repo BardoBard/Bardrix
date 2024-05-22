@@ -4,9 +4,12 @@
 
 This release changes to the API have been made, this is due to the fact that `width` and `height` in `camera` are
 now `int` instead of `unsigned`. This is due to compatibility with other libraries that use `int` for width and height.
-now call `get_width()`, `get_height()`, `set_width(int)`, `set_height(int)`. \
+now call `get_width()`, `get_height()`, `set_width(int)`, `set_height(int)`. 
+
 `shoot_ray(unsigned, unsigned, double)` in `camera` now takes in `int` instead of `unsigned` for `x` and `y`. For the
 same reason `width` and `height` are now `int`.
+
+Added examples for simple raytracing.
 
 ## Documentation Changes
 
@@ -15,7 +18,7 @@ Updated bardrix-math class diagram since in v0.0.5 it included `reflect` and `re
 and `refraction`. \
 Updated bardrix-view class diagram to accommodate the new changes in `camera`. \
 Added release notes, this now gives more detail about the api changes happening in each release. \
-Added `camera` to the [Bardrix_Reference](Bardrix_Reference.md). \
+Added `camera` to the [Bardrix_Reference](Bardrix_Reference.md).
 
 ## Code Changes
 
@@ -32,18 +35,14 @@ call `shoot_ray(int, int, double)`.
 
 Added default constructor to [camera](../Bardrix/include/bardrix/camera.h) with position `(0, 0, 0)`, direction
 `(0, 0, 1)`, width `800`, height `600` and fov `90`.
-Added `<<` operator to [camera](../Bardrix/include/bardrix/camera.h) to print out the camera's components.
+Added `<<` operator to [camera](../Bardrix/include/bardrix/camera.h) to print out the camera's components. \
+Added `bardrix::` prefix to all the functions and classes in `objects.h` and `camera.h`, sometimes there was an issue
+with overriding; when using an external IDE like clion it would not copy with it the pre-fixes.
 
 ## Test Changes
 
 Added extra tests for `camera` to test the new changes. \
 Removed a print line in `vector3_test.cpp` that was not needed.
-
-### Minor Changes
-
-Added `bardrix::` prefix to all the functions and classes in `objects.h` and `camera.h`, sometimes there was an issue
-with overriding; when using an external IDE like clion it would not copy with it the pre-fixes. \
-
 # [v0.0.5](https://github.com/BardoBard/Bardrix/releases/tag/v0.0.5)
 
 ## Overview
