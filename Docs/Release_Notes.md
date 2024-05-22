@@ -1,10 +1,43 @@
+# [v0.2.0](https://github.com/BardoBard/Bardrix/releases/tag/v0.2.0)
+
+## Overview
+
+The changes have backward compatibility issues (comared to v0.1.0), only if you were
+using `color::rgba()`, `color::rgba(unsigned)` or `color::color(unsigned)`. \
+Color now uses RRGGBBAA format instead of AABBGGRR format. This change was made to have a more consistent base color;
+other colors will still be converted to this format and other formats. \
+`window.h` when compiling in clang works fine, yet when running on cl (microsft compiler) it does not work. This is due
+the encoding, which has now been fixed and updated in [window.h](Examples/Raytracing/window.h). \
+
+## Documentation Changes
+
+Updated [Bardrix_Reference](Bardrix_Reference.md) to include `argb()` and `abgr()` in color. \
+Added parameters to the math functions like `degrees_to_radians` [Bardrix_Reference](Bardrix_Reference.md)
+Updated class diagrams to include `argb()` and `abgr()` in color. \
+Updated [Raytracing cpp](Examples/Raytracing/main.cpp) to include the new changes in color and center the screen.
+
+## Code Changes
+
+### Major Changes
+
+Updated `unsigned` to uint32_t in color to always have a 32 bit integer representation. \
+Updated color to now represent the correct layout (RRGGBBAA instead of the previous AABBGGRR) for 32 bit integer
+representation. This change means that previously used `rgba()` and `rgba(rgba : unsigned)` should be altered to
+use `abgr()` instead. \
+Added `argb()` and `abgr()` to color (this will help with windows API which uses argb).
+
+### Minor Changes
+
+Fixed small compiler compatibility issues fixed in Raytracer [Example](Examples/Raytracing/README.md). \
+Added `#include <<cstdint>` to [bardrix.h](../Bardrix/include/bardrix/bardrix.h) to include `uint32_t` for color.
+
 # [v0.1.0](https://github.com/BardoBard/Bardrix/releases/tag/v0.1.0)
 
 ## Overview
 
 This release changes to the API have been made, this is due to the fact that `width` and `height` in `camera` are
 now `int` instead of `unsigned`. This is due to compatibility with other libraries that use `int` for width and height.
-now call `get_width()`, `get_height()`, `set_width(int)`, `set_height(int)`. 
+now call `get_width()`, `get_height()`, `set_width(int)`, `set_height(int)`.
 
 `shoot_ray(unsigned, unsigned, double)` in `camera` now takes in `int` instead of `unsigned` for `x` and `y`. For the
 same reason `width` and `height` are now `int`.
@@ -43,6 +76,7 @@ with overriding; when using an external IDE like clion it would not copy with it
 
 Added extra tests for `camera` to test the new changes. \
 Removed a print line in `vector3_test.cpp` that was not needed.
+
 # [v0.0.5](https://github.com/BardoBard/Bardrix/releases/tag/v0.0.5)
 
 ## Overview
