@@ -17,10 +17,11 @@ namespace bardrix {
                    int screen_size) noexcept: camera(position, direction, screen_size, screen_size, 90) {}
 
     camera::camera(point3 position, const vector3& direction, int screen_width, int screen_height,
-                   unsigned int fov) noexcept:
-            position(std::move(position)), width_(screen_width), height_(screen_height) {
+                   unsigned int fov) noexcept: position(std::move(position)) {
         set_fov(fov);
         set_direction(direction);
+        set_width(screen_width);
+        set_height(screen_height);
     }
 
     void camera::update_screen_vectors() noexcept {
@@ -79,7 +80,7 @@ namespace bardrix {
         // top left corner of the screen
         const point3 top_left = position + direction_ - right_ + up_;
 
-        return std::make_optional(ray{ position, position.vector_to(top_left + horizontal - vertical), distance });
+        return std::make_optional(ray{position, position.vector_to(top_left + horizontal - vertical), distance});
     }
 
     void camera::look_at(const point3& point) noexcept {

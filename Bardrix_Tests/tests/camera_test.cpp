@@ -64,6 +64,14 @@ TEST(camera, constructor_degenerate) {
     EXPECT_EQ(camera.get_fov(), 179);
     EXPECT_EQ(camera.get_width(), 425);
     EXPECT_EQ(camera.get_height(), 2423);
+
+    camera = bardrix::camera(bardrix::point3{0, 0, 0}, bardrix::vector3{0, 0, 1}, -10);
+    EXPECT_EQ(camera.get_width(), 0);
+    EXPECT_EQ(camera.get_height(), 0);
+
+    camera = bardrix::camera(bardrix::point3{0, 0, 0}, bardrix::vector3{0, 0, 1}, -10, -10, 90);
+    EXPECT_EQ(camera.get_width(), 0);
+    EXPECT_EQ(camera.get_height(), 0);
 }
 
 /// \brief Test the set_direction method
