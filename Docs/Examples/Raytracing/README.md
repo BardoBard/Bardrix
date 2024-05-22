@@ -89,12 +89,12 @@ The intensity is inversely proportional to the square of the distance from the s
 The camera is a point in 3D space. It has a position, direction, field of view and width/height. \
 The field of view is the angle of the camera, it's how wide the camera can see. \
 
-![fov_showcase.png](../../images/fov_showcase.png)
+![fov_showcase.png](../../Images/fov_showcase.png)
 
 Here is shown how the field of view works. The camera fov is 60 degrees which means there is less distortion at the edges. \
 Ther 120 degrees camera is a lot wider, which means there is more distortion at the edges.
 
-![warzone_fov_difference.png](../../images/warzone_fov_difference.png)
+![warzone_fov_difference.png](../../Images/warzone_fov_difference.png)
 
 And here is a comparison of the field of view in a game. \
 The left image has a 60 degrees field of view, and the right image has a 120 degrees field of view.
