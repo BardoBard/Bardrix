@@ -2,12 +2,14 @@
 
 ## Overview
 
+**Full Changelog**: https://github.com/BardoBard/Bardrix/compare/v0.1.0...v0.2.0
+
 The changes have backward compatibility issues (comared to v0.1.0), only if you were
 using `color::rgba()`, `color::rgba(unsigned)` or `color::color(unsigned)`. \
 Color now uses RRGGBBAA format instead of AABBGGRR format. This change was made to have a more consistent base color;
 other colors will still be converted to this format and other formats. \
 `window.h` when compiling in clang works fine, yet when running on cl (microsft compiler) it does not work. This is due
-the encoding, which has now been fixed and updated in [window.h](Examples/Raytracing/window.h). \
+the encoding, which has now been fixed and updated in [window.h](Examples/Raytracing/window.h).
 
 ## Documentation Changes
 
@@ -29,7 +31,7 @@ Added `argb()` and `abgr()` to color (this will help with windows API which uses
 ### Minor Changes
 
 Fixed small compiler compatibility issues fixed in Raytracer [Example](Examples/Raytracing/README.md). \
-Added `#include <<cstdint>` to [bardrix.h](../Bardrix/include/bardrix/bardrix.h) to include `uint32_t` for color.
+Added `#include <cstdint>` to [bardrix.h](../Bardrix/include/bardrix/bardrix.h) to include `uint32_t` for color.
 
 # [v0.1.0](https://github.com/BardoBard/Bardrix/releases/tag/v0.1.0)
 
