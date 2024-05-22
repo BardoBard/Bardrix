@@ -51,7 +51,7 @@ namespace bardrix {
         /// \details The direction will be (0,0,1)
         /// \details The fov will be 90 degrees
         /// \details The screen size will be 800x600
-        camera() noexcept = default;
+        camera() noexcept;
 
         /// \brief Constructor for camera, initializes position and direction
         /// \param position The position of the camera
