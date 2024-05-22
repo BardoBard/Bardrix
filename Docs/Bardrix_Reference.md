@@ -52,28 +52,28 @@ There are a few pre-defined constants and functions that are used throughout the
         - (pi / 180) constant, used for converting degrees to radians.
         - `0.017453292519943295`
 - Methods
-    - `degrees_to_radians`
+    - `degrees_to_radians(degrees : arithmetic)`
         - Converts degrees to radians.
         - **Returns** the degrees in radians.
         - The type of the degrees must be an arithmetic
           type, [is_arithmetic](https://en.cppreference.com/w/cpp/types/is_arithmetic).
-    - `radians_to_degrees`
+    - `radians_to_degrees(radians : arithmetic)`
         - Converts radians to degrees.
         - **Returns** the radians in degrees.
         - The type of the radians must be an arithmetic
           type, [is_arithmetic](https://en.cppreference.com/w/cpp/types/is_arithmetic).
-    - `nearly_equal`
+    - `nearly_equal(lhs : arithmetic, rhs : arithmetic)`
         - Checks if the number is nearly equal to another number.
         - **Returns** true if the numbers are nearly equal (within bardrix::epsilon).
         - The type of the numbers must be an arithmetic
           type, [is_arithmetic](https://en.cppreference.com/w/cpp/types/is_arithmetic).
-    - `greater_than_or_nearly_equal`
+    - `greater_than_or_nearly_equal(lhs : arithmetic, rhs : arithmetic)`
         - Checks if the number is greater than or nearly equal to another number.
         - **Returns** true if the first number is greater than or nearly equal (within bardrix::epsilon) to the second
           number.
         - The type of the numbers must be an arithmetic
           type, [is_arithmetic](https://en.cppreference.com/w/cpp/types/is_arithmetic).
-    - `less_than_or_nearly_equal`
+    - `less_than_or_nearly_equal(lhs : arithmetic, rhs : arithmetic)`
         - Checks if the number is less than or nearly equal to another number.
         - **Returns** true if the first number is less than or nearly equal (within bardrix::epsilon) to the second
           number.
@@ -536,9 +536,10 @@ It has red, green, blue, and alpha components.
 
 - Constructors:
     - Default constructor
-        - Initializes the color to (0, 0, 0, 1).
+        - Initializes the color to (0, 0, 0, 0).
     - Parameterized constructor
         - Initializes the color to the given red, green, blue, and alpha values.
+        - Initializes the color to the given uint32_t value. (RRGGBBAA).
 - Setters/Getters:
     - `r(r : uchar)`
         - Sets the red component of the color.
@@ -548,9 +549,17 @@ It has red, green, blue, and alpha components.
         - Sets the blue component of the color.
     - `a(a : uchar)`
         - Sets the alpha component of the color.
-    - `rgba(rgba : unsigned int)`
+    - `rgba(rgba : uint32_t)`
         - Sets the red, green, blue, and alpha components of the color.
-        - It's important to note that the order is inverted, meaning AABBGGRR.
+        - It's important to note that the order is RRGGBBAA.
+        - The components will be stored the same way as the `r`, `g`, `b`, and `a` methods.
+    - `abgr(abgr : uint32_t)`
+        - Sets the red, green, blue, and alpha components of the color.
+        - It's important to note that the order is AABBGGRR.
+        - The components will be stored the same way as the `r`, `g`, `b`, and `a` methods.
+    - `argb(argb : uint32_t)`
+        - Sets the red, green, blue, and alpha components of the color.
+        - It's important to note that the order is AARRGGBB.
         - The components will be stored the same way as the `r`, `g`, `b`, and `a` methods.
     - `r()`
         - **Returns** the red component of the color.
@@ -561,9 +570,14 @@ It has red, green, blue, and alpha components.
     - `a()`
         - **Returns** the alpha component of the color.
     - `rgba()`
-        - **Returns** the red, green, blue, and alpha components of the color.
-        - It's important to note that the order is inverted, meaning AABBGGRR.
-        - The components will be stored the same way as the `r`, `g`, `b`, and `a` methods.
+        - **Returns** the uint32_t value of the color in the format RRGGBBAA.
+        - It's important to note that the order is RRGGBBAA.
+    - `abgr()`
+        - **Returns** the uint32_t value of the color in the format AABBGGRR.
+        - It's important to note that the order is AABBGGRR.
+    - `argb()`
+        - **Returns** the uint32_t value of the color in the format AARRGGBB.
+        - It's important to note that the order is AARRGGBB.
     - `invert()`
         - Inverts the color, not the alpha component. (255 - r, 255 - g, 255 - b, a)
         - **Returns** a reference to the color, this allows for chaining of the method.
