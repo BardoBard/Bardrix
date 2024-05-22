@@ -9,9 +9,13 @@
 
 #include <bardrix/bardrix.h>
 #include <bardrix/color.h>
+
+#undef UNICODE // This is for the window class to work with char* instead of wchar_t* (unicode)
 #include <Windows.h>
+
 #include <cstdint>
 #include <functional>
+#include <vector>
 
 namespace bardrix {
 

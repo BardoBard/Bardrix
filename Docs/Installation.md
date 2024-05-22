@@ -14,7 +14,6 @@ int main(){
 ## Table of Contents
 
 - [Installation](#installation)
-    - [Table of Contents](#table-of-contents)
     - [CMake](#cmake)
         - [Submodule](#submodule)
         - [FetchContent](#fetchcontent)

@@ -1,3 +1,15 @@
+# [v0.2.0](https://github.com/BardoBard/Bardrix/releases/tag/v0.2.0)
+
+## Overview
+
+## Code Changes
+
+### Major Changes
+
+### Minor Changes
+
+Small compiler compatibility issues fixed in Raytracer [Example](Examples/Raytracing/README.md).
+
 # [v0.1.0](https://github.com/BardoBard/Bardrix/releases/tag/v0.1.0)
 
 ## Overview
