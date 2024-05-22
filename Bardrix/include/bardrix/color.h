@@ -124,24 +124,24 @@ namespace bardrix {
         /// \return The color as a uint32_t with format RRGGBBAA.
         NODISCARD uint32_t rgba() const noexcept;
 
-        /// \brief Get the color as a uint32_t with format AARRGGBB.
-        /// \return The color as a uint32_t with format AARRGGBB.
+        /// \brief Get the color as a uint32_t with format AABBGGRR.
+        /// \return The color as a uint32_t with format AABBGGRR.
         NODISCARD uint32_t abgr() const noexcept;
 
         /// \brief Get the color as a uint32_t with format AARRGGBB.
-        /// \return The color as a uint32_t with format AABBGGRR.
+        /// \return The color as a uint32_t with format AARRGGBB.
         NODISCARD uint32_t argb() const noexcept;
 
         /// \brief Set the color as a uint32_t with format RRGGBBAA.
         /// \param rgba The color as a uint32_t with format RRGGBBAA.
         void rgba(uint32_t rgba) noexcept;
 
-        /// \brief Set the color as a uint32_t with format AARRGGBB.
-        /// \param abgr The color as a uint32_t with format AARRGGBB.
+        /// \brief Set the color as a uint32_t with format AABBGGRR.
+        /// \param abgr The color as a uint32_t with format AABBGGRR.
         void abgr(uint32_t abgr) noexcept;
 
-        /// \brief Set the color as a uint32_t with format AABBGGRR.
-        /// \param argb The color as a uint32_t with format AABBGGRR.
+        /// \brief Set the color as a uint32_t with format AARRGGBB.
+        /// \param argb The color as a uint32_t with format AARRGGBB.
         void argb(uint32_t argb) noexcept;
 
         /// \brief Inverts this color.
