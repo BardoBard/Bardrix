@@ -714,4 +714,7 @@ It has a position, direction, field of view and width/height of the image.
         - **Degenerate cases**:
             - If the x or y is greater than or equal to the width or height.
             - If the x or y is less than 0.
-- 
+- Operators:
+    - `<<`
+        - Outputs the components of the camera to the output stream (Position: (x,y,z), Direction (x,y,z), width, height, fov).
+        - **Returns** a reference to the output stream.

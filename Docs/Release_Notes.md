@@ -31,6 +31,7 @@ call `shoot_ray(int, int, double)`.
 
 Added default constructor to [camera](../Bardrix/include/bardrix/camera.h) with position `(0, 0, 0)`, direction
 `(0, 0, 1)`, width `800`, height `600` and fov `90`.
+Added `<<` operator to [camera](../Bardrix/include/bardrix/camera.h) to print out the camera's components.
 
 ## Test Changes
 

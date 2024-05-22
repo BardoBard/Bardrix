@@ -234,3 +234,14 @@ TEST(camera, look_at_degenerate) {
     camera.look_at(bardrix::point3{0, 0, 0});
     EXPECT_EQ(camera.get_direction(), bardrix::vector3(0, 0, 1));
 }
+
+/// \brief Test the operator << method
+TEST(camera, operator) {
+    bardrix::camera camera = bardrix::camera(bardrix::point3{0, 0, 0}, bardrix::vector3{0, 0, 1});
+
+    std::stringstream stream;
+    stream << camera;
+
+    std::string expected = "Camera: Position: (0, 0, 0), Direction: (0, 0, 1), 800, 600, 90";
+    EXPECT_EQ(stream.str(), expected);
+}

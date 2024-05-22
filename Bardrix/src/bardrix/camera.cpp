@@ -86,4 +86,9 @@ namespace bardrix {
         set_direction(position.vector_to(point));
     }
 
+    std::ostream& operator<<(std::ostream& os, const camera& camera) noexcept {
+        return os << "Position: " << camera.position << ", Direction: " << camera.direction_ << ", " << camera.width_
+                  << ", " << camera.height_ << ", " << camera.fov_degrees_;
+    }
+
 } // namespace bardrix

@@ -130,7 +130,12 @@ namespace bardrix {
         /// \details If the point is the same as the position, it will not change the direction
         void look_at(const bardrix::point3& point) noexcept;
 
-
+        /// \brief Prints the camera to the output stream
+        /// \param os The output stream
+        /// \param camera The camera to print
+        /// \return The output stream
+        /// \details The output will be in the format: "Position: (x, y, z), Direction: (x, y, z), width, height, fov"
+        friend std::ostream& operator<<(std::ostream& os, const bardrix::camera& camera) noexcept;
 
     }; // class camera
 } // namespace bardrix
