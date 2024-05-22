@@ -9,7 +9,7 @@
 namespace bardrix {
     /// \brief
     /// A color class that represents a color with red, green, blue and alpha components.
-    /// The color can be represented as an unsigned integer, where r g b a are the starting bytes respectively, AABBCCDD -> r = DD, g = CC, b = BB, a = AA.
+    /// The color can be represented as an unsigned integer, where r g b a are the starting bytes respectively, RRGGBBAA.
     /// \note The color components are unsigned.
     class color {
     public:
@@ -55,17 +55,17 @@ namespace bardrix {
         public:
             /// \brief The color as separate components.
             struct {
-                uchar r, g, b, a;
+                uchar a, b, g, r;
             } r_g_b_a;
 
-            /// \brief The color as an unsigned integer; AABBCCDD -> r = DD, g = CC, b = BB, a = AA.
-            unsigned rgba;
+            /// \brief The color as a uint32_t; RRGGBBAA.
+            uint32_t rgba;
 
             color_union() : rgba{ 0 } {}
 
-            color_union(uchar r, uchar g, uchar b, uchar a) : r_g_b_a{ r, g, b, a } {}
+            color_union(uchar r, uchar g, uchar b, uchar a) : r_g_b_a{ a, b, g, r } {}
 
-            explicit color_union(unsigned rgba) : rgba{ rgba } {}
+            explicit color_union(uint32_t rgba) : rgba{ rgba } {}
         };
 
     protected:
@@ -83,10 +83,10 @@ namespace bardrix {
         /// \param a The alpha component of the color.
         color(uchar r, uchar g, uchar b, uchar a);
 
-        /// \brief Construct a color from an unsigned integer.
-        /// \param rgba The color as an unsigned integer.
-        /// \note The color is represented as an unsigned integer, where r g b a are the starting bytes respectively, AABBCCDD -> r = DD, g = CC, b = BB, a = AA.
-        explicit color(unsigned rgba);
+        /// \brief Construct a color from a uint32_t.
+        /// \param rgba The color as a uint32_t.
+        /// \note The color is represented as a uint32_t, where r g b a are the starting bytes respectively, RRGGBBAA.
+        explicit color(uint32_t rgba);
 
         /// \brief Get the red component of the color.
         /// \return The red component of the color.
@@ -120,13 +120,29 @@ namespace bardrix {
         /// \param a The alpha component of the color.
         void a(uchar a) noexcept;
 
-        /// \brief Get the color as an unsigned integer.
-        /// \return The color as an unsigned integer.
-        NODISCARD unsigned rgba() const noexcept;
+        /// \brief Get the color as a uint32_t with format RRGGBBAA.
+        /// \return The color as a uint32_t with format RRGGBBAA.
+        NODISCARD uint32_t rgba() const noexcept;
 
-        /// \brief Set the color as an unsigned integer.
-        /// \param rgba The color as an unsigned integer.
-        void rgba(unsigned rgba) noexcept;
+        /// \brief Get the color as a uint32_t with format AABBGGRR.
+        /// \return The color as a uint32_t with format AABBGGRR.
+        NODISCARD uint32_t abgr() const noexcept;
+
+        /// \brief Get the color as a uint32_t with format AARRGGBB.
+        /// \return The color as a uint32_t with format AARRGGBB.
+        NODISCARD uint32_t argb() const noexcept;
+
+        /// \brief Set the color as a uint32_t with format RRGGBBAA.
+        /// \param rgba The color as a uint32_t with format RRGGBBAA.
+        void rgba(uint32_t rgba) noexcept;
+
+        /// \brief Set the color as a uint32_t with format AABBGGRR.
+        /// \param abgr The color as a uint32_t with format AABBGGRR.
+        void abgr(uint32_t abgr) noexcept;
+
+        /// \brief Set the color as a uint32_t with format AARRGGBB.
+        /// \param argb The color as a uint32_t with format AARRGGBB.
+        void argb(uint32_t argb) noexcept;
 
         /// \brief Inverts this color.
         /// \details The inversion is calculated as (r,g,b) => (255 - r, 255 - g, 255 - b).

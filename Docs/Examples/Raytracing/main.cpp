@@ -11,7 +11,7 @@
 #include <bardrix/camera.h>
 
 int main() {
-    int width = 800;
+    int width = 600;
     int height = 600;
     // Create a window
     bardrix::window window("Raytracing", width, height);
@@ -29,9 +29,13 @@ int main() {
                 bardrix::ray ray = *camera.shoot_ray(x, y, 10);
                 auto intersection = sphere.intersection(ray);
 
+                bardrix::color color = bardrix::color::black();
+
                 // If the ray intersects the sphere, paint the pixel white
                 if (intersection.has_value())
-                    buffer[y * window->get_width() + x] = 0xFFFFFFFF;
+                    color = bardrix::color::white();
+
+                buffer[y * window->get_width() + x] = color.argb(); // ARGB is the format used by Windows API
             }
         }
     };
@@ -44,7 +48,12 @@ int main() {
         window->redraw(); // Redraw the window (calls on_paint)
     };
 
-    if (!window.show()) {
+    // Get width and height of the screen
+    int screen_width = GetSystemMetrics(SM_CXSCREEN);
+    int screen_height = GetSystemMetrics(SM_CYSCREEN);
+
+    // Show the window in the center of the screen
+    if (!window.show(screen_width / 2 - width / 2, screen_height / 2 - height / 2)) {
         std::cout << GetLastError() << std::endl;
         return -1;
     }

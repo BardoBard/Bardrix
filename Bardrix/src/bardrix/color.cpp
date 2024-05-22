@@ -34,6 +34,28 @@ namespace bardrix {
 
     void color::rgba(unsigned int rgba) noexcept { c_union_.rgba = rgba; }
 
+    uint32_t color::abgr() const noexcept {
+        return (c_union_.r_g_b_a.a << 24) | (c_union_.r_g_b_a.b << 16) | (c_union_.r_g_b_a.g << 8) | c_union_.r_g_b_a.r;
+    }
+
+    uint32_t color::argb() const noexcept {
+        return (c_union_.r_g_b_a.a << 24) | (c_union_.r_g_b_a.r << 16) | (c_union_.r_g_b_a.g << 8) | c_union_.r_g_b_a.b;
+    }
+
+    void color::abgr(uint32_t abgr) noexcept {
+        c_union_.r_g_b_a.a = static_cast<color::uchar>((abgr & 0xFF000000) >> 24);
+        c_union_.r_g_b_a.b = static_cast<color::uchar>((abgr & 0x00FF0000) >> 16);
+        c_union_.r_g_b_a.g = static_cast<color::uchar>((abgr & 0x0000FF00) >> 8);
+        c_union_.r_g_b_a.r = static_cast<color::uchar>(abgr & 0x000000FF);
+    }
+
+    void color::argb(uint32_t argb) noexcept {
+        c_union_.r_g_b_a.a = static_cast<color::uchar>((argb & 0xFF000000) >> 24);
+        c_union_.r_g_b_a.r = static_cast<color::uchar>((argb & 0x00FF0000) >> 16);
+        c_union_.r_g_b_a.g = static_cast<color::uchar>((argb & 0x0000FF00) >> 8);
+        c_union_.r_g_b_a.b = static_cast<color::uchar>(argb & 0x000000FF);
+    }
+
     // Methods
 
     color& color::invert() noexcept {
@@ -241,7 +263,7 @@ namespace bardrix {
     }
 
     color color::operator~() const noexcept {
-        return color(c_union_.rgba ^ 0x00FFFFFF);
+        return color(c_union_.rgba ^ 0xFFFFFF00);
     }
 
     bool color::operator==(const color& other) const noexcept {

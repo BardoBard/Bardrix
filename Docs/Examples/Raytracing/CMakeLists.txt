@@ -9,11 +9,10 @@ include(FetchContent) # Include the FetchContent module
 FetchContent_Declare(
         Bardrix
         GIT_REPOSITORY https://github.com/bardobard/Bardrix.git
-        GIT_TAG v0.1.0
+        GIT_TAG v0.2.0
 )
 
 FetchContent_MakeAvailable(Bardrix)
-
 
 # Add your project files
 add_executable(${PROJECT_NAME} main.cpp sphere.cpp window.cpp)
