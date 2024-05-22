@@ -10,6 +10,7 @@ same reason `width` and `height` are now `int`.
 
 ## Documentation Changes
 
+Added examples to docs/ for a very simple demonstration of how to use Bardrix and raytracing. \
 Updated bardrix-math class diagram since in v0.0.5 it included `reflect` and `refract` instead of `reflection`
 and `refraction`. \
 Updated bardrix-view class diagram to accommodate the new changes in `camera`. \

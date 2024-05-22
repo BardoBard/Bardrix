@@ -7,6 +7,9 @@
 bardrix::window::window(const char* title, int width, int height) {
     if (title == nullptr || title[0] == '\0')
         title_ = "Bardrix Window";
+    else
+        title_ = title;
+
     width_ = width > 0 ? width : -width;
     height_ = height > 0 ? height : -height;
     back_buffer.resize(width_ * height_);

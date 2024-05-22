@@ -10,15 +10,17 @@
 #include <bardrix/light.h>
 #include <bardrix/camera.h>
 
-int main(){
+int main() {
+    int width = 800;
+    int height = 600;
     // Create a window
-    bardrix::window window("Raytracing", 800, 600);
+    bardrix::window window("Raytracing", width, height);
 
     // Create a camera
-    bardrix::camera camera = bardrix::camera();
+    bardrix::camera camera = bardrix::camera({0,0,0}, {0,0,1}, width, height, 60);
 
     // Create a sphere
-    sphere sphere(1.0, bardrix::point3(0.0, 0.0, 15.0));
+    sphere sphere(1.0, bardrix::point3(0.0, 0.0, 3.0));
 
     window.on_paint = [&camera, &sphere](bardrix::window* window, std::vector<uint32_t>& buffer) {
         // Draw the sphere
@@ -42,8 +44,10 @@ int main(){
         window->redraw(); // Redraw the window (calls on_paint)
     };
 
-    if (!window.show())
+    if (!window.show()) {
+        std::cout << GetLastError() << std::endl;
         return -1;
+    }
 
     bardrix::window::run();
 }
