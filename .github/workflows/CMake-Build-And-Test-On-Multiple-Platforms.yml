@@ -61,7 +61,7 @@ jobs:
           if exists "${{ steps.strings.outputs.build-output-dir }}/Bardrix_Tests/Bardrix_Tests.exe" "${{ steps.strings.outputs.build-output-dir }}\Bardrix_Tests\${{ matrix.build_type }}\Bardrix_Tests.exe"
 
       - name: Run tests
-        if: runner.os != 'Windows' && test -f ./Bardrix_Tests/Bardrix_Tests
+        if: runner.os != 'Windows'
         working-directory: ${{ steps.strings.outputs.build-output-dir }}
         run: >
           if [ -f "${{ steps.strings.outputs.build-output-dir }}/Bardrix_Tests/Bardrix_Tests" ]; then
