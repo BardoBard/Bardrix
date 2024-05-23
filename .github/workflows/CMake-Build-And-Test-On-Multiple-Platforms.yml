@@ -13,10 +13,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        cmake_path: ["", "Docs/Examples"]
-        os: [ubuntu-latest, windows-latest]
-        build_type: [Release, Debug]
-        c_compiler: [gcc, clang, cl]
+        cmake_path: [ "", "Docs/Examples" ]
+        os: [ ubuntu-latest, windows-latest ]
+        build_type: [ Release, Debug ]
+        c_compiler: [ gcc, clang, cl ]
         include:
           - os: windows-latest
             c_compiler: cl
@@ -36,32 +36,34 @@ jobs:
             c_compiler: cl
 
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Set reusable strings
-      id: strings
-      shell: bash
-      run: |
-        echo "build-output-dir=${{ github.workspace }}/${{ matrix.cmake_path }}/build" >> "$GITHUB_OUTPUT"
+      - name: Set reusable strings
+        id: strings
+        shell: bash
+        run: |
+          echo "build-output-dir=${{ github.workspace }}/${{ matrix.cmake_path }}/build" >> "$GITHUB_OUTPUT"
 
-    - name: Configure CMake
-      run: >
-        cmake -B ${{ steps.strings.outputs.build-output-dir }}
-        -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
-        -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
-        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-        -S ${{ github.workspace }}/${{ matrix.cmake_path }}
+      - name: Configure CMake
+        run: >
+          cmake -B ${{ steps.strings.outputs.build-output-dir }}
+          -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
+          -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
+          -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+          -S ${{ github.workspace }}/${{ matrix.cmake_path }}
 
-    - name: Build
-      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
+      - name: Build
+        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
 
-    - name: Run tests
-      if: runner.os == 'Windows' && exists ${{ steps.strings.outputs.build-output-dir }}/Bardrix_Tests/Bardrix_Tests.exe
-      run: >
-        ${{ steps.strings.outputs.build-output-dir }}\Bardrix_Tests\${{ matrix.build_type }}\Bardrix_Tests.exe
+      - name: Run tests
+        if: runner.os == 'Windows'
+        run: >
+          if exists "${{ steps.strings.outputs.build-output-dir }}/Bardrix_Tests/Bardrix_Tests.exe" "${{ steps.strings.outputs.build-output-dir }}\Bardrix_Tests\${{ matrix.build_type }}\Bardrix_Tests.exe"
 
-    - name: Run tests
-      if: runner.os != 'Windows' && test -f ./Bardrix_Tests/Bardrix_Tests
-      working-directory: ${{ steps.strings.outputs.build-output-dir }}
-      run: >
-        ./Bardrix_Tests/Bardrix_Tests
+      - name: Run tests
+        if: runner.os != 'Windows' && test -f ./Bardrix_Tests/Bardrix_Tests
+        working-directory: ${{ steps.strings.outputs.build-output-dir }}
+        run: >
+          if [ -f "${{ steps.strings.outputs.build-output-dir }}/Bardrix_Tests/Bardrix_Tests" ]; then
+            ${{ steps.strings.outputs.build-output-dir }}/Bardrix_Tests/Bardrix_Tests
+          fi
