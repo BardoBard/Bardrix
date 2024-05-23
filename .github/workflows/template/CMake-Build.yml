@@ -1,0 +1,47 @@
+name: Build CMake
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "*" ]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os:
+          - name: Ubuntu
+            compiler: [ gcc, clang ]
+          - name: Windows
+            compiler: [ cl ]
+
+      inputs:
+        cmake_path:
+          description: 'Path to the directory containing CMakeLists.txt. It already has workspace/ in front.'
+          required: true
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set reusable strings
+        id: strings
+        run: |
+          echo "::set-output name=build-output-dir::${{ github.workspace }}/build/${{ matrix.compiler }}"
+
+      - name: Configure CMake and Build
+        run: |
+          cmake -B ${{ steps.strings.outputs.build-output-dir }}
+          -DCMAKE_C_COMPILER=${{ matrix.compiler }}
+          -S ${{ github.workspace }}/${{ inputs.cmake_path }}
+
+          cmake --build ${{ steps.strings.outputs.build-output-dir }}
+
+      - name: Export build output directory
+        id: export-dir
+        run: |
+          echo "::set-output name=build-output-dir::${{ steps.strings.outputs.build-output-dir }}"
+          echo "::set-output name=compiler::${{ matrix.compiler }}"
