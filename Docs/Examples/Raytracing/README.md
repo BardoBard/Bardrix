@@ -81,18 +81,48 @@ Output:
 ```
 
 Here we can see that the light is at the origin (0, 0, 0) with a red color and intensity of 1. \
-The inverse square law is a simple formula that calculates the intensity of the light at a certain distance. \
+The [Inverse-square law](https://en.wikipedia.org/wiki/Inverse-square_law) is a simple formula that calculates the intensity of the light at a certain distance. \
 The intensity is inversely proportional to the square of the distance from the source of the light.
+
+![Inverse_square_law.png](../../Images/Inverse_square_law.png)
+
+
+## 2.1. Light Sphere Intensity
+
+Light behaves differently when it hits a sphere. The intensity of the light is calculated by the angle of the light and
+the
+
+![light_sphere_example.png](../../Images/light_sphere_example.png)
+
+In oder to calculate the intensity of the light at a certain point, we first need to calculate the angle between the light and the intersection point. \
+Then we can use the inverse square law to calculate the intensity of the light at that point.
+
+```cpp
+double calculate_light_intensity(const bardrix::point3& intersection, const bardrix::vector3& intersection_normal,
+                                 const bardrix::light& light) {
+    // Calculate the angle between the light and the intersection point and normalize it
+    bardrix::vector3 light_intersection_vector = light.position.vector_to(intersection).normalized();
+    
+    double angle = light_intersection_vector.dot(intersection_normal);
+
+    if (angle < 0) // This means the light is behind the intersection point
+        return 0;
+
+    // We use the angle and the inverse square law to calculate the intensity
+    return angle * light.inverse_square_law(intersection);
+}
+```
 
 ## 3. Camera
 
 The camera is a point in 3D space. It has a position, direction, field of view and width/height. \
-The field of view is the angle of the camera, it's how wide the camera can see. \
+The field of view is the angle of the camera, it's how wide the camera can see.
 
 ![fov_showcase.png](../../Images/fov_showcase.png)
 
-Here is shown how the field of view works. The camera fov is 60 degrees which means there is less distortion at the edges. \
-Ther 120 degrees camera is a lot wider, which means there is more distortion at the edges.
+Here is shown how the field of view works. The camera fov is 60 degrees which means there is less distortion at the
+edges. \
+The 120 degrees camera is a lot wider, which means there is more distortion at the edges.
 
 ![warzone_fov_difference.png](../../Images/warzone_fov_difference.png)
 
@@ -134,8 +164,7 @@ And we can shoot a ray from the camera by using the `shoot_ray` function. Shooti
 
 ## 4. Sphere
 
-The sphere is a simple object in 3D space. It has a position, radius and color. \
-The color is a simple RGBA color, where each value is between 0 and 255.
+The sphere is a simple object in 3D space. It has a position, radius and material.
 
 ```cpp
 class sphere : public bardrix::shape {
@@ -150,3 +179,8 @@ public:
 ```
 
 Here we can see the base variables of the sphere.
+
+## 4.1. Sphere Intersection
+
+The intersection of the sphere is a simple mathematical formula. \
+It calculates if a ray intersects with the sphere. If it does, it returns the intersection point.

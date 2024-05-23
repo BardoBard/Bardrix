@@ -1,3 +1,15 @@
+# [v0.2.1](https://github.com/BardoBard/Bardrix/releases/tag/v0.2.1)
+
+## Overview
+
+**Full Changelog**: https://github.com/BardoBard/Bardrix/compare/v0.2.0...v0.2.1
+
+## Documentation Changes
+
+Added inverse square law example to [Raytracing readme](Examples/Raytracing/README.md). \
+Added sphere light calculation example to [Raytracing readme](Examples/Raytracing/README.md). \
+Added objects (shape, material) to [Bardrix_Reference](Bardrix_Reference.md).
+
 # [v0.2.0](https://github.com/BardoBard/Bardrix/releases/tag/v0.2.0)
 
 ## Overview

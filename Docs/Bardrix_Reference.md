@@ -732,3 +732,80 @@ It has a position, direction, field of view and width/height of the image.
     - `<<`
         - Outputs the components of the camera to the output stream (Position: (x,y,z), Direction (x,y,z), width, height, fov).
         - **Returns** a reference to the output stream.
+
+
+## Objects
+
+This part includes classes that are object based, like material, spheres, triangles etc.
+
+![bardrix-objects.png](Images/bardrix-objects.png)
+
+### Material
+
+A class that represents a material for an object in the scene. \
+It has a color, ambient, diffuse, specular, shininess.
+
+- Constructors:
+    - Default constructor
+        - Initializes the material to a white color, ambient of 0, diffuse of 1, specular of 0, and shininess of 0.
+    - Parameterized constructor
+        - Initializes the material to the given color, ambient, diffuse and shininess. Where specular is set to inverse of
+          the diffuse.
+        - Initializes the material to the given color, ambient, diffuse, specular and shininess.
+- Setters/Getters:
+  - `set_ambient(ambient : double)`
+      - Sets the ambience of the material.
+      - **Degenerate cases**:
+          - If the ambient is less than zero, it will be set to zero.
+          - If the ambient is greater than one, it will be set to one.
+  - `set_diffuse(diffuse : double)`
+      - Sets the diffuseness of the material.
+      - Sets the specular to the inverse of the diffuse e.g. if the diffuse is 0.2, the specular will be 0.8.
+      - **Degenerate cases**:
+          - If the diffuse is less than zero, it will be set to zero.
+          - If the diffuse is greater than one, it will be set to one.
+  - `set_specular(specular : double)`
+      - Sets the specularness of the material.
+      - Sets the diffuse to the inverse of the specular e.g. if the specular is 0.8, the diffuse will be 0.2.
+      - **Degenerate cases**:
+          - If the specular is less than zero, it will be set to zero.
+          - If the specular is greater than one, it will be set to one.
+  - `set_shininess(shininess : double)`
+      - Sets the shininess of the material.
+      - **Degenerate cases**:
+          - If the shininess is less than zero, it will be set to zero.
+          - If the shininess is greater than 1, it will be set to 1.
+  - `get_ambient()`
+      - **Returns** the ambience of the material.
+  - `get_diffuse()`
+      - **Returns** the diffuseness of the material.
+  - `get_specular()`
+      - **Returns** the specularness of the material.
+  - `get_shininess()`
+      - **Returns** the shininess of the material.
+
+### Shape
+
+Abstract class, only used for inheritance, serves as a base for all the shapes; like `sphere` and `triangle`. \
+It has a material, position and a method to check if a ray intersects with the shape.
+
+All methods are pure virtual, and must be implemented in the derived classes.
+
+- Getters/Setters:
+    - `set_material(material : material)`
+        - Sets the material of the shape.
+    - `set_material(material : material)`
+        - Sets the material of the shape.
+    - `get_material()`
+        - **Returns** the material of the shape.
+    - `get_position()`
+        - **Returns** the position of the shape.
+- Methods:
+    - `intersect(ray : ray)`
+        - Checks if the ray intersects with the shape and calculates the intersection point.
+        - **Returns** an optional `point3` of the intersection point.
+            - If the ray intersects with the shape, it should return the intersection point.
+            - If the ray does not intersect with the shape, it should return an std::nullopt.
+    - `normal_at(point : point3)`
+        - Calculates the normal of the shape at the given point.
+        - **Returns** the normal of the shape at the point.
