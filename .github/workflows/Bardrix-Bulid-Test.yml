@@ -8,14 +8,9 @@ on:
 
 jobs:
   build-and-test:
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ ubuntu-latest, windows-latest ]
 
     uses: ./.github/workflows/Build-Test-Cmake.yml
     with:
-      os: ${{ matrix.os }}
       source_directory: ""
       test_directory: Bardrix_Tests
       test_name: Bardrix_Tests
