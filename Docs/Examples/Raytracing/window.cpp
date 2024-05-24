@@ -4,6 +4,8 @@
 
 #include "window.h"
 
+#ifdef _WIN32
+
 bardrix::window::window(const char* title, int width, int height) {
     if (title == nullptr || title[0] == '\0')
         title_ = "Bardrix Window";
@@ -125,3 +127,5 @@ LRESULT CALLBACK bardrix::window::window_proc(HWND hwnd, UINT msg, WPARAM wparam
     }
     return 0;
 }
+
+#endif // _WIN32

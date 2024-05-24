@@ -7,7 +7,7 @@ on:
     branches: [ "*" ]
 
 jobs:
-  build-and-test:
+  build-and-test-bardrix:
 
     uses: ./.github/workflows/Build-Test-Cmake.yml
     with:
