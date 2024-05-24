@@ -1,0 +1,16 @@
+name: Bardrix Build and Test
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build-and-test-bardrix:
+
+    uses: ./.github/workflows/Build-Test-Cmake.yml
+    with:
+      source_directory: ""
+      test_directory: Bardrix_Tests
+      test_name: Bardrix_Tests
