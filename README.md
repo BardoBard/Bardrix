@@ -20,4 +20,4 @@ applications. \
 Besides the source it provides extensive documentation and examples for students to learn about raytracing, which is the
 goal of this project.
 
-[Installation](Docs/Installation.md) | [Release Notes](Docs/Release_Notes.md) | [Examples](Docs/Examples/README.md) | [Reference](Docs/Bardrix_Reference.md) | [Conventions](Docs/Conventions.md) | [Contributing](CONTRIBUTING.md)
+[Installation](Docs/Installation.md) | [Release Notes](Docs/Release_Notes.md) | [Examples](Docs/Examples/) | [Reference](Docs/Bardrix_Reference.md) | [Conventions](Docs/Conventions.md) | [Contributing](CONTRIBUTING.md)
