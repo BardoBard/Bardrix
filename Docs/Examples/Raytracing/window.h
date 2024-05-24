@@ -3,9 +3,7 @@
 //
 
 #pragma once
-#ifndef _WIN32
-    #error "This class is only for Windows, use any other window library like GLFW, QT, etc."
-#endif
+#ifdef _WIN32
 
 #include <bardrix/bardrix.h>
 #include <bardrix/color.h>
@@ -112,3 +110,5 @@ namespace bardrix {
 
     }; // class window
 } // namespace bardrix
+
+#endif // _WIN32
