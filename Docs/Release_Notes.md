@@ -12,7 +12,8 @@ Added a workflow to test the examples, this will help pushing correct code to th
 
 Added inverse square law example to [Raytracing readme](Examples/Raytracing/README.md). \
 Added sphere light calculation example to [Raytracing readme](Examples/Raytracing/README.md). \
-Added objects (shape, material) to [Bardrix_Reference](Bardrix_Reference.md).
+Added objects (shape, material) to [Bardrix_Reference](Bardrix_Reference.md). \
+Added code and visual sphere intersection example to [Raytracing readme](Examples/Raytracing/README.md).
 
 ## Code Changes
 
@@ -21,7 +22,8 @@ Added objects (shape, material) to [Bardrix_Reference](Bardrix_Reference.md).
 Updated [raytracing example](Examples/Raytracing/main.cpp) and [window.cpp](Examples/Raytracing/window.cpp) now doesn't
 give a compiler error when running on an operating system other than Windows, instead it prints out a message that it is
 not supported. \
-Added [Examples/CMakeLists.txt](Examples/CMakeLists.txt) to include all the examples in one build.
+Added [Examples/CMakeLists.txt](Examples/CMakeLists.txt) to include all the examples in one build. \
+Renamed `position` to `position_` and made it protected in [sphere](Examples/Raytracing/sphere.h).
 
 ## Test Changes
 

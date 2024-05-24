@@ -13,10 +13,10 @@ protected:
     // Material of the sphere (not used currently)
     bardrix::material material_;
 
-public:
     /// \brief Center of the sphere
-    bardrix::point3 position;
+    bardrix::point3 position_;
 
+public:
     // CONSTRUCTORS
 
     explicit sphere(double radius);

@@ -81,11 +81,11 @@ Output:
 ```
 
 Here we can see that the light is at the origin (0, 0, 0) with a red color and intensity of 1. \
-The [Inverse-square law](https://en.wikipedia.org/wiki/Inverse-square_law) is a simple formula that calculates the intensity of the light at a certain distance. \
+The [Inverse-square law](https://en.wikipedia.org/wiki/Inverse-square_law) is a simple formula that calculates the
+intensity of the light at a certain distance. \
 The intensity is inversely proportional to the square of the distance from the source of the light.
 
 ![Inverse_square_law.png](../../Images/Inverse_square_law.png)
-
 
 ## 2.1. Light Sphere Intensity
 
@@ -94,7 +94,8 @@ the
 
 ![light_sphere_example.png](../../Images/light_sphere_example.png)
 
-In oder to calculate the intensity of the light at a certain point, we first need to calculate the angle between the light and the intersection point. \
+In oder to calculate the intensity of the light at a certain point, we first need to calculate the angle between the
+light and the intersection point. \
 Then we can use the inverse square law to calculate the intensity of the light at that point.
 
 ```cpp
@@ -157,7 +158,7 @@ Output:
 ```
 
 Here we can see that the camera is at the origin (0, 0, 0) with a direction of (1, 0, 0). \
-The camera has a width of 800, height of 600 and a field of view of 60 degrees. \
+The camera has a width of 800, height of 600 and a field of view of 60 degrees.
 
 We're able to look at points (or spheres, objects, etc.) by using the `look_at` function. \
 And we can shoot a ray from the camera by using the `shoot_ray` function. Shooting rays is how the RAYtracing works.
@@ -184,3 +185,52 @@ Here we can see the base variables of the sphere.
 
 The intersection of the sphere is a simple mathematical formula. \
 It calculates if a ray intersects with the sphere. If it does, it returns the intersection point.
+
+For all kinds of complex and primitive shapes, the formulas can be
+found [here](https://www.realtimerendering.com/intersections.html). \
+Due to mathematics and unclear code; the formulas include terrible variable names.
+
+```cpp
+std::optional<bardrix::point3> sphere::intersection(const bardrix::ray& ray) const {
+    // Get direction of the ray
+    bardrix::vector3 direction = ray.get_direction();
+
+    // Gets vector from points: ray origin and sphere center
+    bardrix::vector3 ray_to_sphere_vector = ray.position.vector_to(position);
+
+    // Get dot product of origin-center-vector and normalized direction
+    double dot = ray_to_sphere_vector.dot(direction);
+
+    // Turn unit vector direction into a vector direction
+    direction *= dot;
+
+    // Length from ray origin to sphere center
+    ray_to_sphere_vector = direction - ray_to_sphere_vector;
+
+    // vec.dot(vec) == |vec|^2
+    const double distance_squared = ray_to_sphere_vector.dot(ray_to_sphere_vector);
+
+    // Radius^2
+    const double radius_squared = radius_ * radius_;
+
+    if (distance_squared > radius_squared)
+        return std::nullopt; // A smart way to check if ray intersects before taking the sqrt
+
+    // Calculate distance to intersection
+    const double distance = dot - std::sqrt(radius_squared - distance_squared);
+
+    // If we intersect sphere return the length
+    return (distance < ray.get_length() && distance > 0)
+           ? std::optional(position + direction * distance)
+           : std::nullopt;
+}
+```
+
+In the picture we can see the visual representation of the intersection formula. \
+Where pc is a vector from point (ray origin) to the center of the sphere. \
+We're calculating `distance` which, if we add it to the ray direction, we get the intersection point `ray.point_at(distance)`.
+
+![sphere_ray_intersection.png](../../Images/sphere_ray_intersection.png)
+
+[Here](https://iquilezles.org/articles/intersectors/) is a great resource for intersection formulas, though it has the
+same naming problems like mentioned above, it can sometimes feel like deciphering hieroglyphs.
