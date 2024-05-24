@@ -1,4 +1,4 @@
-name: Bardrix Build and Test
+name: Examples Build
 
 on:
   push:
@@ -13,7 +13,7 @@ jobs:
       matrix:
         os: [ ubuntu-latest, windows-latest ]
 
-    uses: ./.github/workflows/templates/Build-Test-Cmake.yml
+    uses: ./.github/workflows/Build-Test-Cmake.yml
     with:
       os: ${{ matrix.os }}
       source_directory: "Docs/Examples"
