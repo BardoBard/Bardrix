@@ -6,53 +6,50 @@
 
 sphere::sphere(double radius) : sphere(radius, bardrix::point3(0, 0, 0)) {}
 
-sphere::sphere(double radius, const bardrix::point3& position) : radius_(radius), position(position) {}
+sphere::sphere(double radius, const bardrix::point3& position) : radius_(radius), position_(position) {}
 
 void sphere::set_material(const bardrix::material& material) { this->material_ = material; }
 
 const bardrix::material& sphere::get_material() const { return material_; }
 
-void sphere::set_position(const bardrix::point3& position) { this->position = position; }
+void sphere::set_position(const bardrix::point3& position) { this->position_ = position; }
 
-const bardrix::point3& sphere::get_position() const { return position; }
+const bardrix::point3& sphere::get_position() const { return position_; }
 
 bardrix::vector3 sphere::normal_at(const bardrix::point3& point) const {
-    return position.vector_to(point).normalized();
+    return position_.vector_to(point).normalized();
 }
 
-std::optional <bardrix::point3> sphere::intersection(const bardrix::ray& ray) const {
-
-    // Basic hit function for a sphere
-
+std::optional<bardrix::point3> sphere::intersection(const bardrix::ray& ray) const {
+    // Get direction of the ray
     bardrix::vector3 direction = ray.get_direction();
 
     // Gets vector from points: ray origin and sphere center
-    bardrix::vector3 oc_vec = ray.position.vector_to(position);
+    bardrix::vector3 ray_to_sphere_vector = ray.position.vector_to(position_);
 
-    // Get dot product of origin-center-Vector and normalizedDirection
-    double t = oc_vec.dot(direction);
+    // Get dot product of origin-center-vector and normalized direction
+    double dot = ray_to_sphere_vector.dot(direction);
 
     // Turn unit vector direction into a vector direction
-    direction = direction * t;
+    direction *= dot;
 
     // Length from ray origin to sphere center
-    oc_vec = direction - oc_vec;
+    ray_to_sphere_vector = direction - ray_to_sphere_vector;
 
-    // |q|^2
-    const double p2 = oc_vec.dot(oc_vec);
+    // vec.dot(vec) == |vec|^2
+    const double distance_squared = ray_to_sphere_vector.dot(ray_to_sphere_vector);
 
     // Radius^2
-    const double r2 = radius_ * radius_;
+    const double radius_squared = radius_ * radius_;
 
-    if (p2 > r2)
-        return std::nullopt; //a smart way to check if ray intersects before taking the sqrt
+    if (distance_squared > radius_squared)
+        return std::nullopt; // A smart way to check if ray intersects before taking the sqrt
 
     // Calculate distance to intersection
-    t -= std::sqrt(r2 - p2);
+    const double distance = dot - std::sqrt(radius_squared - distance_squared);
 
     // If we intersect sphere return the length
-    return (t < ray.get_length() && t > 0)
-           ? std::optional(position + direction * t)
+    return (distance < ray.get_length() && distance > 0)
+           ? std::optional(position_ + direction * distance)
            : std::nullopt;
 }
-

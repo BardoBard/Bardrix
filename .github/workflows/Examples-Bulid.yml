@@ -1,0 +1,13 @@
+name: Examples Build
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build-examples:
+    uses: ./.github/workflows/Build-Test-Cmake.yml
+    with:
+      source_directory: "Docs/Examples"

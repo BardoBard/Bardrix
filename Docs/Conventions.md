@@ -79,6 +79,7 @@ instead of `n`.
 ### 5.1. General Documentation Conventions
 1. Use Markdown for README files and other documentation files.
 2. Whenever adding or updating any code update the [Bardrix Reference](Bardrix_Reference.md) file.
+3. Whenever adding or updating any code update the [Release Notes](Release_Notes.md) file.
 
 ## 5. Code Documentation Conventions
 1. Use Doxygen style comments for documenting functions, classes, members, etc.

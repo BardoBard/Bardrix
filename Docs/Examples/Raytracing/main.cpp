@@ -2,10 +2,13 @@
 // Created by Bardio on 22/05/2024.
 //
 
+#include <iostream>
+
+#ifdef _WIN32
+
 #include "sphere.h"
 #include "window.h"
 
-#include <iostream>
 #include <bardrix/ray.h>
 #include <bardrix/light.h>
 #include <bardrix/camera.h>
@@ -60,3 +63,12 @@ int main() {
 
     bardrix::window::run();
 }
+
+#else // _WIN32
+
+int main() {
+    std::cout << "This example is only available on Windows." << std::endl;
+    return 0;
+}
+
+#endif // _WIN32
