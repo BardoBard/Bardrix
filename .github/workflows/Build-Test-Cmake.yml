@@ -22,59 +22,60 @@ on:
         description: "The name of the test executable"
 
 jobs:
-  runs-on: ${{ inputs.os }}
+  build-and-test:
+    runs-on: ${{ inputs.os }}
 
-  strategy:
-    fail-fast: false
-    matrix:
-      build_type: [ Release, Debug ]
-      c_compiler: [ gcc, clang, cl ]
-      include:
-        - os: windows-latest
-          c_compiler: cl
-          cpp_compiler: cl
-        - os: ubuntu-latest
-          c_compiler: gcc
-          cpp_compiler: g++
-        - os: ubuntu-latest
-          c_compiler: clang
-          cpp_compiler: clang++
-      exclude:
-        - os: windows-latest
-          c_compiler: gcc
-        - os: windows-latest
-          c_compiler: clang
-        - os: ubuntu-latest
-          c_compiler: cl
+    strategy:
+      fail-fast: false
+      matrix:
+        build_type: [ Release, Debug ]
+        c_compiler: [ gcc, clang, cl ]
+        include:
+          - os: windows-latest
+            c_compiler: cl
+            cpp_compiler: cl
+          - os: ubuntu-latest
+            c_compiler: gcc
+            cpp_compiler: g++
+          - os: ubuntu-latest
+            c_compiler: clang
+            cpp_compiler: clang++
+        exclude:
+          - os: windows-latest
+            c_compiler: gcc
+          - os: windows-latest
+            c_compiler: clang
+          - os: ubuntu-latest
+            c_compiler: cl
 
-  steps:
-    - uses: actions/checkout@v3
+    steps:
+      - uses: actions/checkout@v3
 
-    - name: Set reusable strings
-      id: strings
-      shell: bash
-      run: |
-        echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+      - name: Set reusable strings
+        id: strings
+        shell: bash
+        run: |
+          echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
 
-    - name: Configure CMake
-      run: >
-        cmake -B ${{ steps.strings.outputs.build-output-dir }}
-        -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
-        -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
-        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-        -S "${{ github.workspace }}/${{ inputs.source_directory }}"
+      - name: Configure CMake
+        run: >
+          cmake -B ${{ steps.strings.outputs.build-output-dir }}
+          -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
+          -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
+          -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+          -S "${{ github.workspace }}/${{ inputs.source_directory }}"
 
-    - name: Build
-      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
+      - name: Build
+        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
 
-    - name: Run tests
-      if: runner.os == 'Windows' && inputs.test_directory && inputs.test_name
-      working-directory: ${{ steps.strings.outputs.build-output-dir }}/${{ inputs.test_directory }}/${{ matrix.build_type }}/
-      run: >
-       ${{ inputs.test_name }}.exe
+      - name: Run tests
+        if: runner.os == 'Windows' && inputs.test_directory && inputs.test_name
+        working-directory: ${{ steps.strings.outputs.build-output-dir }}/${{ inputs.test_directory }}/${{ matrix.build_type }}/
+        run: >
+         ${{ inputs.test_name }}.exe
 
-    - name: Run tests
-      if: runner.os != 'Windows' && inputs.test_directory && inputs.test_name
-      working-directory: ${{ steps.strings.outputs.build-output-dir }}/${{ inputs.test_directory }}/
-      run: >
-        ./${{ inputs.test_name }}
+      - name: Run tests
+        if: runner.os != 'Windows' && inputs.test_directory && inputs.test_name
+        working-directory: ${{ steps.strings.outputs.build-output-dir }}/${{ inputs.test_directory }}/
+        run: >
+          ./${{ inputs.test_name }}
