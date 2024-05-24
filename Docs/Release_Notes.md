@@ -4,11 +4,29 @@
 
 **Full Changelog**: https://github.com/BardoBard/Bardrix/compare/v0.2.0...v0.2.1
 
+Added [CONTRIBUTING.md](../CONTRIBUTING.md) to help contributors get started with the project. \
+Added more documentation to the codebase to help contributors understand the codebase. \
+Added a workflow to test the examples, this will help pushing correct code to the repository.
+
 ## Documentation Changes
 
 Added inverse square law example to [Raytracing readme](Examples/Raytracing/README.md). \
 Added sphere light calculation example to [Raytracing readme](Examples/Raytracing/README.md). \
 Added objects (shape, material) to [Bardrix_Reference](Bardrix_Reference.md).
+
+## Code Changes
+
+### Minor Changes
+
+Updated [raytracing example](Examples/Raytracing/main.cpp) and [window.cpp](Examples/Raytracing/window.cpp) now doesn't
+give a compiler error when running on an operating system other than Windows, instead it prints out a message that it is
+not supported. \
+Added [Examples/CMakeLists.txt](Examples/CMakeLists.txt) to include all the examples in one build.
+
+## Test Changes
+
+Added a generic workflow for building and testing on multiple platforms. \
+Added a workflow for testing if the examples compile.
 
 # [v0.2.0](https://github.com/BardoBard/Bardrix/releases/tag/v0.2.0)
 
