@@ -26,7 +26,7 @@ It also defines `NODISCARD` and `INLINE` marcos as they are used throughout the 
 
 There are a few classes that are used for mathematics, these make the foundation of the library.
 
-![bardrix-math.png](../../docs/Docs/Images/bardrix-math.png)
+![bardrix-math.png](Images/bardrix-math.png)
 
 ### Math
 
@@ -185,33 +185,33 @@ Copy and move constructors are implicitly defined.
         - Initializes the vector to the given x, y, and z values.
 - Methods:
     - `length()`
-        - Calculates the [length/magnitude](../../docs/Docs/Mathematics.md#magnitudelength) of the vector.
+        - Calculates the [length/magnitude](Mathematics.md#magnitudelength) of the vector.
         - **Returns** the length of the vector.
     - `length_squared()`
-        - Calculates the squared [length/magnitude](../../docs/Docs/Mathematics.md#magnitudelength) of the vector.
+        - Calculates the squared [length/magnitude](Mathematics.md#magnitudelength) of the vector.
         - **Returns** the squared length of the vector.
         - This is faster than the `length` method as it does not require a square root calculation.
     - `normalize()`
-        - [Normalizes](../../docs/Docs/Mathematics.md#normalization) the vector and
+        - [Normalizes](Mathematics.md#normalization) the vector and
         - **Returns** a reference to the vector, this allows for chaining of the method.
         - When the length of the vector is zero, it will return the original vector.
     - `normalized()`
-        - [Normalizes](../../docs/Docs/Mathematics.md#normalization) the vector.
+        - [Normalizes](Mathematics.md#normalization) the vector.
         - **Returns** a new vector that is normalized.
         - When the length of the vector is zero, it will return the original vector.
     - `dot(vector : vector3)`
-        - Calculates the [dot product](../../docs/Docs/Mathematics.md#dot-product) of the vector with another vector.
+        - Calculates the [dot product](Mathematics.md#dot-product) of the vector with another vector.
         - **Returns** the dot product of the two vectors.
     - `cross(vector : vector3)`
-        - Calculates the [cross product](../../docs/Docs/Mathematics.md#cross-product) of the vector with another vector.
+        - Calculates the [cross product](Mathematics.md#cross-product) of the vector with another vector.
         - **Returns** the cross product of the two vectors.
     - `angle(vector : vector3)`
-        - Calculates the [angle](../../docs/Docs/Mathematics.md#angle-between-vectors) between the vector and another vector.
+        - Calculates the [angle](Mathematics.md#angle-between-vectors) between the vector and another vector.
         - **Returns** the angle between the two vectors between [-1, 1].
         - When the angle is 1, the vectors are parallel, when the angle is -1, the vectors are opposite.
         - The arccos can be taken from the result to get the angle in radians.
     - `reflection(normal : vector3)`
-        - [Reflects](../../docs/Docs/Mathematics.md#reflection) the vector about a normal vector.
+        - [Reflects](Mathematics.md#reflection) the vector about a normal vector.
         - The normal and vector will be normalized for you.
         - **Returns** a new vector, the reflected vector will have a length of 1.
         - If any degenerate cases are met, the function will return an std::nullopt
@@ -220,7 +220,7 @@ Copy and move constructors are implicitly defined.
             - The vector has to be pointing towards the normal vector.
     - `refraction(normal : vector3, refractive_ratio : double)`
     - `refraction(normal : vector3, medium1 : double, medium2 : double)`
-        - [Refracts](../../docs/Docs/Mathematics.md#refraction) the vector through a normal vector.
+        - [Refracts](Mathematics.md#refraction) the vector through a normal vector.
         - The normal and vector will be normalized for you.
         - **Returns** a new vector, the refracted vector will have a length of 1.
         - If any degenerate cases are met, the function will return an std::nullopt
@@ -245,17 +245,17 @@ Copy and move constructors are implicitly defined.
         - Initializes the point to the given x, y, and z values.
 - Methods:
     - `distance(point : point3)`
-        - Calculates the [distance](../../docs/Docs/Mathematics.md#distance) between the point and another point.
+        - Calculates the [distance](Mathematics.md#distance) between the point and another point.
         - **Returns** the distance between the two points.
     - `distance_squared(point : point3)`
-        - Calculates the squared [distance](../../docs/Docs/Mathematics.md#distance) between the point and another point.
+        - Calculates the squared [distance](Mathematics.md#distance) between the point and another point.
         - **Returns** the squared distance between the two points.
         - This is faster than the `distance` method as it does not require a square root calculation.
     - `midpoint(point : point3)`
-        - Calculates the [midpoint/center](../../docs/Docs/Mathematics.md#center) between the point and another point.
+        - Calculates the [midpoint/center](Mathematics.md#center) between the point and another point.
         - **Returns** the midpoint between the two points.
     - `vector_to(point : point3)`
-        - Calculates the [point to vector](../../docs/Docs/Mathematics.md#point-to-vector) from the point to another point.
+        - Calculates the [point to vector](Mathematics.md#point-to-vector) from the point to another point.
         - **Returns** the vector from the point to the other point.
     - `+`
         - Allows for addition of a vector to a point.
@@ -448,7 +448,7 @@ Copy and move constructors are implicitly defined.
         - **Degenerate cases**:
             - If the quaternion is zero, the original quaternion will be returned.
     - `length()`
-        - Calculates the [length/magnitude](../../docs/Docs/Mathematics.md#magnitudelength) of the quaternion.
+        - Calculates the [length/magnitude](Mathematics.md#magnitudelength) of the quaternion.
         - **Returns** the length of the quaternion.
     - `rotate_radians(dim3 : dimension3, rotation_vector : vector3, theta : double)`
         - Rotates the quaternion by the given angle (theta) in radians about the given axis (rotation_vector).
@@ -475,7 +475,7 @@ Copy and move constructors are implicitly defined.
           replaced with the values of the quaternion.
 - Operators:
     - `*`
-        - Calculates the [Hamilton product](../../docs/Docs/Mathematics.md#hamilton-product) of the two quaternions.
+        - Calculates the [Hamilton product](Mathematics.md#hamilton-product) of the two quaternions.
         - **Returns** a new quaternion, the result of the Hamilton product.
         - The Hamilton product is used for combining rotations.
 
@@ -484,7 +484,7 @@ Copy and move constructors are implicitly defined.
 This part includes all the classes that are used for the visual aspect of raytracing. \
 This includes the camera, light, color etc.
 
-![bardrix-view.png](../../docs/Docs/Images/bardrix-view.png)
+![bardrix-view.png](Images/bardrix-view.png)
 
 ### Light
 
@@ -505,13 +505,13 @@ It has a position, color, and intensity.
         - **Returns** the intensity of the light.
 - Methods:
     - `inverse_square_law(distance : double)`
-        - Calculates the [inverse square law](../../docs/Docs/Mathematics.md#inverse-square-law) of the light at a distance.
+        - Calculates the [inverse square law](Mathematics.md#inverse-square-law) of the light at a distance.
         - **Returns** the intensity of the light at the distance.
         - **Degenerate cases**:
             - If the distance is less than zero, it will be treated as the absolute value.
             - If the distance is zero, `HUGE_VAL` (which is infinity for double) will be returned.
     - `inverse_square_law(point : point3)`
-        - Calculates the [inverse square law](../../docs/Docs/Mathematics.md#inverse-square-law) of the light at a point.
+        - Calculates the [inverse square law](Mathematics.md#inverse-square-law) of the light at a point.
         - **Returns** the intensity of the light at the point.
         - **Degenerate cases**:
             - If the point is the same as the light position, `HUGE_VAL` (which is infinity for double) will be
@@ -741,7 +741,7 @@ It has a position, direction, field of view and width/height of the image.
 
 This part includes classes that are object based, like material, spheres, triangles etc.
 
-![bardrix-objects.png](../../docs/Docs/Images/bardrix-objects.png)
+![bardrix-objects.png](Images/bardrix-objects.png)
 
 ### Material
 
