@@ -1,3 +1,27 @@
+# [v0.2.2](https://github.com/BardoBard/Bardrix/releases/tag/v0.2.2)
+
+Very minor changes to documentation.
+
+## Overview
+
+**Full Changelog**: https://github.com/BardoBard/Bardrix/compare/v0.2.1...v0.2.2
+
+Solved issue [30](https://github.com/BardoBard/Bardrix/issues/30), where in the README it doesn't properly link to the
+github. \
+Updated table of contents in [Bardrix_Reference](Bardrix_Reference.md) to include objects (material/shape). \
+Updated README in [Examples/Raytracing](Examples/Raytracing/README.md), forgot to finish a sentence and updated table of
+contents; which now also properly links.
+
+## Documentation Changes
+
+Updated [Bardrix_Reference](Bardrix_Reference.md) to include objects (material/shape). \
+Updated README in [Examples/Raytracing](Examples/Raytracing/README.md), forgot to finish a sentence and updated table of
+contents; which now also properly links.
+Updated name from `light_sphere_example.png` to `light_calculation_example.png` \
+Updated [2.1 Light Sphere Intensity](Examples/Raytracing/README.md#21-light-intensity) to Light Intensity. \
+Solved issue [30](https://github.com/BardoBard/Bardrix/issues/30), where in the README it doesn't properly link to the
+github.
+
 # [v0.2.1](https://github.com/BardoBard/Bardrix/releases/tag/v0.2.1)
 
 ## Overview

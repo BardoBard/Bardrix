@@ -12,6 +12,9 @@
     - [Light](#light)
     - [Color](#color)
     - [Camera](#camera)
+- [Objects](#objects)
+    - [Material](#material)
+    - [Shape](#shape)
 
 ## Bardrix
 

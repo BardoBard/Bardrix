@@ -6,10 +6,12 @@ good starting point for understanding how the raytracing works.
 ## Table of Contents
 
 - [Introduction](#introduction)
-- [1. Ray](#ray)
-- [2. Light](#ray)
-- [3. Camera](#camera)
-- [4. Sphere](#sphere)
+- [1. Ray](#1-ray)
+- [2. Light](#2-light)
+  - [2.1. Light Intensity](#21-light-intensity)
+- [3. Camera](#3-camera)
+- [4. Sphere](#4-sphere)
+  - [4.1 Sphere Intersection](#41-sphere-intersection)
 
 ## Introduction
 
@@ -87,12 +89,11 @@ The intensity is inversely proportional to the square of the distance from the s
 
 ![Inverse_square_law.png](../../Images/Inverse_square_law.png)
 
-## 2.1. Light Sphere Intensity
+## 2.1. Light Intensity
 
-Light behaves differently when it hits a sphere. The intensity of the light is calculated by the angle of the light and
-the
+Light behaves differently when it hits an object, it's determined by the angle; when the angle is at 90 degrees it will have the most intensity (1).
 
-![light_sphere_example.png](../../Images/light_sphere_example.png)
+![light_sphere_example.png](../../Images/light_calulation_example.png)
 
 In oder to calculate the intensity of the light at a certain point, we first need to calculate the angle between the
 light and the intersection point. \
