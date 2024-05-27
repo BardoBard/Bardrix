@@ -93,7 +93,7 @@ The intensity is inversely proportional to the square of the distance from the s
 
 Light behaves differently when it hits an object, it's determined by the angle; when the angle is at 90 degrees it will have the most intensity (1).
 
-![light_sphere_example.png](../../Images/light_sphere_example.png)
+![light_sphere_example.png](../../Images/light_calulation_example.png)
 
 In oder to calculate the intensity of the light at a certain point, we first need to calculate the angle between the
 light and the intersection point. \
