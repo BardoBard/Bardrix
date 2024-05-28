@@ -94,3 +94,9 @@ Output:
     v1 angle v2 (degrees): 12.9332°
     v1 normalized: (0.267261, 0.534522, 0.801784)
 ```
+
+# Next Steps
+
+We've now covered the basics of 3D objects. \
+The next steps would be to learn about `camera`, `ray`, `light` and `sphere` interactions. \
+See [Raytracing](../Raytracing/README.md) where it teaches you how to use these classes in a simple raytracing application.

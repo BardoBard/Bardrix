@@ -28,7 +28,7 @@ std::optional<bardrix::point3> sphere::intersection(const bardrix::ray& ray) con
     bardrix::vector3 ray_to_sphere_vector = ray.position.vector_to(position_);
 
     // Get dot product of origin-center-vector and normalized direction
-    double dot = ray_to_sphere_vector.dot(direction);
+    const double dot = ray_to_sphere_vector.dot(direction);
 
     // Turn unit vector direction into a vector direction
     direction *= dot;
@@ -50,6 +50,6 @@ std::optional<bardrix::point3> sphere::intersection(const bardrix::ray& ray) con
 
     // If we intersect sphere return the length
     return (distance < ray.get_length() && distance > 0)
-           ? std::optional(position_ + direction * distance)
+           ? std::optional(ray.position + ray.get_direction() * distance)
            : std::nullopt;
 }
