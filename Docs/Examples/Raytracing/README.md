@@ -62,7 +62,7 @@ The intensity is a double value that can be infinitely large, sometimes expresse
 ```
 
 ```cpp
-    bardrix::point3 position(0, 0, 0);
+bardrix::point3 position(0, 0, 0);
 bardrix::color color = bardrix::color::red();
 double intensity = 1.0;
 
@@ -100,18 +100,24 @@ light and the intersection point. \
 Then we can use the inverse square law to calculate the intensity of the light at that point.
 
 ```cpp
-double calculate_light_intensity(const bardrix::point3& intersection, const bardrix::vector3& intersection_normal,
-                                 const bardrix::light& light) {
-    // Calculate the angle between the light and the intersection point and normalize it
-    bardrix::vector3 light_intersection_vector = light.position.vector_to(intersection).normalized();
-    
-    double angle = light_intersection_vector.dot(intersection_normal);
+/// \brief Calculates the light intensity at a given intersection point
+/// \param intersection_point The intersection point of an object
+/// \param intersection_normal The normal of the intersection point
+/// \param light The light source
+/// \return The light intensity at the intersection point
+/// \example double intensity = calculate_light_intensity(intersection_point, normal, light);
+double calculate_light_intensity(const bardrix::point3& intersection_point, const bardrix::vector3& intersection_normal,
+const bardrix::light& light)
+{
+const bardrix::vector3 light_intersection_vector = intersection_point.vector_to(light.position).normalized();
 
-    if (angle < 0) // This means the light is behind the intersection point
-        return 0;
+const double angle = intersection_normal.dot(light_intersection_vector);
 
-    // We use the angle and the inverse square law to calculate the intensity
-    return angle * light.inverse_square_law(intersection);
+if (angle < 0) // This means the light is behind the intersection_point point
+return 0;
+
+// We use the angle and the inverse square law to calculate the intensity
+return angle * light.inverse_square_law(intersection_point);
 }
 ```
 
@@ -197,7 +203,7 @@ std::optional<bardrix::point3> sphere::intersection(const bardrix::ray& ray) con
     bardrix::vector3 direction = ray.get_direction();
 
     // Gets vector from points: ray origin and sphere center
-    bardrix::vector3 ray_to_sphere_vector = ray.position.vector_to(position);
+    bardrix::vector3 ray_to_sphere_vector = ray.position.vector_to(position_);
 
     // Get dot product of origin-center-vector and normalized direction
     double dot = ray_to_sphere_vector.dot(direction);
@@ -222,7 +228,7 @@ std::optional<bardrix::point3> sphere::intersection(const bardrix::ray& ray) con
 
     // If we intersect sphere return the length
     return (distance < ray.get_length() && distance > 0)
-           ? std::optional(position + direction * distance)
+           ? std::optional(ray.position + ray.get_direction() * distance)
            : std::nullopt;
 }
 ```

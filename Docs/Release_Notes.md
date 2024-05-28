@@ -1,3 +1,22 @@
+# [v0.2.3](https://github.com/BardoBard/Bardrix/releases/tag/v0.2.3)
+
+Documentation hotfix, wrong formula in example.
+
+## Overview
+
+**Full Changelog**: https://github.com/BardoBard/Bardrix/compare/v0.2.2...v0.2.3
+
+Solved issue [32](https://github.com/BardoBard/Bardrix/issues/32), where [Mathematics](Mathematics.md) didn't have a table of contents. \
+Updated incorrect formula in [Raytracing example](Examples/Raytracing/README.md) for calculating the light intensity at a certain point. \
+Updated incorrect formula in [Raytracing example](Examples/Raytracing/README.md) for calculating the intersection point of a sphere.
+
+## Documentation Changes
+
+Solved issue [32](https://github.com/BardoBard/Bardrix/issues/32), where [Mathematics](Mathematics.md) didn't have a table of contents. \
+Updated incorrect formula in [Raytracing example](Examples/Raytracing/README.md) for calculating the light intensity at a certain point. \
+Updated incorrect formula in [Raytracing example](Examples/Raytracing/README.md) for calculating the intersection point of a sphere.
+Added next step to [Introduction](Examples/Introduction/README.md).
+
 # [v0.2.2](https://github.com/BardoBard/Bardrix/releases/tag/v0.2.2)
 
 Very minor changes to documentation.

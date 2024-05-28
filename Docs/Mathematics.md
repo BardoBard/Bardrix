@@ -6,6 +6,36 @@ We'll talk about the mathematics in 3D/4D space.
 
 Refer to the examples at the bottom of the page for more intuitive understanding.
 
+# Table of contents
+
+- [Symbols](#symbols)
+- [Generic 3D object](#generic-3d-object)
+  - [3D addition](#3d-addition)
+  - [3D subtraction](#3d-subtraction)
+  - [3D multiplication](#3d-multiplication)
+  - [3D division](#3d-division)
+- [Vector operations](#vector-operations)
+    - [Magnitude/Length](#magnitudelength)
+    - [Normalization](#normalization)
+    - [Dot product](#dot-product)
+    - [Cross product](#cross-product)
+    - [Angle between vectors](#angle-between-vectors)
+    - [Reflection](#reflection)
+    - [Refraction](#refraction)
+- [Point operations](#point-operations)
+    - [Point to vector](#point-to-vector)
+    - [Center](#center)
+    - [Distance](#distance)
+- [Examples](#examples)
+    - [3D addition](#3d-addition-1)
+    - [3D subtraction](#3d-subtraction-1)
+    - [3D multiplication](#3d-multiplication-1)
+    - [3D division](#3d-division-1)
+    - [Magnitude/Length](#magnitudelength-1)
+    - [Normalization](#normalization-1)
+    - [Dot product](#dot-product-1)
+    - [Cross product](#cross-product-1)
+
 # Symbols
 
 Please refer to the [wiki](https://en.wikipedia.org/wiki/List_of_mathematical_symbols_by_subject) for all of the
