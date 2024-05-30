@@ -14,15 +14,15 @@ bardrix::window::window(const char* title, int width, int height) {
 
     width_ = width > 0 ? width : -width;
     height_ = height > 0 ? height : -height;
-    back_buffer.resize(width_ * height_);
-    front_buffer.resize(width_ * height_);
+    back_buffer_.resize(width_ * height_);
+    front_buffer_.resize(width_ * height_);
 
-    bmi.bmiHeader.biSize = sizeof(bmi.bmiHeader);
-    bmi.bmiHeader.biWidth = width_;
-    bmi.bmiHeader.biHeight = -height_; // top-down
-    bmi.bmiHeader.biPlanes = 1;
-    bmi.bmiHeader.biBitCount = 32; // 32 bit color RRGGBBAA
-    bmi.bmiHeader.biCompression = BI_RGB;
+    bmi_.bmiHeader.biSize = sizeof(bmi_.bmiHeader);
+    bmi_.bmiHeader.biWidth = width_;
+    bmi_.bmiHeader.biHeight = -height_; // top-down
+    bmi_.bmiHeader.biPlanes = 1;
+    bmi_.bmiHeader.biBitCount = 32; // 32 bit color RRGGBBAA
+    bmi_.bmiHeader.biCompression = BI_RGB;
 }
 
 bardrix::window::~window() {
@@ -100,13 +100,13 @@ LRESULT CALLBACK bardrix::window::window_proc(HWND hwnd, UINT msg, WPARAM wparam
             HDC hdc = BeginPaint(hwnd, &ps);
 
             if (p_window->on_paint) // Call the on_paint function
-                p_window->on_paint(p_window, p_window->back_buffer);
+                p_window->on_paint(p_window, p_window->back_buffer_);
 
-            std::swap(p_window->front_buffer, p_window->back_buffer);
+            std::swap(p_window->front_buffer_, p_window->back_buffer_);
 
             // Draw the front buffer to the screen
             StretchDIBits(hdc, 0, 0, p_window->width_, p_window->height_, 0, 0, p_window->width_,
-                          p_window->height_, p_window->front_buffer.data(), &p_window->bmi, DIB_RGB_COLORS,
+                          p_window->height_, p_window->front_buffer_.data(), &p_window->bmi_, DIB_RGB_COLORS,
                           SRCCOPY);
 
             EndPaint(hwnd, &ps);
@@ -115,10 +115,10 @@ LRESULT CALLBACK bardrix::window::window_proc(HWND hwnd, UINT msg, WPARAM wparam
         case WM_SIZE:
             p_window->width_ = LOWORD(lparam);
             p_window->height_ = HIWORD(lparam);
-            p_window->bmi.bmiHeader.biWidth = p_window->width_;
-            p_window->bmi.bmiHeader.biHeight = -p_window->height_; // top-down
-            p_window->back_buffer.resize(p_window->width_ * p_window->height_);
-            p_window->front_buffer.resize(p_window->width_ * p_window->height_);
+            p_window->bmi_.bmiHeader.biWidth = p_window->width_;
+            p_window->bmi_.bmiHeader.biHeight = -p_window->height_; // top-down
+            p_window->back_buffer_.resize(p_window->width_ * p_window->height_);
+            p_window->front_buffer_.resize(p_window->width_ * p_window->height_);
             if (p_window->on_resize)
                 p_window->on_resize(p_window, p_window->width_, p_window->height_);
             break;

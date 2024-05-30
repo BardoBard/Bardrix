@@ -65,15 +65,14 @@ namespace bardrix {
             return std::nullopt;
 
         const vector3 normalized_normal = normal.normalized();
-        const vector3 normalized_vector = this->normalized();
-        const double dot = normalized_normal.dot(normalized_vector);
+        const double dot = this->dot(normalized_normal);
 
         // Dot < 0 means the vector is behind the normal
         // We're unable to reflect a vector that is behind the normal
         if (dot < 0)
             return std::nullopt;
 
-        return -(normalized_normal * (2 * dot) - normalized_vector);
+        return normalized_normal * 2 * dot - *this;
     }
 
     std::optional<vector3> vector3::refraction(const vector3& normal, double refractive_ratio) const {

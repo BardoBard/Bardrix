@@ -12,6 +12,7 @@ good starting point for understanding how the raytracing works.
 - [3. Camera](#3-camera)
 - [4. Sphere](#4-sphere)
   - [4.1 Sphere Intersection](#41-sphere-intersection)
+  - [4.2 Sphere Normal](#42-sphere-normal)
 
 ## Introduction
 
@@ -113,7 +114,7 @@ const bardrix::vector3 light_intersection_vector = intersection_point.vector_to(
 
 const double angle = intersection_normal.dot(light_intersection_vector);
 
-if (angle < 0) // This means the light is behind the intersection_point point
+if (angle < 0) // This means the light is behind the intersection_point
 return 0;
 
 // We use the angle and the inverse square law to calculate the intensity
@@ -241,3 +242,21 @@ We're calculating `distance` which, if we add it to the ray direction, we get th
 
 [Here](https://iquilezles.org/articles/intersectors/) is a great resource for intersection formulas, though it has the
 same naming problems like mentioned above, it can sometimes feel like deciphering hieroglyphs.
+
+## 4.2 Sphere Normal
+
+The normal of the sphere is a simple formula. It allows us to calculate the light intensity at the intersection point 
+like in [Light Intensity](#21-light-intensity).
+
+![sphere_normal.png](../../Images/sphere_normal.png)
+
+Here we can see that the normal is calculated by taking the center and pointing towards the intersection point. \
+We also need to normalize the vector to make it a unit vector, so it's easier to calculate the angle.
+
+```cpp
+bardrix::vector3 sphere::normal_at(const bardrix::point3& point) const {
+    return position_.vector_to(point).normalized();
+}
+```
+
+With these tools you are able to create a 3D sphere and render it.

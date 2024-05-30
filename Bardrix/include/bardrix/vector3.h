@@ -64,16 +64,17 @@ namespace bardrix {
         NODISCARD double angle(const vector3& vec3) const;
 
         /// \brief Calculates the reflection of this vector onto a normal
-        ///        The result will be an outgoing normalized vector
+        ///        The result will be an outgoing vector with the same length as the incoming vector
         /// \param normal The normal vector, will be normalized for you
         /// \note If the incoming vector or the normal vector has length 0, it will return std::nullopt
         /// \note If the incoming vector is behind the normal, it will return std::nullopt
         /// \return reflection of this vector on a normalized normal, if a degenerate case is found, it will return std::nullopt
         /// \details formula: r = n (2 * (d . n)) − d
         /// \details r is the reflection
-        /// \details n is the normal
+        /// \details n is the normal (normalized)
         /// \details d is the vector
         /// \see https://math.stackexchange.com/a/4019883
+        /// \see bardrix::quaternion::mirror for the same functionality
         NODISCARD std::optional<vector3> reflection(const vector3& normal) const;
 
         /// \brief Calculates the refraction of this vector through a normal

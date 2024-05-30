@@ -55,9 +55,9 @@ namespace bardrix {
         HWND hwnd_{};
 
         /// \brief Buffers for swapping between displaying and drawing.
-        std::vector<uint32_t> back_buffer, front_buffer;
+        std::vector<uint32_t> back_buffer_, front_buffer_;
         /// \brief The bitmap info for the window.
-        BITMAPINFO bmi = {};
+        BITMAPINFO bmi_ = {};
 
     public:
         /// \brief Constructor for the window class.

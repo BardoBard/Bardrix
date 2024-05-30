@@ -316,7 +316,7 @@ Reflection is a way to calculate the direction of a vector after it bounces off 
 This is used for calculating the direction of a vector after it hits a surface.
 
 $$
-Ref_l \(\vec{v}_1, \vec{v}_n\) = \hat{v}_n * \(2 * \hat{v}_n \cdot \vec{v}_1\) - \vec{v}_1
+Ref_l \(\vec{v}_1, \vec{v}_n\) = \hat{v}_n * \(2 * \vec{v}_1\ \cdot \hat{v}_n) - \vec{v}_1
 $$
 
 Here the $\vec{v}_1$ is the direction of the vector, and $\vec{v}_n$ is the normal of the surface. \
@@ -326,7 +326,7 @@ You could avoid this assuming $|\vec{v}_n| = 1$, but it's better to normalize th
 Important to note that the resulting reflection vector is not normalized, this obviously means that the incoming vector
 has the same magnitude as the outgoing vector.
 
-You could extend the definition to where $\hat{v}_n \cdot \vec{v}_1 < 0$ is invalid, this is due to the fact that the
+You could extend the definition to where \vec{v}_1\ \cdot \hat{v}_n < 0$ is invalid, this is due to the fact that the
 normal is pointing away from the incoming vector. \
 This is not necessary, but it's important to know that the normal should be pointing towards the incoming vector. \
 Perhaps turn the normal around if this is the case.

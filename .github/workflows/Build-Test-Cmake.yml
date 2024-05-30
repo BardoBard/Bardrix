@@ -1,5 +1,4 @@
-# .github/workflows/build-job.yml
-name: Build Job
+name: Build And Test CMake
 
 on:
   workflow_call:
