@@ -10,7 +10,7 @@ protected:
     /// \brief Radius of the sphere
     double radius_;
 
-    // Material of the sphere (not used currently)
+    // \brief Material of the sphere
     bardrix::material material_;
 
     /// \brief Center of the sphere

@@ -63,7 +63,7 @@ namespace bardrix {
         /// \param specular The specular coefficient [0, 1]
         /// \param shininess The shininess coefficient [1, infinity]
         /// \param color The color of the material
-        /// \example material material(color::red(), 0.5, 0.1, 0.9, 50); -> color = red, ambient = 0.5, diffuse = 0.1, specular = 0.9, shininess = 50
+        /// \example material material(0.5, 0.1, 0.9, 50, bardrix::color::red()); -> color = red, ambient = 0.5, diffuse = 0.1, specular = 0.9, shininess = 50
         material(double ambient, double diffuse, double specular, double shininess,
                  const bardrix::color& color) noexcept;
 
@@ -109,7 +109,7 @@ namespace bardrix {
 
         /// \brief Sets the shininess coefficient
         /// \param shininess The shininess coefficient
-        /// \note If the shininess coefficient is less than 0, it will be set to 0
+        /// \note If the shininess coefficient is less than 1, it will be set to 1
         /// \example material.set_shininess(0.5); -> shininess = 1
         /// \example material.set_shininess(50); -> shininess = 50
         void set_shininess(double shininess);

@@ -20,7 +20,8 @@ Added documentation to sphere class
 in [sphere example](https://github.com/bardobard/bardrix/blob/v0.3.0/Docs/Examples/Raytracing/sphere.h). \
 Made sure that in Release Notes the links are to the versions they are referring to instead of the latest version. \
 Added
-documentation [Raytracing-Reflections](https://github.com/bardobard/bardrix/blob/v0.3.0/Docs/Examples/Raytracing-Reflections/README.md).
+documentation [Raytracing-Reflections](https://github.com/bardobard/bardrix/blob/v0.3.0/Docs/Examples/Raytracing-Reflections/README.md). \
+Solved issue [33](https://github.com/BardoBard/Bardrix/issues/33), where degenerate cases aren't marked as such.
 
 ## Code Changes
 
@@ -140,7 +141,7 @@ to [Raytracing readme](https://github.com/bardobard/bardrix/blob/v0.2.1/Docs/Exa
 Added sphere light calculation example
 to [Raytracing readme](https://github.com/bardobard/bardrix/blob/v0.2.1/Docs/Examples/Raytracing/README.md). \
 Added objects (shape, material)
-to [Bardrix_Reference]https://github.com/bardobard/bardrix/blob/v0.2.1/Docs/(Bardrix_Reference.md). \
+to [Bardrix_Reference](https://github.com/bardobard/bardrix/blob/v0.2.1/Docs/Bardrix_Reference.md). \
 Added code and visual sphere intersection example
 to [Raytracing readme](https://github.com/bardobard/bardrix/blob/v0.2.1/Docs/Examples/Raytracing/README.md).
 
@@ -266,7 +267,7 @@ The changes have no backward compatibility issues, as the changes are new featur
 
 Added [Bardrix_Reference](https://github.com/bardobard/bardrix/blob/v0.0.5/Docs/Bardrix_Reference.md) that contains all
 the functions and classes in Bardrix. \
-Added [Mathematics](Mathematics.md) that contains mathematical functions to learn about the mathematics used in
+Added [Mathematics](https://github.com/bardobard/bardrix/blob/v0.0.5/Docs/Mathematics.md) that contains mathematical functions to learn about the mathematics used in
 Bardrix. \
 Added [Introduction](https://github.com/bardobard/bardrix/blob/v0.0.5/Docs/Introduction.md) that contains a brief
 introduction to Bardrix. \

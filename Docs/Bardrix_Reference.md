@@ -110,11 +110,13 @@ It has base variables for `x`, `y` and `z`.
     - `/`
         - Divides the components of the `dimension3` object by the scalar `double` value.
         - **Returns** a new `dimension3` object.
-        - When dividing by zero, the function will throw an std::invalid_argument exception.
+        - **Degenerate cases**:
+          - When dividing by zero, the function will throw an std::invalid_argument exception.
     - `%`
         - Calculates the modulus of the components of the `dimension3` object by the scalar `double` value.
         - **Returns** a new `dimension3` object.
-        - When dividing by zero, the function will throw an std::invalid_argument exception.
+        - **Degenerate cases**:
+          - When dividing by zero, the function will throw an std::invalid_argument exception.
     - `+=`
         - Adds the components of the two of the same `dimension3` objects.
         - Adds the components of the `dimension3` object to the scalar `double` value, either order.
@@ -129,11 +131,13 @@ It has base variables for `x`, `y` and `z`.
     - `/=`
         - Divides the components of the `dimension3` object by the scalar `double` value.
         - **Returns** a reference to the `dimension3` object.
-        - When dividing by zero, the function will throw an std::invalid_argument exception.
+        - **Degenerate cases**:
+          - When dividing by zero, the function will throw an std::invalid_argument exception.
     - `%=`
         - Calculates the modulus of the components of the `dimension3` object by the scalar `double` value.
         - **Returns** a reference to the `dimension3` object.
-        - When dividing by zero, the function will throw an std::invalid_argument exception.
+        - **Degenerate cases**:
+          - When dividing by zero, the function will throw an std::invalid_argument exception.
     - `==`
         - Compares the components of the two of the same `dimension3` objects.
         - Compares the components of the `dimension3` object to the scalar `double` value, only `dimension3 == double`
@@ -194,11 +198,13 @@ Copy and move constructors are implicitly defined.
     - `normalize()`
         - [Normalizes](Mathematics.md#normalization) the vector and
         - **Returns** a reference to the vector, this allows for chaining of the method.
-        - When the length of the vector is zero, it will return the original vector.
+        - **Degenerate cases**:
+          - When the length of the vector is zero, it will return the original vector.
     - `normalized()`
         - [Normalizes](Mathematics.md#normalization) the vector.
         - **Returns** a new vector that is normalized.
-        - When the length of the vector is zero, it will return the original vector.
+        - **Degenerate cases**:
+          - When the length of the vector is zero, it will return the original vector.
     - `dot(vector : vector3)`
         - Calculates the [dot product](Mathematics.md#dot-product) of the vector with another vector.
         - **Returns** the dot product of the two vectors.
@@ -291,7 +297,8 @@ Copy and move constructors are implicitly defined.
         - The direction will be normalized for you.
     - `set_length(length : double)`
         - Sets the length of the ray.
-        - If the length is less than zero, it will be set to zero.
+        - **Degenerate cases**:
+          - If the length is less than zero, it will be set to zero.
     - `get_direction()`
         - **Returns** the normalized direction of the ray.
     - `get_length()`
@@ -339,11 +346,13 @@ It has base variables for `x`, `y`, `z`, and `w`.
     - `/`
         - Divides the components of the `dimension4` object by the scalar `double` value.
         - **Returns** a new `dimension4` object.
-        - When dividing by zero, the function will throw an std::invalid_argument exception.
+        - **Degenerate cases**:
+          - When dividing by zero, the function will throw an std::invalid_argument exception.
     - `%`
         - Calculates the modulus of the components of the `dimension4` object by the scalar `double` value.
         - **Returns** a new `dimension4` object.
-        - When dividing by zero, the function will throw an std::invalid_argument exception.
+        - **Degenerate cases**:
+          - When dividing by zero, the function will throw an std::invalid_argument exception.
     - `+=`
         - Adds the components of the two of the same `dimension4` objects.
         - Adds the components of the `dimension4` object to the scalar `double` value, either order.
@@ -358,11 +367,13 @@ It has base variables for `x`, `y`, `z`, and `w`.
     - `/=`
         - Divides the components of the `dimension4` object by the scalar `double` value.
         - **Returns** a reference to the `dimension4` object.
-        - When dividing by zero, the function will throw an std::invalid_argument exception.
+        - **Degenerate cases**:
+          - When dividing by zero, the function will throw an std::invalid_argument exception.
     - `%=`
         - Calculates the modulus of the components of the `dimension4` object by the scalar `double` value.
         - **Returns** a reference to the `dimension4` object.
-        - When dividing by zero, the function will throw an std::invalid_argument exception.
+        - **Degenerate cases**:
+          - When dividing by zero, the function will throw an std::invalid_argument exception.
     - `==`
         - Compares the components of the two of the same `dimension4` objects.
         - Compares the components of the `dimension4` object to the scalar `double` value, only `dimension4 == double`
@@ -432,11 +443,13 @@ Copy and move constructors are implicitly defined.
     - `reciprocal()`
         - Calculates the reciprocal of the quaternion.
         - **Returns** a reference to the quaternion, this allows for chaining of the method.
-        - If the quaternion is zero, the original quaternion will be returned.
+        - **Degenerate cases**:
+          - If the quaternion is zero, the original quaternion will be returned.
     - `reciprocated()`
         - Calculates the reciprocal of the quaternion.
         - **Returns** a new quaternion, the reciprocated quaternion.
-        - If the quaternion is zero, the original quaternion will be returned.
+        - **Degenerate cases**:
+          - If the quaternion is zero, the original quaternion will be returned.
     - `normalize()`
         - Normalizes the quaternion.
         - **Returns** a reference to the quaternion, this allows for chaining of the method.

@@ -25,6 +25,8 @@ int main() {
     // Create a sphere
     sphere sphere(1.0, bardrix::point3(0.0, 0.0, 3.0));
 
+    // [&camera, &sphere] is a capture list, this means we can access those objects outside the lambda
+    // If you'd want to add a light you'd have to add this to the capture list too.
     window.on_paint = [&camera, &sphere](bardrix::window* window, std::vector<uint32_t>& buffer) {
         // Go through all the pixels
         for (int y = 0; y < window->get_height(); y++) {
@@ -43,9 +45,11 @@ int main() {
                 bardrix::color color = bardrix::color::black();
 
                 // If the ray intersects the sphere, paint the pixel white
-                if (intersection.has_value())
+                if (intersection.has_value()) {
                     color = bardrix::color::white();
+                }
 
+                // Set the pixel
                 buffer[y * window->get_width() + x] = color.argb(); // ARGB is the format used by Windows API
             }
         }

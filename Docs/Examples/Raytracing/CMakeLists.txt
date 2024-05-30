@@ -3,11 +3,11 @@ project(Raytracing)
 
 include(FetchContent) # Include the FetchContent module
 
-# Add Bardrix as a subdirectory
+# Clone the Bardrix library
 FetchContent_Declare(
         Bardrix
         GIT_REPOSITORY https://github.com/bardobard/Bardrix.git
-        GIT_TAG v0.2.0
+        GIT_TAG v0.3.0
 )
 
 FetchContent_MakeAvailable(Bardrix)
