@@ -4,9 +4,14 @@
 
 #include "sphere.h"
 
+
+sphere::sphere() : sphere(1.0, bardrix::point3(0, 0, 0)) {}
+
 sphere::sphere(double radius) : sphere(radius, bardrix::point3(0, 0, 0)) {}
 
-sphere::sphere(double radius, const bardrix::point3& position) : radius_(radius), position_(position) {}
+sphere::sphere(double radius, const bardrix::point3& position) : sphere(radius, position, bardrix::material()) {}
+
+sphere::sphere(double radius, const bardrix::point3& position, const bardrix::material& material) : radius_(radius), position_(position), material_(material) {}
 
 void sphere::set_material(const bardrix::material& material) { this->material_ = material; }
 
@@ -16,8 +21,8 @@ void sphere::set_position(const bardrix::point3& position) { this->position_ = p
 
 const bardrix::point3& sphere::get_position() const { return position_; }
 
-bardrix::vector3 sphere::normal_at(const bardrix::point3& point) const {
-    return position_.vector_to(point).normalized();
+bardrix::vector3 sphere::normal_at(const bardrix::point3& intersection) const {
+    return position_.vector_to(intersection).normalized();
 }
 
 std::optional<bardrix::point3> sphere::intersection(const bardrix::ray& ray) const {

@@ -30,41 +30,42 @@ namespace bardrix {
         ///        Diffuse light is the light that is reflected off the surface of the object
         ///        Think of it as light that is scattered in all directions when it hits the object
         /// \details Diffuse light has to be between 0 and 1, where 0 is no diffuse light and 1 is full diffuse light
-        /// \note Diffuse light is the opposite of specular light, both components add up to 1
         double diffuse_ = 1;
 
         /// \brief The specular coefficient, between 0 and 1
         ///        Specular light is the light that is reflected off the surface of the object in a mirror-like way
         ///        Think of it as the light that is reflected in a specific direction when it hits the object
         /// \details Specular light has to be between 0 and 1, where 0 is no specular light and 1 is full specular light
-        /// \note Specular light is the opposite of diffuse light, both components add up to 1
         double specular_ = 0;
 
-        /// \brief The shininess coefficient, between 0 and infinity
+        /// \brief The shininess coefficient, between 1 and infinity
         ///        Shininess is the size of the specular highlight
         ///        Think of it as the size of the reflection of the light
-        /// \details Shininess has to be between 0 and infinity, where 0 is no shininess and 1 is full shininess
+        /// \details Shininess has to be between 1 and infinity, where 1 leads to broad highlights and infinity leads to sharp highlights
         double shininess_ = 0;
 
     public:
         /// \brief Default constructor for material
         /// \note The default material is white with no ambient, full diffuse, no specular and no shininess
-        material() = default;
+        material() noexcept;
 
         /// \brief Constructor for material
-        /// \param ambient The ambient coefficient
-        /// \param diffuse The diffuse coefficient, the specular coefficient will be set to 1 - diffuse
-        /// \param shininess The shininess coefficient
-        /// \example material material(0.5, 0.1, 0.5); -> color = white, ambient = 0.5, diffuse = 0.1, specular = 0.9, shininess = 0.5
-        material(double ambient, double diffuse, double shininess);
+        /// \param ambient The ambient coefficient [0, 1]
+        /// \param diffuse The diffuse coefficient [0, 1]
+        /// \param specular The specular coefficient [0, 1]
+        /// \param shininess The shininess coefficient [1, infinity]
+        /// \example material material(0.5, 0.1, 0.9, 50); -> color = white, ambient = 0.5, diffuse = 0.1, specular = 0.9, shininess = 50
+        material(double ambient, double diffuse, double specular, double shininess) noexcept;
 
         /// \brief Constructor for material
+        /// \param ambient The ambient coefficient [0, 1]
+        /// \param diffuse The diffuse coefficient [0, 1]
+        /// \param specular The specular coefficient [0, 1]
+        /// \param shininess The shininess coefficient [1, infinity]
         /// \param color The color of the material
-        /// \param ambient The ambient coefficient
-        /// \param diffuse The diffuse coefficient, the specular coefficient will be set to 1 - diffuse
-        /// \param shininess The shininess coefficient
-        /// \example material material(color::red(), 0.5, 0.1, 0.5); -> color = red, ambient = 0.5, diffuse = 0.1, specular = 0.9, shininess = 0.5
-        material(const bardrix::color& color, double ambient, double diffuse, double shininess);
+        /// \example material material(color::red(), 0.5, 0.1, 0.9, 50); -> color = red, ambient = 0.5, diffuse = 0.1, specular = 0.9, shininess = 50
+        material(double ambient, double diffuse, double specular, double shininess,
+                 const bardrix::color& color) noexcept;
 
         /// \brief Gets the ambient coefficient
         /// \return The ambient coefficient, between 0 and 1
@@ -82,13 +83,12 @@ namespace bardrix {
         /// \return The diffuse coefficient, between 0 and 1
         NODISCARD double get_diffuse() const;
 
-        /// \brief Sets the diffuse and specular coefficients
+        /// \brief Sets the diffuse
         /// \param diffuse The diffuse coefficient
-        /// \details This method sets the diffuse and specular coefficients, ensuring that they add up to 1
         /// \note If the diffuse coefficient is less than 0, it will be set to 0
         /// \note If the diffuse coefficient is greater than 1, it will be set to 1
-        /// \example material.set_diffuse(0.5); -> diffuse = 0.5, specular = 0.5
-        /// \example material.set_diffuse(0.8); -> diffuse = 0.8, specular = 0.2
+        /// \example material.set_diffuse(0.5); -> diffuse = 0.5
+        /// \example material.set_diffuse(1.8); -> diffuse = 1
         void set_diffuse(double diffuse);
 
         /// \brief Gets the specular coefficient
@@ -97,25 +97,22 @@ namespace bardrix {
 
         /// \brief Sets the specular coefficient
         /// \param specular The specular coefficient
-        /// \details This method sets the specular and diffuse coefficients, ensuring that they add up to 1
         /// \note If the specular coefficient is less than 0, it will be set to 0
         /// \note If the specular coefficient is greater than 1, it will be set to 1
-        /// \example material.set_specular(0.5); -> diffuse = 0.5, specular = 0.5
-        /// \example material.set_specular(0.8); -> diffuse = 0.2, specular = 0.8
+        /// \example material.set_specular(0.5); -> specular = 0.5
+        /// \example material.set_specular(1.8); -> specular = 1
         void set_specular(double specular);
 
         /// \brief Gets the shininess coefficient
-        /// \return The shininess coefficient, between 0 and infinity
+        /// \return The shininess coefficient, between 1 and infinity
         NODISCARD double get_shininess() const;
 
         /// \brief Sets the shininess coefficient
         /// \param shininess The shininess coefficient
         /// \note If the shininess coefficient is less than 0, it will be set to 0
-        /// \note If the shininess coefficient is greater than 1, it will be set to 1
-        /// \example material.set_shininess(0.5); -> shininess = 0.5
-        /// \example material.set_shininess(1.8); -> shininess = 1
+        /// \example material.set_shininess(0.5); -> shininess = 1
+        /// \example material.set_shininess(50); -> shininess = 50
         void set_shininess(double shininess);
-
     };
 
     /// \brief A pure virtual class for a 3D shape

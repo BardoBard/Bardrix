@@ -144,17 +144,52 @@ TEST(vector3, angle_orthogonal) {
 
 /// \brief Test the reflection of a vector
 TEST(vector3, reflection) {
-    bardrix::vector3 v1(1, 2, 3);
-    bardrix::vector3 normal(0, 0, 1);
+    bardrix::vector3 rotation_vector = {1, 2, 3};
+    bardrix::vector3 vector = {4, 5, 6};
 
-    std::optional<bardrix::vector3> result = v1.reflection(normal);
-    EXPECT_TRUE(result.has_value());
-    ASSERT_TRUE(bardrix::nearly_equal(result->length_squared(), 1));
-    EXPECT_EQ(result.value(), bardrix::vector3(1, 2, -3).normalized());
+    std::optional<bardrix::vector3> result = vector.reflection(rotation_vector);
+
+    ASSERT_TRUE(result.has_value());
+    ASSERT_EQ(*result, bardrix::vector3(0.5714, 4.1428, 7.7143));
+}
+
+/// \brief Test the reflection of a vector with different values
+TEST(vector3, reflection2) {
+    bardrix::vector3 rotation_vector = {1, 0,0};
+    bardrix::vector3 vector = {1, 2, 3};
+
+    std::optional<bardrix::vector3> result = vector.reflection(rotation_vector);
+
+    ASSERT_TRUE(result.has_value());
+    ASSERT_EQ(*result, bardrix::vector3(1, -2, -3));
+}
+
+/// \brief Test the reflection of a vector with vector being zero
+TEST(vector3, reflection_degenerate) {
+    bardrix::vector3 rotation_vector = {1, 2, 3};
+    bardrix::vector3 vector = {0, 0, 0};
+
+    std::optional<bardrix::vector3> result = vector.reflection(rotation_vector);
+
+    EXPECT_FALSE(result.has_value());
+}
+
+/// \brief Test the reflection of a vector with rotation vector being zero
+TEST(vector3, reflection_degenerate2) {
+    bardrix::vector3 rotation_vector = {0, 0, 0};
+    bardrix::vector3 vector = {4, 5, 6};
+
+    std::optional<bardrix::vector3> result = vector.reflection(rotation_vector);
+    ASSERT_FALSE(result.has_value());
+
+    rotation_vector = {-23,52,0};
+    result = vector.reflection(rotation_vector);
+    ASSERT_TRUE(result.has_value());
+    ASSERT_EQ(*result, bardrix::vector3(-6.3903, 0.40426, -6));
 }
 
 /// \brief Test the reflection of a vector with the vector behind the normal and other degenerate cases
-TEST(vector3, reflection_degenerate) {
+TEST(vector3, reflection_degenerate3) {
     bardrix::vector3 v1(1, 2, 3);
     bardrix::vector3 normal(0, 0, -1);
 
