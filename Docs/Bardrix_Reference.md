@@ -7,7 +7,7 @@
     - [point3](#point3)
     - [ray](#ray)
     - [dimension4](#dimension4)
-    - [Quaternion](#quaternion)
+    - [quaternion](#quaternion)
 - [View](#view)
     - [Light](#light)
     - [Color](#color)
@@ -213,7 +213,7 @@ Copy and move constructors are implicitly defined.
     - `reflection(normal : vector3)`
         - [Reflects](Mathematics.md#reflection) the vector about a normal vector.
         - The normal and vector will be normalized for you.
-        - **Returns** a new vector, the reflected vector will have a length of 1.
+        - **Returns** a new vector, the reflected vector will have a length equal to the original vector.
         - If any degenerate cases are met, the function will return an std::nullopt
         - **Degenerate cases**:
             - The vector and normal vector must have a length greater than zero.
@@ -403,7 +403,7 @@ It has base variables for `x`, `y`, `z`, and `w`.
           function.
         - **Returns** a reference to the output stream.
 
-### Quaternion
+### quaternion
 
 A 4D quaternion class that has a real and imaginary part. \
 It's main purpose is for rotation in 3D space; it can be used for other mathematical purposes too. \
@@ -750,10 +750,9 @@ It has a color, ambient, diffuse, specular, shininess.
 
 - Constructors:
     - Default constructor
-        - Initializes the material to a white color, ambient of 0, diffuse of 1, specular of 0, and shininess of 0.
+        - Initializes the material to a white color, ambient of 0, diffuse of 1, specular of 0, and shininess of 1.
     - Parameterized constructor
-        - Initializes the material to the given color, ambient, diffuse and shininess. Where specular is set to inverse of
-          the diffuse.
+        - Initializes the material to the given color, ambient, diffuse and shininess.
         - Initializes the material to the given color, ambient, diffuse, specular and shininess.
 - Setters/Getters:
   - `set_ambient(ambient : double)`
@@ -763,21 +762,18 @@ It has a color, ambient, diffuse, specular, shininess.
           - If the ambient is greater than one, it will be set to one.
   - `set_diffuse(diffuse : double)`
       - Sets the diffuseness of the material.
-      - Sets the specular to the inverse of the diffuse e.g. if the diffuse is 0.2, the specular will be 0.8.
       - **Degenerate cases**:
           - If the diffuse is less than zero, it will be set to zero.
           - If the diffuse is greater than one, it will be set to one.
   - `set_specular(specular : double)`
       - Sets the specularness of the material.
-      - Sets the diffuse to the inverse of the specular e.g. if the specular is 0.8, the diffuse will be 0.2.
       - **Degenerate cases**:
           - If the specular is less than zero, it will be set to zero.
           - If the specular is greater than one, it will be set to one.
   - `set_shininess(shininess : double)`
       - Sets the shininess of the material.
       - **Degenerate cases**:
-          - If the shininess is less than zero, it will be set to zero.
-          - If the shininess is greater than 1, it will be set to 1.
+          - If the shininess is less than one, it will be set to one.
   - `get_ambient()`
       - **Returns** the ambience of the material.
   - `get_diffuse()`

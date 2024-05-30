@@ -26,12 +26,20 @@ int main() {
     sphere sphere(1.0, bardrix::point3(0.0, 0.0, 3.0));
 
     window.on_paint = [&camera, &sphere](bardrix::window* window, std::vector<uint32_t>& buffer) {
-        // Draw the sphere
+        // Go through all the pixels
         for (int y = 0; y < window->get_height(); y++) {
             for (int x = 0; x < window->get_width(); x++) {
-                bardrix::ray ray = *camera.shoot_ray(x, y, 10);
-                auto intersection = sphere.intersection(ray);
 
+                // Shoot a ray from the camera to the pixel
+                bardrix::ray ray = *camera.shoot_ray(x, y, 10);
+
+                // Optional means that we can or cannot have a value
+                // In order to check if the optional has a value, we use the has_value() method
+                // If the optional has a value, we can access it using the value() method
+                // E.g. intersection.value() -> bardrix::point3
+                std::optional<bardrix::point3> intersection = sphere.intersection(ray);
+
+                // Default color is black
                 bardrix::color color = bardrix::color::black();
 
                 // If the ray intersects the sphere, paint the pixel white
