@@ -9,6 +9,7 @@
 #include <bardrix/color.h>
 
 #undef UNICODE // This is for the window class to work with char* instead of wchar_t* (unicode)
+#define NOMINMAX // This is to avoid the min and max macros from windows.h
 #include <Windows.h>
 
 #include <cstdint>
