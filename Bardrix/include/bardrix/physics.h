@@ -8,12 +8,23 @@
 
 namespace bardrix {
 
+    /// \brief Mass, can be expressed in kg
     typedef double mass;
-    typedef double velocity;
-    typedef double force;
+
+    /// \brief Time, can be expressed in s
     typedef double time;
+
+    /// \brief Distance, can be expressed in m
     typedef double distance;
+
+    /// \brief Velocity, can be expressed in m/s
+    typedef double velocity;
+
+    /// \brief Acceleration, can be expressed in m/s^2
     typedef double acceleration;
+
+    /// \brief Force, can be expressed in N (kg*m/s^2)
+    typedef double force;
 
     /// \brief The Universal Gravitational Constant (6.67430e-11 m^3 kg^-1 s^-2)
     /// \details This value can be changed if you want to simulate different gravity
@@ -59,7 +70,7 @@ namespace bardrix {
     /// \brief Calculate the Universal Gravitational Force using the formula F = G * (m1 * m2) / r^2
     /// \param m1 Mass object 1                                     (e.g. kg)
     /// \param m2 Mass object 2                                     (e.g. kg)
-    /// \param d Distance between center of masses of the objects   (e.g. m)
+    /// \param d Distance between centroid of masses of the objects (e.g. m)
     /// \return Force exerted between the two objects               (e.g. N (kg*m/s^2))
     /// \details G is the Universal Gravitational Constant, change it for different gravity
     /// \note Isaac Newton's law of universal gravitation
@@ -68,7 +79,7 @@ namespace bardrix {
 
     /// \brief Calculate the escape velocity using the formula v = sqrt(2 * G * m / r)
     /// \param m Main body mass                                             (e.g. kg)
-    /// \param r Radius of the main body                                    (e.g. m)
+    /// \param r Distance from centroid to the object                       (e.g. m)
     /// \return The escape velocity                                         (e.g. m/s)
     /// \details The escape velocity is the minimum velocity needed for an object to escape the gravitational influence of a massive body
     /// \details G is the Universal Gravitational Constant, change it for different gravity
@@ -77,7 +88,7 @@ namespace bardrix {
 
     /// \brief Calculate the orbital velocity using the formula v = sqrt(G * m / r)
     /// \param m Main body mass                                             (e.g. kg)
-    /// \param d Distance from the center of the main body to the object    (e.g. m)
+    /// \param d Distance from the centroid of the main body to the object  (e.g. m)
     /// \return The orbital velocity                                        (e.g. m/s)
     /// \details The orbital velocity is the velocity needed for an object to stay in orbit around a massive body
     /// \details G is the Universal Gravitational Constant, change it for different gravity

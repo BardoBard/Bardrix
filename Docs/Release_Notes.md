@@ -3,6 +3,7 @@
 ## Overview
 
 Added color blending to `color`. \
+Added physics (conversion calculations + gravity calculations). \
 Solved issues [36](https://github.com/BardoBard/Bardrix/issues/36) and [37](https://github.com/BardoBard/Bardrix/issues/37).
 
 **Full Changelog**: https://github.com/BardoBard/Bardrix/compare/v0.3.0...v0.3.1
@@ -11,7 +12,7 @@ Solved issues [36](https://github.com/BardoBard/Bardrix/issues/36) and [37](http
 
 Renamed a classes in [Bardrix_Reference](https://github.com/bardobard/bardrix/blob/v0.3.1/Docs/Bardrix_Reference.md) to
 be lowercase instead of uppercase. \
-Added color blending
+Added color blending and physics
 to [Bardrix_Reference](https://github.com/bardobard/bardrix/blob/v0.3.1/Docs/Bardrix_Reference.md). \
 Added `#define NOMINMAX`
 to [window.h](https://github.com/bardobard/bardrix/blob/v0.3.1/Docs/Examples/Raytracing/window.h) to fix an issue with
@@ -22,11 +23,13 @@ Updated the versions in examples (cmake).
 
 ### Major Changes
 
-Added color blending to [color](https://github.com/bardobard/bardrix/blob/v0.3.1/Bardrix/include/bardrix/color.h).
+Added color blending to [color](https://github.com/bardobard/bardrix/blob/v0.3.1/Bardrix/include/bardrix/color.h). \
+Added physics to [physics](https://github.com/bardobard/bardrix/blob/v0.3.1/Bardrix/include/bardrix/physics.h).
 
 ## Test Changes
 
-Added tests for color blending.
+Added tests for color blending. \
+Added tests for physics.
 
 # [v0.3.0](https://github.com/BardoBard/Bardrix/releases/tag/v0.3.0)
 
