@@ -13,6 +13,15 @@
 #include <climits>
 #include <algorithm>
 
+// C++20 feature
+#if __cplusplus > 201703L
+    #define UNLIKELY [[unlikely]]
+    #define LIKELY [[likely]]
+#else
+    #define UNLIKELY
+    #define LIKELY
+#endif
+
 #define NODISCARD [[nodiscard]]
 #define INLINE inline
 
