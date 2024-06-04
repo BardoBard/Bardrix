@@ -80,6 +80,52 @@ TEST(color, grayscaled) {
     EXPECT_EQ(bardrix::color(34, 12, 72, 255).grayscaled().abgr(), 0xFF191919); // Random
 }
 
+/// \brief Test blending of colors
+TEST(color, blend) {
+    bardrix::color c1(255, 255, 255, 255);
+    bardrix::color c2(4, 255, 53, 255);
+    bardrix::color c3(4, 34, 53, 255);
+
+    c1.blend(c2);
+    EXPECT_EQ(c1.rgba(), 0x81FF9AFF);
+
+    c1 = bardrix::color(255, 255, 255, 255);
+    c2.blend(c1);
+    EXPECT_EQ(c2.rgba(), 0x81FF9AFF);
+
+    c2 = bardrix::color(4, 255, 53, 255);
+    c2.blend(c3);
+    EXPECT_EQ(c2.rgba(), 0x049035FF);
+
+    c2 = bardrix::color(4, 255, 53, 255);
+    c3.blend(c2);
+    EXPECT_EQ(c3.rgba(), 0x049035FF);
+
+    c3 = bardrix::color(4, 34, 53, 255);
+    c1.blend(c3);
+    EXPECT_EQ(c1.rgba(), 0x81909AFF);
+
+    c1 = bardrix::color(255, 255, 255, 255);
+    c3.blend(c1);
+    EXPECT_EQ(c3.rgba(), 0x81909AFF);
+}
+
+/// \brief Test blending of colors
+TEST(color, blended) {
+    bardrix::color c1(255, 255, 255, 255);
+    bardrix::color c2(4, 255, 53, 255);
+    bardrix::color c3(4, 34, 53, 255);
+
+    EXPECT_EQ(c1.blended(c2).rgba(), 0x81FF9AFF);
+    EXPECT_EQ(c2.blended(c1).rgba(), 0x81FF9AFF);
+
+    EXPECT_EQ(c2.blended(c3).rgba(), 0x049035FF);
+    EXPECT_EQ(c3.blended(c2).rgba(), 0x049035FF);
+
+    EXPECT_EQ(c1.blended(c3).rgba(), 0x81909AFF);
+    EXPECT_EQ(c3.blended(c1).rgba(), 0x81909AFF);
+}
+
 /// \brief Test the get rgba method
 TEST(color, rgba) {
     bardrix::color c1(255, 255, 255, 255);

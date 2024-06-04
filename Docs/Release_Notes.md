@@ -1,3 +1,33 @@
+# [v0.3.1](https://github.com/BardoBard/Bardrix/releases/tag/v0.3.1)
+
+## Overview
+
+Added color blending to `color`. \
+Solved issues [36](https://github.com/BardoBard/Bardrix/issues/36) and [37](https://github.com/BardoBard/Bardrix/issues/37).
+
+**Full Changelog**: https://github.com/BardoBard/Bardrix/compare/v0.3.0...v0.3.1
+
+## Documentation Changes
+
+Renamed a classes in [Bardrix_Reference](https://github.com/bardobard/bardrix/blob/v0.3.1/Docs/Bardrix_Reference.md) to
+be lowercase instead of uppercase. \
+Added color blending
+to [Bardrix_Reference](https://github.com/bardobard/bardrix/blob/v0.3.1/Docs/Bardrix_Reference.md). \
+Added `#define NOMINMAX`
+to [window.h](https://github.com/bardobard/bardrix/blob/v0.3.1/Docs/Examples/Raytracing/window.h) to fix an issue with
+`min` and `max` being defined in `windows.h`. \
+Updated the versions in examples (cmake).
+
+## Code Changes
+
+### Major Changes
+
+Added color blending to [color](https://github.com/bardobard/bardrix/blob/v0.3.1/Bardrix/include/bardrix/color.h).
+
+## Test Changes
+
+Added tests for color blending.
+
 # [v0.3.0](https://github.com/BardoBard/Bardrix/releases/tag/v0.3.0)
 
 Major changes to the API have been made regarding `material` and `vector3::reflection`.
@@ -267,7 +297,8 @@ The changes have no backward compatibility issues, as the changes are new featur
 
 Added [Bardrix_Reference](https://github.com/bardobard/bardrix/blob/v0.0.5/Docs/Bardrix_Reference.md) that contains all
 the functions and classes in Bardrix. \
-Added [Mathematics](https://github.com/bardobard/bardrix/blob/v0.0.5/Docs/Mathematics.md) that contains mathematical functions to learn about the mathematics used in
+Added [Mathematics](https://github.com/bardobard/bardrix/blob/v0.0.5/Docs/Mathematics.md) that contains mathematical
+functions to learn about the mathematics used in
 Bardrix. \
 Added [Introduction](https://github.com/bardobard/bardrix/blob/v0.0.5/Docs/Introduction.md) that contains a brief
 introduction to Bardrix. \

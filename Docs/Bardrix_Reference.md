@@ -9,12 +9,12 @@
     - [dimension4](#dimension4)
     - [quaternion](#quaternion)
 - [View](#view)
-    - [Light](#light)
-    - [Color](#color)
-    - [Camera](#camera)
+    - [light](#light)
+    - [color](#color)
+    - [camera](#camera)
 - [Objects](#objects)
-    - [Material](#material)
-    - [Shape](#shape)
+    - [material](#material)
+    - [shape](#shape)
 
 ## Bardrix
 
@@ -499,7 +499,7 @@ This includes the camera, light, color etc.
 
 ![bardrix-view.png](Images/bardrix-view.png)
 
-### Light
+### light
 
 A class that represents a light source in the scene. \
 It has a position, color, and intensity.
@@ -545,7 +545,7 @@ It has a position, color, and intensity.
         - Outputs the components of the light to the output stream.
         - **Returns** a reference to the output stream.
 
-### Color
+### color
 
 A class that represents a color in the scene. \
 It has red, green, blue, and alpha components.
@@ -610,6 +610,16 @@ It has red, green, blue, and alpha components.
         - Formula: 0.299 * r + 0.587 * g + 0.114 * b for the red, green, and blue components; the alpha component
           will remain the same.
         - **Returns** a new color, the grayscaled color.
+    - `blend(color : color)`
+      - Blends the color with another color.
+      - The result is rounded down, meaning (12,12,12,12) blend with (13,13,13,13) you'd get (12,12,12,12).
+      - Blends the color with another color using r = (r + other.r) / 2 for all components (b = (b + other.b))
+      - **Returns** a reference to the color, this allows for chaining of the method.
+    - `blended(color : color)`
+      - Blends the color with another color.
+      - The result is rounded down, meaning (12,12,12,12) blended with (13,13,13,13) you'd get (12,12,12,12).
+      - Blends the color with another color using r = (r + other.r) / 2 for all components (b = (b + other.b)).
+      - **Returns** a new color, the blended color.
     - `print(std::ostream &os)`
         - Outputs the components of the color to the output stream.
         - **Returns** a reference to the output stream. (r, g, b, a)
@@ -697,7 +707,7 @@ It has red, green, blue, and alpha components.
         - **Returns** a reference to the output stream.
         - The output will be in the format (r, g, b, a)
 
-### Camera
+### camera
 
 A class that represents a camera in 3D space. \
 It has a position, direction, field of view and width/height of the image.
@@ -756,7 +766,7 @@ This part includes classes that are object based, like material, spheres, triang
 
 ![bardrix-objects.png](Images/bardrix-objects.png)
 
-### Material
+### material
 
 A class that represents a material for an object in the scene. \
 It has a color, ambient, diffuse, specular, shininess.
@@ -796,7 +806,7 @@ It has a color, ambient, diffuse, specular, shininess.
   - `get_shininess()`
       - **Returns** the shininess of the material.
 
-### Shape
+### shape
 
 Abstract class, only used for inheritance, serves as a base for all the shapes; like `sphere` and `triangle`. \
 It has a material, position and a method to check if a ray intersects with the shape.

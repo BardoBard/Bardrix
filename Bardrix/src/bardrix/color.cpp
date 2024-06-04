@@ -82,6 +82,20 @@ namespace bardrix {
         return gray;
     }
 
+    color& color::blend(const color& other) noexcept {
+        c_union_.r_g_b_a.r = (static_cast<int>(c_union_.r_g_b_a.r) + static_cast<int>(other.r())) / 2;
+        c_union_.r_g_b_a.g = (static_cast<int>(c_union_.r_g_b_a.g) + static_cast<int>(other.g())) / 2;
+        c_union_.r_g_b_a.b = (static_cast<int>(c_union_.r_g_b_a.b) + static_cast<int>(other.b())) / 2;
+        c_union_.r_g_b_a.a = (static_cast<int>(c_union_.r_g_b_a.a) + static_cast<int>(other.a())) / 2;
+        return *this;
+    }
+
+    color color::blended(const color& other) const noexcept {
+        color result = *this;
+        result.blend(other);
+        return result;
+    }
+
     // Operators
 
     color color::operator+(const color& other) const noexcept {
