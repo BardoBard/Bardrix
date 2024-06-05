@@ -1,7 +1,8 @@
 # Bardrix Reference
 
 - [Math](#math)
-    - [Math](#math-1)
+    - [math](#math-1)
+    - [physics](#physics)
     - [dimension3](#dimension3)
     - [vector3](#vector3)
     - [point3](#point3)
@@ -28,7 +29,7 @@ There are a few classes that are used for mathematics, these make the foundation
 
 ![bardrix-math.png](Images/bardrix-math.png)
 
-### Math
+### math
 
 There are a few pre-defined constants and functions that are used throughout the library.
 
@@ -86,6 +87,87 @@ There are a few pre-defined constants and functions that are used throughout the
 All comparison functions in `bardrix` use the comparison functions in `math` to compare the numbers, changing the
 epsilon value will change the comparison value for all the classes.
 
+### physics
+
+- Typedefs:
+    - `mass`
+        - A typedef for the mass (kilograms).
+        - `double`
+    - `time`
+        - A typedef for the time (seconds).
+        - `double`
+    - `distance`
+        - A typedef for the distance (meters).
+        - `double`
+    - `velocity`
+        - A typedef for the velocity (meters per second).
+        - `double`
+    - `acceleration`
+        - A typedef for the acceleration (meters per second squared).
+        - `double`
+    - `force`
+        - A typedef for the force (newtons).
+        - `double`
+- Constants:
+    - `universal_gravitational_constant`
+        - The universal gravitational constant.
+        - `6.67430e-11`
+- Methods:
+    - `calculate_force(m : mass, a : acceleration)`
+        - Calculates the force using the formula `F = m * a`.
+        - **Returns** the force.
+    - `calculate_mass(f : force, a : acceleration)`
+        - Calculates the mass using the formula `m = F / a`.
+        - **Returns** the mass.
+        - **Degenerate cases**:
+            - If acceleration is zero, aka dividing by zero, the function will throw an std::invalid_argument exception.
+    - `calculate_acceleration(f : force, m : mass)`
+        - Calculates the acceleration using the formula `a = F / m`.
+        - **Returns** the acceleration.
+        - **Degenerate cases**:
+            - If mass is zero, aka dividing by zero, the function will throw an std::invalid_argument exception.
+    - `calculate_velocity(a : acceleration, t : time)`
+        - Calculates the velocity using the formula `v = a * t`.
+        - **Returns** the velocity.
+    - `calculate_velocity(f : force, m : mass, t : time)`
+        - Calculates the velocity using the formula `v = (F / m) * t`.
+        - **Returns** the velocity.
+        - **Degenerate cases**:
+            - If mass is zero, aka dividing by zero, the function will throw an std::invalid_argument exception.
+    - `calculate_distance(v : velocity, t : time)`
+        - Calculates the distance using the formula `d = v * t`.
+        - **Returns** the distance.
+    - `calculate_gravity(m1 : mass, m2 : mass, d : distance)`
+        - Calculates the gravitational force between two masses using the formula `F = G * (m1 * m2) / d^2`.
+        - Where G is the universal gravitational constant, which is defined
+          in `bardrix::universal_gravitational_constant`, changing this value will change the gravitational constant for
+          all the classes.
+        - `m1` and `m2` are the masses of the two objects.
+        - `d` is the distance between the two objects with regard to the centroid.
+        - **Returns** the force applied on m1 and m2.
+        - **Degenerate cases**:
+            - If the distance is zero, aka dividing by zero, the function will throw an std::invalid_argument exception.
+    - `calculate_escape_velocity(m : mass, r : distance)`
+        - Calculates the escape velocity using the formula `v = sqrt(2 * G * m / r)`.
+        - Where G is the universal gravitational constant, which is defined
+          in `bardrix::universal_gravitational_constant`, changing this value will change the gravitational constant for
+          all the classes.
+        - `m` is the mass of the object.
+        - `r` is the distance from the centroid to the surface of the object.
+        - **Returns** the escape velocity.
+        - **Degenerate cases**:
+            - If the distance is zero, aka dividing by zero, the function will throw an std::invalid_argument exception.
+    - `calculate_orbital_velocity(m : mass, d : distance)`
+        - Calculates the orbital velocity using the formula `v = sqrt(G * m / d)`.
+        - Where G is the universal gravitational constant, which is defined
+          in `bardrix::universal_gravitational_constant`, changing this value will change the gravitational constant for
+          all the classes.
+        - `m` is the mass of the object.
+        - `d` is the distance from the centroid to the object.
+        - **Returns** the orbital velocity.
+        - **Degenerate cases**:
+            - If the distance is zero, aka dividing by zero, the function will throw an std::invalid_argument exception.
+
 ### dimension3
 
 Abstract class, only used for inheritance, serves as a base for 3D classes; like `vector3` and `point3`. \
@@ -111,12 +193,12 @@ It has base variables for `x`, `y` and `z`.
         - Divides the components of the `dimension3` object by the scalar `double` value.
         - **Returns** a new `dimension3` object.
         - **Degenerate cases**:
-          - When dividing by zero, the function will throw an std::invalid_argument exception.
+            - When dividing by zero, the function will throw an std::invalid_argument exception.
     - `%`
         - Calculates the modulus of the components of the `dimension3` object by the scalar `double` value.
         - **Returns** a new `dimension3` object.
         - **Degenerate cases**:
-          - When dividing by zero, the function will throw an std::invalid_argument exception.
+            - When dividing by zero, the function will throw an std::invalid_argument exception.
     - `+=`
         - Adds the components of the two of the same `dimension3` objects.
         - Adds the components of the `dimension3` object to the scalar `double` value, either order.
@@ -132,12 +214,12 @@ It has base variables for `x`, `y` and `z`.
         - Divides the components of the `dimension3` object by the scalar `double` value.
         - **Returns** a reference to the `dimension3` object.
         - **Degenerate cases**:
-          - When dividing by zero, the function will throw an std::invalid_argument exception.
+            - When dividing by zero, the function will throw an std::invalid_argument exception.
     - `%=`
         - Calculates the modulus of the components of the `dimension3` object by the scalar `double` value.
         - **Returns** a reference to the `dimension3` object.
         - **Degenerate cases**:
-          - When dividing by zero, the function will throw an std::invalid_argument exception.
+            - When dividing by zero, the function will throw an std::invalid_argument exception.
     - `==`
         - Compares the components of the two of the same `dimension3` objects.
         - Compares the components of the `dimension3` object to the scalar `double` value, only `dimension3 == double`
@@ -199,12 +281,12 @@ Copy and move constructors are implicitly defined.
         - [Normalizes](Mathematics.md#normalization) the vector and
         - **Returns** a reference to the vector, this allows for chaining of the method.
         - **Degenerate cases**:
-          - When the length of the vector is zero, it will return the original vector.
+            - When the length of the vector is zero, it will return the original vector.
     - `normalized()`
         - [Normalizes](Mathematics.md#normalization) the vector.
         - **Returns** a new vector that is normalized.
         - **Degenerate cases**:
-          - When the length of the vector is zero, it will return the original vector.
+            - When the length of the vector is zero, it will return the original vector.
     - `dot(vector : vector3)`
         - Calculates the [dot product](Mathematics.md#dot-product) of the vector with another vector.
         - **Returns** the dot product of the two vectors.
@@ -298,7 +380,7 @@ Copy and move constructors are implicitly defined.
     - `set_length(length : double)`
         - Sets the length of the ray.
         - **Degenerate cases**:
-          - If the length is less than zero, it will be set to zero.
+            - If the length is less than zero, it will be set to zero.
     - `get_direction()`
         - **Returns** the normalized direction of the ray.
     - `get_length()`
@@ -347,12 +429,12 @@ It has base variables for `x`, `y`, `z`, and `w`.
         - Divides the components of the `dimension4` object by the scalar `double` value.
         - **Returns** a new `dimension4` object.
         - **Degenerate cases**:
-          - When dividing by zero, the function will throw an std::invalid_argument exception.
+            - When dividing by zero, the function will throw an std::invalid_argument exception.
     - `%`
         - Calculates the modulus of the components of the `dimension4` object by the scalar `double` value.
         - **Returns** a new `dimension4` object.
         - **Degenerate cases**:
-          - When dividing by zero, the function will throw an std::invalid_argument exception.
+            - When dividing by zero, the function will throw an std::invalid_argument exception.
     - `+=`
         - Adds the components of the two of the same `dimension4` objects.
         - Adds the components of the `dimension4` object to the scalar `double` value, either order.
@@ -368,12 +450,12 @@ It has base variables for `x`, `y`, `z`, and `w`.
         - Divides the components of the `dimension4` object by the scalar `double` value.
         - **Returns** a reference to the `dimension4` object.
         - **Degenerate cases**:
-          - When dividing by zero, the function will throw an std::invalid_argument exception.
+            - When dividing by zero, the function will throw an std::invalid_argument exception.
     - `%=`
         - Calculates the modulus of the components of the `dimension4` object by the scalar `double` value.
         - **Returns** a reference to the `dimension4` object.
         - **Degenerate cases**:
-          - When dividing by zero, the function will throw an std::invalid_argument exception.
+            - When dividing by zero, the function will throw an std::invalid_argument exception.
     - `==`
         - Compares the components of the two of the same `dimension4` objects.
         - Compares the components of the `dimension4` object to the scalar `double` value, only `dimension4 == double`
@@ -444,12 +526,12 @@ Copy and move constructors are implicitly defined.
         - Calculates the reciprocal of the quaternion.
         - **Returns** a reference to the quaternion, this allows for chaining of the method.
         - **Degenerate cases**:
-          - If the quaternion is zero, the original quaternion will be returned.
+            - If the quaternion is zero, the original quaternion will be returned.
     - `reciprocated()`
         - Calculates the reciprocal of the quaternion.
         - **Returns** a new quaternion, the reciprocated quaternion.
         - **Degenerate cases**:
-          - If the quaternion is zero, the original quaternion will be returned.
+            - If the quaternion is zero, the original quaternion will be returned.
     - `normalize()`
         - Normalizes the quaternion.
         - **Returns** a reference to the quaternion, this allows for chaining of the method.
@@ -611,15 +693,15 @@ It has red, green, blue, and alpha components.
           will remain the same.
         - **Returns** a new color, the grayscaled color.
     - `blend(color : color)`
-      - Blends the color with another color.
-      - The result is rounded down, meaning (12,12,12,12) blend with (13,13,13,13) you'd get (12,12,12,12).
-      - Blends the color with another color using r = (r + other.r) / 2 for all components (b = (b + other.b))
-      - **Returns** a reference to the color, this allows for chaining of the method.
+        - Blends the color with another color.
+        - The result is rounded down, meaning (12,12,12,12) blend with (13,13,13,13) you'd get (12,12,12,12).
+        - Blends the color with another color using r = (r + other.r) / 2 for all components (b = (b + other.b))
+        - **Returns** a reference to the color, this allows for chaining of the method.
     - `blended(color : color)`
-      - Blends the color with another color.
-      - The result is rounded down, meaning (12,12,12,12) blended with (13,13,13,13) you'd get (12,12,12,12).
-      - Blends the color with another color using r = (r + other.r) / 2 for all components (b = (b + other.b)).
-      - **Returns** a new color, the blended color.
+        - Blends the color with another color.
+        - The result is rounded down, meaning (12,12,12,12) blended with (13,13,13,13) you'd get (12,12,12,12).
+        - Blends the color with another color using r = (r + other.r) / 2 for all components (b = (b + other.b)).
+        - **Returns** a new color, the blended color.
     - `print(std::ostream &os)`
         - Outputs the components of the color to the output stream.
         - **Returns** a reference to the output stream. (r, g, b, a)
@@ -726,7 +808,7 @@ It has a position, direction, field of view and width/height of the image.
     - `set_fov(fov : unsigned int)`
         - Sets the field of view of the camera in degrees.
         - **Degenerate cases**:
-            - If the field of view is greater than or equal  180, it will be set to 179; as this is the limit.
+            - If the field of view is greater than or equal 180, it will be set to 179; as this is the limit.
     - `set_width(width : unsigned int)`
         - Sets the width of the camera image.
         - **Degenerate cases**:
@@ -756,9 +838,9 @@ It has a position, direction, field of view and width/height of the image.
             - If the x or y is less than 0.
 - Operators:
     - `<<`
-        - Outputs the components of the camera to the output stream (Position: (x,y,z), Direction (x,y,z), width, height, fov).
+        - Outputs the components of the camera to the output stream (Position: (x,y,z), Direction (x,y,z), width,
+          height, fov).
         - **Returns** a reference to the output stream.
-
 
 ## Objects
 
@@ -778,33 +860,33 @@ It has a color, ambient, diffuse, specular, shininess.
         - Initializes the material to the given color, ambient, diffuse and shininess.
         - Initializes the material to the given color, ambient, diffuse, specular and shininess.
 - Setters/Getters:
-  - `set_ambient(ambient : double)`
-      - Sets the ambience of the material.
-      - **Degenerate cases**:
-          - If the ambient is less than zero, it will be set to zero.
-          - If the ambient is greater than one, it will be set to one.
-  - `set_diffuse(diffuse : double)`
-      - Sets the diffuseness of the material.
-      - **Degenerate cases**:
-          - If the diffuse is less than zero, it will be set to zero.
-          - If the diffuse is greater than one, it will be set to one.
-  - `set_specular(specular : double)`
-      - Sets the specularness of the material.
-      - **Degenerate cases**:
-          - If the specular is less than zero, it will be set to zero.
-          - If the specular is greater than one, it will be set to one.
-  - `set_shininess(shininess : double)`
-      - Sets the shininess of the material.
-      - **Degenerate cases**:
-          - If the shininess is less than one, it will be set to one.
-  - `get_ambient()`
-      - **Returns** the ambience of the material.
-  - `get_diffuse()`
-      - **Returns** the diffuseness of the material.
-  - `get_specular()`
-      - **Returns** the specularness of the material.
-  - `get_shininess()`
-      - **Returns** the shininess of the material.
+    - `set_ambient(ambient : double)`
+        - Sets the ambience of the material.
+        - **Degenerate cases**:
+            - If the ambient is less than zero, it will be set to zero.
+            - If the ambient is greater than one, it will be set to one.
+    - `set_diffuse(diffuse : double)`
+        - Sets the diffuseness of the material.
+        - **Degenerate cases**:
+            - If the diffuse is less than zero, it will be set to zero.
+            - If the diffuse is greater than one, it will be set to one.
+    - `set_specular(specular : double)`
+        - Sets the specularness of the material.
+        - **Degenerate cases**:
+            - If the specular is less than zero, it will be set to zero.
+            - If the specular is greater than one, it will be set to one.
+    - `set_shininess(shininess : double)`
+        - Sets the shininess of the material.
+        - **Degenerate cases**:
+            - If the shininess is less than one, it will be set to one.
+    - `get_ambient()`
+        - **Returns** the ambience of the material.
+    - `get_diffuse()`
+        - **Returns** the diffuseness of the material.
+    - `get_specular()`
+        - **Returns** the specularness of the material.
+    - `get_shininess()`
+        - **Returns** the shininess of the material.
 
 ### shape
 

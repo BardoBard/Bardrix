@@ -5,6 +5,7 @@
 #include <bardrix/quaternion.h>
 
 namespace bardrix {
+
     quaternion::quaternion() noexcept: quaternion(0, 0, 0, 0) {}
 
     quaternion::quaternion(double x, double y, double z, double w) noexcept {
