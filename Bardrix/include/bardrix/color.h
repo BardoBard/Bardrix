@@ -174,7 +174,7 @@ namespace bardrix {
         /// \param other The color to blend with.
         /// \return A reference to the current color after the blending.
         /// \note The result is rounded down.
-        /// \example my_red_color.blend(color(0, 255, 0, 255)) // (127, 127, 0, 255)
+        /// \example color(255, 0, 0, 255).blend(color(0, 255, 0, 255)) // (127, 127, 0, 255)
         color& blend(const color& other) noexcept;
 
         /// \brief Blends two colors.
