@@ -29,6 +29,10 @@ reflection. There is no ambient light in this scene.
 In the previous document we've already calculated the color of a pixel, now we're going to add highlights to it.
 
 ```cpp
+#include <bardrix/quaternion.h>
+```
+
+```cpp
 /// \brief Calculates the light intensity at a given intersection point
 /// \param shape The shape that was intersected
 /// \param light The light source

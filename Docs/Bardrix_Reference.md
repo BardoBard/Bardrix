@@ -345,15 +345,22 @@ Copy and move constructors are implicitly defined.
     - `vector_to(point : point3)`
         - Calculates the [point to vector](Mathematics.md#point-to-vector) from the point to another point.
         - **Returns** the vector from the point to the other point.
-    - `+`
-        - Allows for addition of a vector to a point.
-        - **Returns** a new point that is the result of the addition.
-    - `-`
-        - Allows for subtraction of a vector from a point.
-        - **Returns** a new point that is the result of the subtraction.
     - `print(std::ostream &os)`
         - Outputs the components of the point to the output stream.
         - **Returns** a reference to the output stream. (x, y, z)
+- Operators:
+    - `+`
+        - Allows for addition of a vector to a point.
+        - **Returns** a new point that is the result of the addition.
+    - `+=`
+        - Allows for addition of a vector to a point.
+        - **Returns** a reference to the point.
+    - `-`
+        - Allows for subtraction of a vector from a point.
+        - **Returns** a new point that is the result of the subtraction.
+    - `-=`
+        - Allows for subtraction of a vector from a point.
+        - **Returns** a reference to the point.
 
 ### ray
 

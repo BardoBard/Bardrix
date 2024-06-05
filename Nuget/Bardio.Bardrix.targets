@@ -3,6 +3,7 @@
 
     <ItemDefinitionGroup>
         <ClCompile>
+            <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
             <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
         </ClCompile>
     </ItemDefinitionGroup>
