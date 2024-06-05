@@ -170,6 +170,20 @@ namespace bardrix {
         /// \see https://en.wikipedia.org/wiki/Grayscale#Converting_color_to_grayscale
         NODISCARD color grayscaled() const noexcept;
 
+        /// \brief Blends two colors.
+        /// \param other The color to blend with.
+        /// \return A reference to the current color after the blending.
+        /// \note The result is rounded down.
+        /// \example color(255, 0, 0, 255).blend(color(0, 255, 0, 255)) // (127, 127, 0, 255)
+        color& blend(const color& other) noexcept;
+
+        /// \brief Blends two colors.
+        /// \param other The color to blend with.
+        /// \return A copy of the color after the blending.
+        /// \note The result is rounded down.
+        /// \example color color = color(255, 0, 0, 255).blended(color(0, 255, 0, 255)) // (127, 127, 0, 255)
+        NODISCARD color blended(const color& other) const noexcept;
+
         /// \brief Add two colors.
         /// \param other The color to add.
         /// \return The result of the addition as a copy.

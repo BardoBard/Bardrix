@@ -7,7 +7,6 @@
 
 namespace bardrix {
 
-
     camera::camera() noexcept : camera({ 0, 0, 0 }, { 0, 0, 1 }) {}
 
     camera::camera(const point3& position, const vector3& direction) noexcept: camera(position, direction, 800, 600,
