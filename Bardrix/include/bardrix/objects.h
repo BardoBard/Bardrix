@@ -150,4 +150,58 @@ namespace bardrix {
         virtual ~shape() = default;
 
     }; // class shape
+
+    /// \brief Bounding Box
+    class bounding_box {
+    public:
+        /// \brief Minimum point of the bounding box
+        bardrix::point3 min;
+
+        /// \brief Maximum point of the bounding box
+        bardrix::point3 max;
+
+        /// \brief Constructor to create a bounding box
+        /// \param min The minimum point of the bounding box
+        /// \param max The maximum point of the bounding box
+        bounding_box(const bardrix::point3& min, const bardrix::point3& max) noexcept;
+
+        /// \brief Check if a point is inside the bounding box
+        /// \param point The point to check
+        /// \return True if the point is inside the bounding box, false otherwise
+        NODISCARD bool inside(const bardrix::point3& point) const noexcept;
+
+        /// \brief Check if a bounding box is inside the bounding box
+        /// \param box The bounding box to check
+        /// \return True if the bounding box is inside the bounding box, false otherwise
+        NODISCARD bool inside(const bounding_box& box) const noexcept;
+
+        /// \brief Gets the center of the bounding box
+        /// \return The center of the bounding box
+        NODISCARD bardrix::point3 center() const noexcept;
+
+        /// \brief Gets the width of the bounding box
+        /// \return The width of the bounding box
+        NODISCARD double width() const noexcept;
+
+        /// \brief Gets the height of the bounding box
+        /// \return The height of the bounding box
+        NODISCARD double height() const noexcept;
+
+        /// \brief Gets the depth of the bounding box
+        /// \return The depth of the bounding box
+        NODISCARD double depth() const noexcept;
+
+        /// \brief Gets the volume of the bounding box
+        /// \return The volume of the bounding box
+        NODISCARD double volume() const noexcept;
+
+        /// \brief Gets the area of the bounding box
+        /// \return The area of the bounding box
+        NODISCARD double area() const noexcept;
+
+        /// \brief Gets the diagonal of the bounding box
+        /// \return The diagonal of the bounding box
+        NODISCARD double diagonal() const noexcept;
+
+    }; // class bounding_box
 } // namespace bardrix

@@ -4,6 +4,8 @@
 
 #include <bardrix/objects.h>
 
+/// MATERIAL
+
 /// \brief Test the material default constructor
 TEST(material, default_constructor) {
     bardrix::material material = bardrix::material();
@@ -101,4 +103,30 @@ TEST(material, set_shininess) {
 
     material.set_shininess(1.5);
     EXPECT_EQ(material.get_shininess(), 1.5);
+}
+
+/// BOUNDING BOX
+
+/// \brief Test the bounding_box constructor
+TEST(bounding_box, constructor) {
+    bardrix::point3 top_left = bardrix::point3(0, 0, 0);
+    bardrix::point3 bottom_right = bardrix::point3(1, 1, 1);
+    bardrix::bounding_box box = bardrix::bounding_box(top_left, bottom_right);
+
+    EXPECT_EQ(box.top_left, top_left);
+    EXPECT_EQ(box.bottom_right, bottom_right);
+}
+
+/// \brief Test the bounding_box contains method
+TEST(bounding_box, contains) {
+    bardrix::point3 top_left = bardrix::point3(-5.04, 6.17, 6.9);
+    bardrix::point3 bottom_right = bardrix::point3(4.05, 9.74, 0);
+    bardrix::bounding_box box = bardrix::bounding_box(top_left, bottom_right);
+
+    EXPECT_TRUE(box.contains(bardrix::point3(-5.04, 6.17, 6.9)));
+    EXPECT_TRUE(box.contains(bardrix::point3(4.05, 9.74, 0)));
+    EXPECT_TRUE(box.contains(bardrix::point3(0, 8, 3.45)));
+    EXPECT_FALSE(box.contains(bardrix::point3(-2, 8, 3.45)));
+    EXPECT_FALSE(box.contains(bardrix::point3(2, 10, 3.45)));
+    EXPECT_TRUE(box.contains(bardrix::point3(3.45, 7.5, 0)));
 }
