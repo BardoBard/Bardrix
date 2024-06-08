@@ -115,55 +115,41 @@ namespace bardrix {
         void set_shininess(double shininess);
     };
 
-    /// \brief A pure virtual class for a 3D shape
-    /// \details This class represents a 3D shape, such as a sphere or a plane
-    /// \note This is but a base class, it can be inherited to create more complex materials
-    class shape {
-    public:
-        /// \brief Gets the position of the shape
-        /// \return The position of the shape
-        NODISCARD virtual const bardrix::point3& get_position() const = 0;
-
-        /// \brief Sets the position of the shape
-        /// \param position The position to set
-        virtual void set_position(const bardrix::point3& position) = 0;
-
-        /// \brief Intersection of a ray with the shape
-        /// \param ray The ray to intersect with
-        /// \return The intersection point, if any
-        NODISCARD virtual std::optional<bardrix::point3> intersection(const bardrix::ray& ray) const = 0;
-
-        /// \brief Gets the normal of the shape at a point
-        /// \param point The point to get the normal at
-        /// \return The normal of the shape at the point
-        NODISCARD virtual bardrix::vector3 normal_at(const bardrix::point3& point) const = 0;
-
-        /// \brief Gets the material of the shape
-        /// \return The material of the shape
-        NODISCARD virtual const bardrix::material& get_material() const = 0;
-
-        /// \brief Sets the material of the shape
-        /// \param material The material to set
-        virtual void set_material(const bardrix::material& material) = 0;
-
-        /// \brief Virtual destructor for shape
-        virtual ~shape() = default;
-
-    }; // class shape
-
-    /// \brief Bounding Box
+    /// \brief Bounding Box, used as acceleration structures
     class bounding_box {
-    public:
+
+    private:
         /// \brief Minimum point of the bounding box
-        bardrix::point3 min;
+        bardrix::point3 min_;
 
         /// \brief Maximum point of the bounding box
-        bardrix::point3 max;
+        bardrix::point3 max_;
 
+    public:
         /// \brief Constructor to create a bounding box
         /// \param min The minimum point of the bounding box
         /// \param max The maximum point of the bounding box
+        /// \note The minimum point cannot exceed the maximum point, meaning set_min(5,5,5) where max = (4,4,4) -> min = (4,4,4), max = (4,4,4)
+        /// \note The maximum point cannot be less than the minimum point, meaning set_max(4,4,4) where min = (5,5,5) -> min = (5,5,5), max = (5,5,5)
         bounding_box(const bardrix::point3& min, const bardrix::point3& max) noexcept;
+
+        /// \brief Gets the minimum point of the bounding box
+        /// \return The minimum point of the bounding box
+        NODISCARD const bardrix::point3& get_min() const noexcept;
+
+        /// \brief Gets the maximum point of the bounding box
+        /// \return The maximum point of the bounding box
+        NODISCARD const bardrix::point3& get_max() const noexcept;
+
+        /// \brief Sets the minimum point of the bounding box
+        /// \param min The minimum point to set
+        /// \note The minimum point cannot exceed the maximum point, meaning set_min(5,5,5) where max = (4,4,4) -> min = (4,4,4), max = (4,4,4)
+        void set_min(const bardrix::point3& min) noexcept;
+
+        /// \brief Sets the maximum point of the bounding box
+        /// \param max The maximum point to set
+        /// \note The maximum point cannot be less than the minimum point, meaning set_max(4,4,4) where min = (5,5,5) -> min = (5,5,5), max = (5,5,5)
+        void set_max(const bardrix::point3& max) noexcept;
 
         /// \brief Check if a point is inside the bounding box
         /// \param point The point to check
@@ -182,6 +168,11 @@ namespace bardrix {
         /// \note If the ray is inside the bounding box, it will return true (even at length 0)
         /// \example bounding_box.is_hit(ray) -> true
         NODISCARD bool is_hit(const bardrix::ray& ray) const noexcept;
+
+        /// \brief Merges two bounding boxes
+        /// \param box The bounding box to merge with
+        /// \return The merged bounding box
+        NODISCARD bounding_box merge(const bounding_box& box) const noexcept;
 
         /// \brief Gets the center of the bounding box
         /// \return The center of the bounding box
@@ -212,4 +203,45 @@ namespace bardrix {
         NODISCARD double diagonal() const noexcept;
 
     }; // class bounding_box
+
+    /// \brief A pure virtual class for a 3D shape
+    /// \details This class represents a 3D shape, such as a sphere or a plane
+    /// \note This is but a base class, it can be inherited to create more complex materials
+    class shape {
+    public:
+        /// \brief Gets the position of the shape
+        /// \return The position of the shape
+        NODISCARD virtual const bardrix::point3& get_position() const = 0;
+
+        /// \brief Sets the position of the shape
+        /// \param position The position to set
+        virtual void set_position(const bardrix::point3& position) = 0;
+
+        /// \brief Intersection of a ray with the shape
+        /// \param ray The ray to intersect with
+        /// \return The intersection point, if any
+        NODISCARD virtual std::optional<bardrix::point3> intersection(const bardrix::ray& ray) const = 0;
+
+        /// \brief Gets the normal of the shape at a point
+        /// \param point The point to get the normal at
+        /// \return The normal of the shape at the point
+        NODISCARD virtual bardrix::vector3 normal_at(const bardrix::point3& point) const = 0;
+
+        /// \brief Gets the bounding box of the shape
+        /// \return The bounding box of the shape
+        NODISCARD virtual const bardrix::bounding_box& get_bounding_box() const = 0;
+
+        /// \brief Gets the material of the shape
+        /// \return The material of the shape
+        NODISCARD virtual const bardrix::material& get_material() const = 0;
+
+        /// \brief Sets the material of the shape
+        /// \param material The material to set
+        virtual void set_material(const bardrix::material& material) = 0;
+
+        /// \brief Virtual destructor for shape
+        virtual ~shape() = default;
+
+    }; // class shape
+
 } // namespace bardrix

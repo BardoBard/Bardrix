@@ -20,6 +20,26 @@ public:
     }
 };
 
+/// \brief Test min function
+TEST(dimension4, min) {
+    dimension4_test dim4{1, 2, 3, 4};
+    dimension4_test dim4_positive{5, 6, 7, 8};
+    dimension4_test dim4_2{0,3,4,1};
+
+    ASSERT_EQ(dim4.min(dim4_positive), dimension4_test(1, 2, 3, 4));
+    ASSERT_EQ(dim4.min(dim4_2), dimension4_test(0, 2, 3, 1));
+}
+
+/// \brief Test max function
+TEST(dimension4, max) {
+    dimension4_test dim4{1, 2, 3, 4};
+    dimension4_test dim4_positive{5, 6, 7, 8};
+    dimension4_test dim4_2{0,3,4,1};
+
+    ASSERT_EQ(dim4.max(dim4_positive), dimension4_test(5, 6, 7, 8));
+    ASSERT_EQ(dim4.max(dim4_2), dimension4_test(1, 3, 4, 4));
+}
+
 /// \brief Test the addition of two dimension4
 TEST(dimension4, add) {
     dimension4_test dim4(1, 2, 3, 4);

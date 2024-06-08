@@ -111,10 +111,52 @@ TEST(material, set_shininess) {
 TEST(bounding_box, constructor) {
     bardrix::point3 top_left = bardrix::point3(0, 0, 0);
     bardrix::point3 bottom_right = bardrix::point3(1, 1, 1);
-    bardrix::bounding_box box = bardrix::bounding_box(top_left, bottom_right);
 
-    EXPECT_EQ(box.min, top_left);
-    EXPECT_EQ(box.max, bottom_right);
+    bardrix::bounding_box box = bardrix::bounding_box(top_left, bottom_right);
+    EXPECT_EQ(box.get_min(), top_left);
+    EXPECT_EQ(box.get_max(), bottom_right);
+
+    box = bardrix::bounding_box(bottom_right, top_left);
+    EXPECT_EQ(box.get_min(), top_left);
+    EXPECT_EQ(box.get_max(), bottom_right);
+}
+
+/// \brief Test the set_min method of bounding_box
+TEST(bounding_box, set_min) {
+    bardrix::point3 min = bardrix::point3(1,2,3);
+    bardrix::point3 max = bardrix::point3(4,5,6);
+    bardrix::bounding_box box = bardrix::bounding_box(min, max);
+
+    box.set_min(bardrix::point3(0, 1, 2));
+    EXPECT_EQ(box.get_min(), bardrix::point3(0, 1, 2));
+    EXPECT_EQ(box.get_max(), bardrix::point3(4, 5, 6));
+
+    box.set_min(bardrix::point3(5, 6, 7));
+    EXPECT_EQ(box.get_min(), bardrix::point3(4, 5, 6));
+    EXPECT_EQ(box.get_max(), bardrix::point3(4, 5, 6));
+
+    box.set_min(bardrix::point3(3, 4, 5));
+    EXPECT_EQ(box.get_min(), bardrix::point3(3, 4, 5));
+    EXPECT_EQ(box.get_max(), bardrix::point3(4, 5, 6));
+}
+
+/// \brief Test the set_max method of bounding_box
+TEST(bounding_box, set_max) {
+    bardrix::point3 min = bardrix::point3(1,2,3);
+    bardrix::point3 max = bardrix::point3(4,5,6);
+    bardrix::bounding_box box = bardrix::bounding_box(min, max);
+
+    box.set_max(bardrix::point3(5, 6, 7));
+    EXPECT_EQ(box.get_min(), bardrix::point3(1, 2, 3));
+    EXPECT_EQ(box.get_max(), bardrix::point3(5, 6, 7));
+
+    box.set_max(bardrix::point3(0, 1, 2));
+    EXPECT_EQ(box.get_min(), bardrix::point3(1, 2, 3));
+    EXPECT_EQ(box.get_max(), bardrix::point3(1, 2, 3));
+
+    box.set_max(bardrix::point3(3, 4, 5));
+    EXPECT_EQ(box.get_min(), bardrix::point3(1, 2, 3));
+    EXPECT_EQ(box.get_max(), bardrix::point3(3, 4, 5));
 }
 
 /// \brief Test the bounding_box inside method
@@ -225,6 +267,29 @@ TEST(bounding_box, diagonal) {
     bardrix::bounding_box box = bardrix::bounding_box(min, max);
 
     EXPECT_NEAR(box.diagonal(), 14.5, 0.02);
+}
+
+/// \brief Test the merge of two bounding boxes
+TEST(bounding_box, merge) {
+    bardrix::point3 min1 = bardrix::point3(-5.04,3.4,0);
+    bardrix::point3 max1 = bardrix::point3(4, 12.44, 6.84);
+    bardrix::bounding_box box1 = bardrix::bounding_box(min1, max1);
+
+    bardrix::point3 min2 = bardrix::point3(-4, 2, 1);
+    bardrix::point3 max2 = bardrix::point3(3, 11, 7);
+    bardrix::bounding_box box2 = bardrix::bounding_box(min2, max2);
+
+    bardrix::bounding_box merged = box1.merge(box2);
+    EXPECT_EQ(merged.get_min(), bardrix::point3(-5.04, 2, 0));
+    EXPECT_EQ(merged.get_max(), bardrix::point3(4, 12.44, 7));
+
+    min2 = bardrix::point3(-6, 6, -1);
+    max2 = bardrix::point3(7, 14, 2);
+    box2 = bardrix::bounding_box(min2, max2);
+
+    merged = box1.merge(box2);
+    EXPECT_EQ(merged.get_min(), bardrix::point3(-6, 3.4, -1));
+    EXPECT_EQ(merged.get_max(), bardrix::point3(7, 14, 6.84));
 }
 
 /// \brief Test the bounding_box is_hit method with ray

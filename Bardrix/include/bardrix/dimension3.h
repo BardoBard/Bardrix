@@ -25,6 +25,34 @@ namespace bardrix {
     public:
         double x{}, y{}, z{};
 
+        /// \brief Takes the minimum of each dimension of two dimension3 (T result = min(dim3, dim3))
+        /// \tparam T Type of the dimension3, must be a derived class of dimension3
+        /// \param dimension3 Dimension3 to compare
+        /// \return A copy of the dimension3 with the minimum of each dimension
+        /// \example point3 min_point = point3(1, 2, 3).min(point3(2, 1, 4)); // min_point = (1, 1, 3)
+        template<typename T>
+        NODISCARD auto min(const T& dimension3) const noexcept -> enable_if_dimension3<T, T> {
+            T result = dimension3;
+            result.x = std::min(x, result.x);
+            result.y = std::min(y, result.y);
+            result.z = std::min(z, result.z);
+            return result;
+        }
+
+        /// \brief Takes the maximum of each dimension of two dimension3 (T result = max(dim3, dim3))
+        /// \tparam T Type of the dimension3, must be a derived class of dimension3
+        /// \param dimension3 Dimension3 to compare
+        /// \return A copy of the dimension3 with the maximum of each dimension
+        /// \example point3 max_point = point3(1, 2, 3).max(point3(2, 1, 4)); // max_point = (2, 2, 4)
+        template<typename T>
+        NODISCARD auto max(const T& dimension3) const noexcept -> enable_if_dimension3<T, T> {
+            T result = dimension3;
+            result.x = std::max(x, result.x);
+            result.y = std::max(y, result.y);
+            result.z = std::max(z, result.z);
+            return result;
+        }
+
         // https://en.wikipedia.org/wiki/Operators_in_C_and_C%2B%2B
         // https://en.cppreference.com/w/cpp/language/operators
         // Operator overloading

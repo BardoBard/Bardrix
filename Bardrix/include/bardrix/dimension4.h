@@ -26,6 +26,36 @@ namespace bardrix {
     public:
         double x{}, y{}, z{}, w{};
 
+        /// \brief Takes the minimum of each dimension of two dimension4 (T result = min(dim4, dim4))
+        /// \tparam T Type of the dimension4, must be a derived class of dimension4
+        /// \param dimension4 dimension4 to compare
+        /// \return A copy of the dimension4 with the minimum of each dimension
+        /// \example auto result = dimension4.min(dimension4); -> (2,5,3,4).min(1,6,2,5) -> (1,5,2,4)
+        template<typename T>
+        NODISCARD auto min(const T& dimension4) const noexcept -> enable_if_dimension4<T, T> {
+            T result = dimension4;
+            result.x = std::min(x, dimension4.x);
+            result.y = std::min(y, dimension4.y);
+            result.z = std::min(z, dimension4.z);
+            result.w = std::min(w, dimension4.w);
+            return result;
+        }
+
+        /// \brief Takes the maximum of each dimension of two dimension4 (T result = max(dim4, dim4))
+        /// \tparam T Type of the dimension4, must be a derived class of dimension4
+        /// \param dimension4 dimension4 to compare
+        /// \return A copy of the dimension4 with the maximum of each dimension
+        /// \example auto result = dimension4.max(dimension4); -> (2,5,3,4).max(1,6,2,5) -> (2,6,3,5)
+        template<typename T>
+        NODISCARD auto max(const T& dimension4) const noexcept -> enable_if_dimension4<T, T> {
+            T result = dimension4;
+            result.x = std::max(x, dimension4.x);
+            result.y = std::max(y, dimension4.y);
+            result.z = std::max(z, dimension4.z);
+            result.w = std::max(w, dimension4.w);
+            return result;
+        }
+
         // https://en.wikipedia.org/wiki/Operators_in_C_and_C%2B%2B
         // https://en.cppreference.com/w/cpp/language/operators
         // Operator overloading
