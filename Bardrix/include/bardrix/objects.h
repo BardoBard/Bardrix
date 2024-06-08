@@ -175,6 +175,14 @@ namespace bardrix {
         /// \return True if the bounding box is inside the bounding box, false otherwise
         NODISCARD bool inside(const bounding_box& box) const noexcept;
 
+        /// \brief Check if a ray hits the bounding box
+        /// \param ray The ray to check
+        /// \return True if the ray hits the bounding box, false otherwise
+        /// \note The ray length is taken into account
+        /// \note If the ray is inside the bounding box, it will return true (even at length 0)
+        /// \example bounding_box.is_hit(ray) -> true
+        NODISCARD bool is_hit(const bardrix::ray& ray) const noexcept;
+
         /// \brief Gets the center of the bounding box
         /// \return The center of the bounding box
         NODISCARD bardrix::point3 center() const noexcept;

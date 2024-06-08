@@ -42,21 +42,18 @@ namespace bardrix {
 
     void material::set_shininess(const double shininess) { shininess_ = std::max(1.0, shininess); }
 
-    /// BOUDING BOX
+    /// BOUNDING BOX
 
     bounding_box::bounding_box(const point3& min, const point3& max) noexcept: min(min), max(max) {}
 
     bool bounding_box::inside(const bardrix::point3& point) const noexcept {
-        bool one = point.x >= min.x && point.x <= max.x;
-        bool two = point.y >= min.y && point.y <= max.y;
-        bool three = point.z >= min.z && point.z <= max.z;
-        return one && two && three;
+        return greater_than_or_nearly_equal(point.x, min.x) && less_than_or_nearly_equal(point.x, max.x) &&
+               greater_than_or_nearly_equal(point.y, min.y) && less_than_or_nearly_equal(point.y, max.y) &&
+               greater_than_or_nearly_equal(point.z, min.z) && less_than_or_nearly_equal(point.z, max.z);
     }
 
     bool bounding_box::inside(const bounding_box& box) const noexcept {
-        return (min.x <= box.max.x && max.x >= box.min.x &&
-                min.y <= box.max.y && max.y >= box.min.y &&
-                min.z <= box.max.z && max.z >= box.min.z);
+        return inside(box.min) && inside(box.max);
     }
 
     point3 bounding_box::center() const noexcept {
@@ -87,6 +84,43 @@ namespace bardrix {
 
     double bounding_box::diagonal() const noexcept {
         return min.vector_to(max).length();
+    }
+
+    bool bounding_box::is_hit(const bardrix::ray& ray) const noexcept {
+        // my attempt of branch-less intersection
+
+        double tmin, tmax, tymin, tymax, tzmin, tzmax;
+        vector3 ray_dir = ray.get_direction();
+
+        // x axis
+        {
+            bool positive_x = greater_than_or_nearly_equal(ray_dir.x, 0);
+            tmin = (positive_x ? (min.x - ray.position.x) / ray_dir.x : (max.x - ray.position.x) / ray_dir.x);
+            tmax = (positive_x ? (max.x - ray.position.x) / ray_dir.x : (min.x - ray.position.x) / ray_dir.x);
+        }
+
+        // y axis
+        {
+            bool positive_y = greater_than_or_nearly_equal(ray_dir.y, 0);
+            tymin = (positive_y ? (min.y - ray.position.y) / ray_dir.y : (max.y - ray.position.y) / ray_dir.y);
+            tymax = (positive_y ? (max.y - ray.position.y) / ray_dir.y : (min.y - ray.position.y) / ray_dir.y);
+        }
+
+        if ((tmin > tymax) || (tymin > tmax)) return false;
+
+        tmin = std::max(tmin, tymin);
+        tmax = std::min(tmax, tymax);
+
+        // z axis
+        {
+            bool positive_z = greater_than_or_nearly_equal(ray_dir.z, 0);
+            tzmin = (positive_z ? (min.z - ray.position.z) / ray_dir.z : (max.z - ray.position.z) / ray_dir.z);
+            tzmax = (positive_z ? (max.z - ray.position.z) / ray_dir.z : (min.z - ray.position.z) / ray_dir.z);
+        }
+
+        if ((tmin > tzmax) || (tzmin > tmax)) return false;
+
+        return tmin < ray.get_length();
     }
 
 } // namespace bardrix
