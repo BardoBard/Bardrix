@@ -3,7 +3,8 @@
 ## Overview
 
 Added `-=`, `+=` to `point3` with regards to `vector3`. \
-Updated nuget targets file to include `/Zc:__cplusplus` to add support for C++20.
+Updated nuget targets file to include `/Zc:__cplusplus` to add support for C++20. \
+Added `<PrecompiledHeader>NotUsing</PrecompiledHeader>` to `Bardio.Bardrix.targets` now you're able to use a pch.h (oops).
 
 **Full Changelog**: https://github.com/BardoBard/Bardrix/compare/v0.3.1...v0.3.2
 

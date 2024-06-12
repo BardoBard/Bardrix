@@ -9,6 +9,8 @@
     </ItemDefinitionGroup>
 
     <ItemGroup>
-            <ClCompile Include="$(MSBuildThisFileDirectory)\src\bardrix\**\*.cpp" />
+        <ClCompile Include="$(MSBuildThisFileDirectory)\src\bardrix\**\*.cpp" >
+            <PrecompiledHeader>NotUsing</PrecompiledHeader>
+        </ClCompile>
     </ItemGroup>
 </Project>
