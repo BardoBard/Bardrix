@@ -1,22 +1,45 @@
+# [v0.3.2](https://github.com/BardoBard/Bardrix/releases/tag/v0.3.2)
+
+## Overview
+
+Added `-=`, `+=` to `point3` with regards to `vector3`. \
+Updated nuget targets file to include `/Zc:__cplusplus` to add support for C++20. \
+Added `<PrecompiledHeader>NotUsing</PrecompiledHeader>` to `Bardio.Bardrix.targets` now you're able to use a pch.h (oops).
+
+**Full Changelog**: https://github.com/BardoBard/Bardrix/compare/v0.3.1...v0.3.2
+
+## Documentation Changes
+
+Added `-=`, `+=` to `point3` with regards to `vector3` in [Bardrix_Reference](https://github.com/bardobard/bardrix/blob/v0.3.2/Docs/Bardrix_Reference.md). \
+Added quaternion include to [Raytracing Reflection](https://github.com/bardobard/bardrix/blob/v0.3.2/Docs/Examples/Raytracing-Reflections/README.md).
+
+## Code Changes
+
+### Minor Changes
+
+Added `-=`, `+=` to `point3` with regards to `vector3` in [point3](https://github.com/bardobard/bardrix/blob/v0.3.2/Bardrix/include/bardrix/point3.h). \
+Updated nuget targets file to include `/Zc:__cplusplus` to add support for C++20.
+
+## Test Changes
+
+Added tests for `point3` `-=`, `+=` with regards to `vector3`.
+
 # [v0.3.1](https://github.com/BardoBard/Bardrix/releases/tag/v0.3.1)
 
 ## Overview
 
 Added color blending to `color`. \
 Added physics (conversion calculations + gravity calculations). \
-Solved issues [36](https://github.com/BardoBard/Bardrix/issues/36) and [37](https://github.com/BardoBard/Bardrix/issues/37).
+Solved issues [36](https://github.com/BardoBard/Bardrix/issues/36)
+and [37](https://github.com/BardoBard/Bardrix/issues/37).
 
 **Full Changelog**: https://github.com/BardoBard/Bardrix/compare/v0.3.0...v0.3.1
 
 ## Documentation Changes
 
-Renamed a classes in [Bardrix_Reference](https://github.com/bardobard/bardrix/blob/v0.3.1/Docs/Bardrix_Reference.md) to
-be lowercase instead of uppercase. \
-Added color blending and physics
-to [Bardrix_Reference](https://github.com/bardobard/bardrix/blob/v0.3.1/Docs/Bardrix_Reference.md). \
-Added `#define NOMINMAX`
-to [window.h](https://github.com/bardobard/bardrix/blob/v0.3.1/Docs/Examples/Raytracing/window.h) to fix an issue with
-`min` and `max` being defined in `windows.h`. \
+Renamed a classes in [Bardrix_Reference](https://github.com/bardobard/bardrix/blob/v0.3.1/Docs/Bardrix_Reference.md) to be lowercase instead of uppercase. \
+Added color blending and physics to [Bardrix_Reference](https://github.com/bardobard/bardrix/blob/v0.3.1/Docs/Bardrix_Reference.md). \
+Added `#define NOMINMAX` to [window.h](https://github.com/bardobard/bardrix/blob/v0.3.1/Docs/Examples/Raytracing/window.h) to fix an issue with `min` and `max` being defined in `windows.h`. \
 Updated the versions in examples (cmake).
 
 ## Code Changes

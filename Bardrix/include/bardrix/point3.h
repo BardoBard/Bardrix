@@ -45,15 +45,25 @@ namespace bardrix {
         /// \return The vector from this point to the other point
         NODISCARD vector3 vector_to(const point3& point3) const noexcept;
 
-        /// \brief Add a vector to a point
+        /// \brief Add a vector to a point and returns a new point
         /// \param vector3 The vector to add
         /// \return The point with the vector added
         NODISCARD point3 operator+(const vector3& vector3) const noexcept;
 
-        /// \brief Subtract a vector from a point
+        /// \brief Add a vector to this point and returns a reference to this point
+        /// \param vector3 The vector to add
+        /// \return A reference to this point
+        point3& operator+=(const vector3& vector3) noexcept;
+
+        /// \brief Subtract a vector from a point and returns a new point
         /// \param vector3 The vector to subtract
         /// \return The point with the vector subtracted
         NODISCARD point3 operator-(const vector3& vector3) const noexcept;
+
+        /// \brief Subtract a vector from this point and returns a reference to this point
+        /// \param vector3 The vector to subtract
+        /// \return A reference to this point
+        point3& operator-=(const vector3& vector3) noexcept;
 
         /// \brief Print the point to an output stream
         /// \param os The output stream

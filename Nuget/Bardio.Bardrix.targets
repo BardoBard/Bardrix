@@ -3,11 +3,14 @@
 
     <ItemDefinitionGroup>
         <ClCompile>
+            <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
             <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
         </ClCompile>
     </ItemDefinitionGroup>
 
     <ItemGroup>
-            <ClCompile Include="$(MSBuildThisFileDirectory)\src\bardrix\**\*.cpp" />
+        <ClCompile Include="$(MSBuildThisFileDirectory)\src\bardrix\**\*.cpp" >
+            <PrecompiledHeader>NotUsing</PrecompiledHeader>
+        </ClCompile>
     </ItemGroup>
 </Project>
