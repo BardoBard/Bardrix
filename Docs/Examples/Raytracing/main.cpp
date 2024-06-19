@@ -12,6 +12,7 @@
 #include <bardrix/ray.h>
 #include <bardrix/light.h>
 #include <bardrix/camera.h>
+#include <bardrix/quaternion.h>
 
 int main() {
     int width = 600;
