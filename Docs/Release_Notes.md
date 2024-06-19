@@ -1,3 +1,17 @@
+# [v0.3.3](https://github.com/BardoBard/Bardrix/releases/tag/v0.3.3)
+
+## Overview
+
+Fixed issue [44](https://github.com/BardoBard/Bardrix/issues/44) where the diagrams in the reference were incorrectly displayed. \
+Fixed issue [43](https://github.com/BardoBard/Bardrix/issues/43) where the `+=` was incorrectly formatted in the reference. \
+Fixed issue [42](https://github.com/BardoBard/Bardrix/issues/42) where the `pragma once` was missing in `sphere.h` (wth?).
+
+**Full Changelog**: https://github.com/BardoBard/Bardrix/compare/v0.3.2...v0.3.3
+
+## Documentation Changes
+
+Fixed the issues mentioned above.
+
 # [v0.3.2](https://github.com/BardoBard/Bardrix/releases/tag/v0.3.2)
 
 ## Overview

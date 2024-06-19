@@ -744,7 +744,7 @@ It has red, green, blue, and alpha components.
         - Negates the components of the color e.g. `color(1, 2, 3, 4)` becomes `color(255 - 1, 255 - 2, 255 - 3, 4)`.
         - **Returns** a new color.
         - The alpha component will remain the same.
-    - `+=``
+    - `+=`
         - Adds the components of the two colors, or adds the scalar `unsigned char` value to the components; either
           order
         - The components will get clamped to the range of 0 to 255.
