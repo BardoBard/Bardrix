@@ -63,6 +63,53 @@ int main() {
         window->redraw(); // Redraw the window (calls on_paint)
     };
 
+    window.on_keydown = [&camera](bardrix::window* window, WPARAM key) {
+        constexpr double movement_speed = 0.1; // In units
+        constexpr double rotation_speed = 2; // In degrees
+        switch (key) {
+            case VK_ESCAPE:
+                window->close();
+                break;
+            case 0x57: // W
+                camera.position += camera.get_direction() * movement_speed;
+                break;
+            case 0x41: // A
+                camera.position -= camera.get_direction().cross({0,1,0}).normalized() * movement_speed;
+                break;
+            case 0x53: // S
+                camera.position -= camera.get_direction() * movement_speed;
+                break;
+            case 0x44: // D
+                camera.position += camera.get_direction().cross({0,1,0}).normalized() * movement_speed;
+                break;
+            case VK_SHIFT:
+                camera.position -= {0, movement_speed, 0};
+                break;
+            case VK_SPACE:
+                camera.position += {0, movement_speed, 0};
+                break;
+            case VK_UP:
+                camera.set_direction(bardrix::quaternion::rotate_degrees(camera.get_direction(), {1,0,0}, rotation_speed));
+                break;
+            case VK_DOWN:
+                camera.set_direction(bardrix::quaternion::rotate_degrees(camera.get_direction(), {1,0,0}, -rotation_speed));
+                break;
+            case VK_LEFT:
+                camera.set_direction(bardrix::quaternion::rotate_degrees(camera.get_direction(), {0,1,0}, -rotation_speed));
+                break;
+            case VK_RIGHT:
+                camera.set_direction(bardrix::quaternion::rotate_degrees(camera.get_direction(), {0,1,0}, rotation_speed));
+                break;
+            default:
+                return;
+        }
+        window->redraw(); // Redraw the window (calls on_paint)
+    };
+
+    window.on_close = [](bardrix::window* window) {
+        std::cout << "Window closed." << std::endl;
+    };
+
     // Get width and height of the screen
     int screen_width = GetSystemMetrics(SM_CXSCREEN);
     int screen_height = GetSystemMetrics(SM_CYSCREEN);
