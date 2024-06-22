@@ -58,3 +58,7 @@ std::optional<bardrix::point3> sphere::intersection(const bardrix::ray& ray) con
            ? std::optional(ray.position + ray.get_direction() * distance)
            : std::nullopt;
 }
+
+bardrix::bounding_box sphere::bounding_box() const {
+    return { position_ - bardrix::vector3(radius_, radius_, radius_), position_ + bardrix::vector3(radius_, radius_, radius_) };
+}

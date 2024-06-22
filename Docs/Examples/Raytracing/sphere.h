@@ -57,4 +57,10 @@ public:
     /// \example std::optional<bardrix::point3> intersection = sphere.intersection(ray);
     /// \example if (intersection.has_value()) { /* Do something with the intersection point */ }
     NODISCARD std::optional<bardrix::point3> intersection(const bardrix::ray& ray) const override;
+
+    /// \brief Get the bounding box of the sphere
+    /// \return The bounding box of the sphere
+    /// \example bardrix::bounding_box box = sphere.bounding_box();
+    NODISCARD bardrix::bounding_box bounding_box() const override;
+
 }; // class sphere

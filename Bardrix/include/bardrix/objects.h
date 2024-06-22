@@ -129,8 +129,8 @@ namespace bardrix {
         /// \brief Constructor to create a bounding box
         /// \param min The minimum point of the bounding box
         /// \param max The maximum point of the bounding box
-        /// \note The minimum point cannot exceed the maximum point, meaning set_min(5,5,5) where max = (4,4,4) -> min = (4,4,4), max = (4,4,4)
-        /// \note The maximum point cannot be less than the minimum point, meaning set_max(4,4,4) where min = (5,5,5) -> min = (5,5,5), max = (5,5,5)
+        /// \note The minimum point will be the set of smallest values
+        /// \note The maximum point will be the set of biggest values
         bounding_box(const bardrix::point3& min, const bardrix::point3& max) noexcept;
 
         /// \brief Gets the minimum point of the bounding box
@@ -143,13 +143,9 @@ namespace bardrix {
 
         /// \brief Sets the minimum point of the bounding box
         /// \param min The minimum point to set
-        /// \note The minimum point cannot exceed the maximum point, meaning set_min(5,5,5) where max = (4,4,4) -> min = (4,4,4), max = (4,4,4)
-        void set_min(const bardrix::point3& min) noexcept;
-
-        /// \brief Sets the maximum point of the bounding box
-        /// \param max The maximum point to set
-        /// \note The maximum point cannot be less than the minimum point, meaning set_max(4,4,4) where min = (5,5,5) -> min = (5,5,5), max = (5,5,5)
-        void set_max(const bardrix::point3& max) noexcept;
+        /// \note The minimum point will be the set of smallest values
+        /// \note The maximum point will be the set of biggest values
+        void set_min_max(const bardrix::point3& min, const bardrix::point3& max) noexcept;
 
         /// \brief Check if a point is inside the bounding box
         /// \param point The point to check
@@ -161,13 +157,20 @@ namespace bardrix {
         /// \return True if the bounding box is inside the bounding box, false otherwise
         NODISCARD bool inside(const bounding_box& box) const noexcept;
 
+        /// \brief Check if a bounding box intersects the bounding box
+        /// \param box The bounding box to check
+        /// \return True if the bounding box intersects the bounding box, false otherwise
+        /// \note If the bounding boxes are touching, it will return true
+        /// \example bounding_box.intersects(bounding_box) -> true
+        NODISCARD bool intersects(const bounding_box& box) const noexcept;
+
         /// \brief Check if a ray hits the bounding box
         /// \param ray The ray to check
         /// \return True if the ray hits the bounding box, false otherwise
         /// \note The ray length is taken into account
         /// \note If the ray is inside the bounding box, it will return true (even at length 0)
-        /// \example bounding_box.is_hit(ray) -> true
-        NODISCARD bool is_hit(const bardrix::ray& ray) const noexcept;
+        /// \example bounding_box.intersects(ray) -> true
+        NODISCARD bool intersects(const bardrix::ray& ray) const noexcept;
 
         /// \brief Merges two bounding boxes
         /// \param box The bounding box to merge with
@@ -229,7 +232,7 @@ namespace bardrix {
 
         /// \brief Gets the bounding box of the shape
         /// \return The bounding box of the shape
-        NODISCARD virtual const bardrix::bounding_box& get_bounding_box() const = 0;
+        NODISCARD virtual bardrix::bounding_box bounding_box() const = 0;
 
         /// \brief Gets the material of the shape
         /// \return The material of the shape

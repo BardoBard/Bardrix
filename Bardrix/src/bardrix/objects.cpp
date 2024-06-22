@@ -53,12 +53,9 @@ namespace bardrix {
 
     const bardrix::point3& bounding_box::get_max() const noexcept { return max_; }
 
-    void bounding_box::set_min(const bardrix::point3& min) noexcept {
-        min_ = point3(std::min(min.x, max_.x), std::min(min.y, max_.y), std::min(min.z, max_.z));
-    }
-
-    void bounding_box::set_max(const bardrix::point3& max) noexcept {
-        max_ = point3(std::max(min_.x, max.x), std::max(min_.y, max.y), std::max(min_.z, max.z));
+    void bounding_box::set_min_max(const point3& min, const point3& max) noexcept {
+        min_ = point3(std::min(min.x, max.x), std::min(min.y, max.y), std::min(min.z, max.z));
+        max_ = point3(std::max(min.x, max.x), std::max(min.y, max.y), std::max(min.z, max.z));
     }
 
     bool bounding_box::inside(const bardrix::point3& point) const noexcept {
@@ -71,6 +68,28 @@ namespace bardrix {
         return inside(box.min_) && inside(box.max_);
     }
 
+    bool bounding_box::intersects(const bounding_box& box) const noexcept {
+        return less_than_or_nearly_equal(min_.x, box.max_.x) && greater_than_or_nearly_equal(max_.x, box.min_.x) &&
+               less_than_or_nearly_equal(min_.y, box.max_.y) && greater_than_or_nearly_equal(max_.y, box.min_.y) &&
+               less_than_or_nearly_equal(min_.z, box.max_.z) && greater_than_or_nearly_equal(max_.z, box.min_.z);
+    }
+
+    bool bounding_box::intersects(const bardrix::ray& ray) const noexcept {
+        vector3 ray_dir = bardrix::vector3(1 / ray.get_direction().x, 1 / ray.get_direction().y,
+                                           1 / ray.get_direction().z);
+
+        const double t1 = (min_.x - ray.position.x) * ray_dir.x;
+        const double t2 = (max_.x - ray.position.x) * ray_dir.x;
+        const double t3 = (min_.y - ray.position.y) * ray_dir.y;
+        const double t4 = (max_.y - ray.position.y) * ray_dir.y;
+        const double t5 = (min_.z - ray.position.z) * ray_dir.z;
+        const double t6 = (max_.z - ray.position.z) * ray_dir.z;
+
+        const double tmin = std::max(std::max(std::min(t1, t2), std::min(t3, t4)), std::min(t5, t6));
+        const double tmax = std::min(std::min(std::max(t1, t2), std::max(t3, t4)), std::max(t5, t6));
+
+        return tmax >= tmin && ray.get_length() >= tmin;
+    }
 
     bounding_box bounding_box::merge(const bounding_box& box) const noexcept {
         return {{ std::min(min_.x, box.min_.x), std::min(min_.y, box.min_.y), std::min(min_.z, box.min_.z) },
@@ -105,43 +124,6 @@ namespace bardrix {
 
     double bounding_box::diagonal() const noexcept {
         return min_.vector_to(max_).length();
-    }
-
-    bool bounding_box::is_hit(const bardrix::ray& ray) const noexcept {
-        // my attempt of branch-less intersection
-
-        double tmin, tmax, tymin, tymax, tzmin, tzmax;
-        vector3 ray_dir = ray.get_direction();
-
-        // x axis
-        {
-            bool positive_x = greater_than_or_nearly_equal(ray_dir.x, 0);
-            tmin = (positive_x ? (min_.x - ray.position.x) / ray_dir.x : (max_.x - ray.position.x) / ray_dir.x);
-            tmax = (positive_x ? (max_.x - ray.position.x) / ray_dir.x : (min_.x - ray.position.x) / ray_dir.x);
-        }
-
-        // y axis
-        {
-            bool positive_y = greater_than_or_nearly_equal(ray_dir.y, 0);
-            tymin = (positive_y ? (min_.y - ray.position.y) / ray_dir.y : (max_.y - ray.position.y) / ray_dir.y);
-            tymax = (positive_y ? (max_.y - ray.position.y) / ray_dir.y : (min_.y - ray.position.y) / ray_dir.y);
-        }
-
-        if ((tmin > tymax) || (tymin > tmax)) return false;
-
-        tmin = std::max(tmin, tymin);
-        tmax = std::min(tmax, tymax);
-
-        // z axis
-        {
-            bool positive_z = greater_than_or_nearly_equal(ray_dir.z, 0);
-            tzmin = (positive_z ? (min_.z - ray.position.z) / ray_dir.z : (max_.z - ray.position.z) / ray_dir.z);
-            tzmax = (positive_z ? (max_.z - ray.position.z) / ray_dir.z : (min_.z - ray.position.z) / ray_dir.z);
-        }
-
-        if ((tmin > tzmax) || (tzmin > tmax)) return false;
-
-        return tmin < ray.get_length();
     }
 
 } // namespace bardrix
