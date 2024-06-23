@@ -91,9 +91,38 @@ namespace bardrix {
         return tmax >= tmin && ray.get_length() >= tmin;
     }
 
-    bounding_box bounding_box::merge(const bounding_box& box) const noexcept {
-        return {{ std::min(min_.x, box.min_.x), std::min(min_.y, box.min_.y), std::min(min_.z, box.min_.z) },
-                { std::max(max_.x, box.max_.x), std::max(max_.y, box.max_.y), std::max(max_.z, box.max_.z) }};
+    bounding_box bounding_box::merged(const bounding_box& box) const noexcept {
+        bounding_box temp = *this;
+        temp.merge(box);
+        return temp;
+    }
+
+    const bounding_box& bounding_box::merge(const bounding_box& box) noexcept {
+        min_ = point3(std::min(min_.x, box.min_.x), std::min(min_.y, box.min_.y), std::min(min_.z, box.min_.z));
+        max_ = point3(std::max(max_.x, box.max_.x), std::max(max_.y, box.max_.y), std::max(max_.z, box.max_.z));
+        return *this;
+    }
+
+    bounding_box bounding_box::expanded(double value) const noexcept {
+        bounding_box temp = *this;
+        temp.expand(value);
+        return temp;
+    }
+
+    const bounding_box& bounding_box::expand(double value) noexcept {
+        min_ -= value;
+        max_ += value;
+
+        // We cannot shrink past the center
+        if (width() < 0) min_.x = max_.x = center().x;
+        if (height() < 0) min_.y = max_.y = center().y;
+        if (depth() < 0) min_.z = max_.z = center().z;
+
+        return *this;
+    }
+
+    bool bounding_box::is_empty() const noexcept {
+        return min_ == max_;
     }
 
     point3 bounding_box::center() const noexcept {
@@ -124,6 +153,73 @@ namespace bardrix {
 
     double bounding_box::diagonal() const noexcept {
         return min_.vector_to(max_).length();
+    }
+
+    bounding_box bounding_box::operator+(const vector3& vector) const noexcept {
+        bounding_box temp = *this;
+        temp.min_ += vector;
+        temp.max_ += vector;
+        return temp;
+    }
+
+    bounding_box bounding_box::operator+(double value) const noexcept {
+        bounding_box temp = *this;
+        temp.min_ += value;
+        temp.max_ += value;
+        return temp;
+    }
+
+    const bounding_box& bounding_box::operator+=(const vector3& vector) noexcept {
+        min_ += vector;
+        max_ += vector;
+        return *this;
+    }
+
+    const bounding_box& bounding_box::operator+=(double value) noexcept {
+        min_ += value;
+        max_ += value;
+        return *this;
+    }
+
+    bounding_box bounding_box::operator-(const vector3& vector) const noexcept {
+        bounding_box temp = *this;
+        temp.min_ -= vector;
+        temp.max_ -= vector;
+        return temp;
+    }
+
+    bounding_box bounding_box::operator-(double value) const noexcept {
+        bounding_box temp = *this;
+        temp.min_ -= value;
+        temp.max_ -= value;
+        return temp;
+    }
+
+    const bounding_box& bounding_box::operator-=(const vector3& vector) noexcept {
+        min_ -= vector;
+        max_ -= vector;
+        return *this;
+    }
+
+    const bounding_box& bounding_box::operator-=(double value) noexcept {
+        min_ -= value;
+        max_ -= value;
+        return *this;
+    }
+
+    bool bounding_box::operator==(const bounding_box& box) const noexcept {
+        return min_ == box.min_ && max_ == box.max_;
+    }
+
+    bool bounding_box::operator!=(const bounding_box& box) const noexcept {
+        return min_ != box.min_ || max_ != box.max_;
+    }
+
+    std::ostream& operator<<(std::ostream& os, const bounding_box& box) {
+        os << "Bounding Box:";
+        os << " (Min: " << box.get_min();
+        os << ", Max: " << box.get_max() << ")";
+        return os;
     }
 
 } // namespace bardrix
