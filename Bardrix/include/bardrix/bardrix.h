@@ -12,6 +12,8 @@
 #include <optional>
 #include <climits>
 #include <algorithm>
+#include <memory>
+#include <functional>
 
 // C++20 feature
 #if __cplusplus > 201703L
