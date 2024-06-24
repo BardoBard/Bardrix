@@ -9,13 +9,13 @@
 namespace bardrix {
 
     /// \brief Represents a binary tree, which is a tree data structure in which each node has at most two children.  \n
-    ///        The use of duplicates is not allowed, it will be ignored when inserting.                               \n
     /// \tparam T The type of the values in the binary tree, e.g int, double, point3, etc.
     /// \example       5        \n
-    ///              /  \       \n
-    ///             3    7      \n
+    ///              /   \      \n
+    ///             3     7     \n
     ///            / \   / \    \n
     ///           1   4 6   8
+    /// \note The implementation of operator==, operator!= and operator= is required for the binary tree to work.
     template<typename T>
     class binary_tree {
     public:
@@ -75,8 +75,7 @@ namespace bardrix {
 
         /// \brief Builds a balanced binary tree from the given values.                                             \n
         ///        For a balanced tree the values should be sorted in ascending order. (e.g 1, 2, 3, 4, 5, 6, 7, 8) \n
-        ///        The sorting should adhere to the predicate given in the constructor.                             \n
-        ///        The use of duplicates is not allowed.
+        ///        The sorting should adhere to the predicate given in the constructor.
         /// \param values The values to insert into the binary tree.
         /// \param size The number of values to insert into the binary tree.
         /// \example int values[] = {1, 2, 3, 4, 5, 6, 7, 8}; tree.build(values, 8);                                \n
@@ -86,14 +85,13 @@ namespace bardrix {
         ///       / \ / \     \n
         ///      2  4 6  8    \n
         ///     /             \n
-        ///    1              \n
+        ///    1
         /// \note Use this function for a balanced binary tree.
         void build(const T* values, std::size_t size);
 
         /// \brief Builds a balanced binary tree from the given values.                                                         \n
         ///        For a balanced tree the values should be sorted in ascending order. (e.g 1, 2, 3, 4, 5, 6, 7, 8)             \n
-        ///        The sorting should adhere to the predicate given in the constructor.                                         \n
-        ///        The use of duplicates is not allowed.
+        ///        The sorting should adhere to the predicate given in the constructor.
         /// \param begin The beginning of the values to insert into the binary tree.
         /// \param end The end of the values to insert into the binary tree.
         /// \example std::vector<int> values = {1, 2, 3, 4, 5, 6, 7, 8}; tree.build(values.begin(), values.end());              \n
@@ -104,15 +102,14 @@ namespace bardrix {
         ///       / \ / \     \n
         ///      2  4 6  8    \n
         ///     /             \n
-        ///    1              \n
+        ///    1
         /// \note Use this function for a balanced binary tree.
         template<typename Iterator, typename = std::enable_if_t<std::is_same_v<T, typename std::iterator_traits<Iterator>::value_type>>>
         void build(Iterator begin, Iterator end);
 
         /// \brief Builds a balanced binary tree from the given values.                                             \n
         ///        For a balanced tree the values should be sorted in ascending order. (e.g 1, 2, 3, 4, 5, 6, 7, 8) \n
-        ///        The sorting should adhere to the predicate given in the constructor.                             \n
-        ///        The use of duplicates is not allowed.
+        ///        The sorting should adhere to the predicate given in the constructor.
         /// \tparam Args The types of the values to insert into the binary tree.
         /// \param val The first value to insert into the binary tree.
         /// \param args Other values to insert into the binary tree.
@@ -123,7 +120,7 @@ namespace bardrix {
         ///       / \ / \     \n
         ///      2  4 6  8    \n
         ///     /             \n
-        ///    1              \n
+        ///    1
         /// \note Use this function for a balanced binary tree.
         template<typename... Args>
         void build(T val, Args... args);
@@ -141,9 +138,8 @@ namespace bardrix {
         ///             \       \n
         ///              4      \n
         ///               \     \n
-        ///                5    \n
+        ///                5
         /// \note Do not use this function for a balanced binary tree, use the build function instead.
-        /// \note The use of duplicates is not allowed.
         template<typename... Args>
         void insert(T val, Args... args);
 
@@ -153,7 +149,6 @@ namespace bardrix {
         /// \param val The value to insert into the binary tree.
         /// \example tree.insert(1); // Inserts the value 1 into the binary tree. (Assuming the tree is of type int)
         /// \note Do not use this function for a balanced binary tree, use the build function instead.
-        /// \note The use of duplicates is not allowed.
         void insert(T val);
 
         /// \brief Inserts the given values into the binary tree.           \n
@@ -169,9 +164,8 @@ namespace bardrix {
         ///             \       \n
         ///              4      \n
         ///               \     \n
-        ///                5    \n
+        ///                5
         /// \note Do not use this function for a balanced binary tree, use the build function instead.
-        /// \note The use of duplicates is not allowed.
         void insert(const T* values, std::size_t size);
 
         /// \brief Inserts the given values into the binary tree.           \n
@@ -187,9 +181,8 @@ namespace bardrix {
         ///             \       \n
         ///              4      \n
         ///               \     \n
-        ///                5    \n
+        ///                5
         /// \note Do not use this function for a balanced binary tree, use the build function instead.
-        /// \note The use of duplicates is not allowed.
         template<typename Iterator, typename = std::enable_if_t<std::is_same_v<T, typename std::iterator_traits<Iterator>::value_type>>>
         void insert(Iterator begin, Iterator end);
 
@@ -211,7 +204,7 @@ namespace bardrix {
         ///       /   / \               \n
         ///      2   6   8              \n
         ///     /                       \n
-        ///    1                        \n
+        ///    1
         bool remove(T val);
 
         /// \brief Checks if the binary tree contains the given value, meant to be a helper function for the public contains function.
@@ -267,7 +260,7 @@ namespace bardrix {
         ///          / \        \n
         ///         2   5       \n
         ///        /   /        \n
-        /// (min) 1   4         \n
+        /// (min) 1   4
         NODISCARD const node* find_min() const;
 
         /// \brief Finds the maximum value in the binary tree, it's called recursively.
@@ -283,7 +276,7 @@ namespace bardrix {
         ///          / \        \n
         ///         2   5 (max) \n
         ///        /   /        \n
-        ///       1   4         \n
+        ///       1   4
         NODISCARD const node* find_max() const;
 
         /// \brief Checks if the binary tree is empty.
@@ -295,12 +288,17 @@ namespace bardrix {
         /// \param current The current node to calculate the height from.
         /// \return The height of the binary tree.
         /// \details This function is called recursively to calculate the height of the binary tree.
-        NODISCARD int height(const node* current) const;
+        NODISCARD std::size_t height(const node* current) const;
 
         /// \brief Calculates the height of the binary tree.
         /// \return The height of the binary tree.
         /// \example int h = tree.height(); // (1,2,3,4,5) -> 3    \n
-        NODISCARD int height() const;
+        /// 1         3         \n
+        ///          / \        \n
+        /// 2       2   5       \n
+        ///        /   /        \n
+        /// 3     1   4
+        NODISCARD std::size_t height() const;
 
     protected:
         /// \brief Inserts the given value into the binary tree, meant to be a helper function for the public insert function.
@@ -447,21 +445,19 @@ namespace bardrix {
     }
 
     template<typename T>
-    int binary_tree<T>::height(const binary_tree::node* current) const {
+    std::size_t binary_tree<T>::height(const binary_tree::node* current) const {
         if (!current) return 0;
         return 1 + std::max(height(current->left.get()), height(current->right.get()));
     }
 
     template<typename T>
-    int binary_tree<T>::height() const {
+    std::size_t binary_tree<T>::height() const {
         return height(root.get());
     }
 
     // helper function for insert
     template<typename T>
     void binary_tree<T>::insert(std::unique_ptr<node>& current, T val) {
-        if (val == current->data) return; // Avoid duplicates
-
         if (predicate(val, current->data)) {
             if (current->left) insert(current->left, val);
             else current->left = std::make_unique<node>(val);

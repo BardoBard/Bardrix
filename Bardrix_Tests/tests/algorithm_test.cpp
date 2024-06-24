@@ -4,7 +4,6 @@
 
 #include <bardrix/algorithm.h>
 #include <bardrix/point3.h>
-#include <bardrix/camera.h>
 
 bool int_predicate(int a, int b) {
     return a < b;
@@ -25,7 +24,7 @@ TEST(algorithm, binary_tree_build_array_points) {
     //    /
     //   1
     //    \
-    //     2
+    //     2 (inserted)
     std::vector<bardrix::point3> points2 = {
             { 1,  2,  3 },
             { 10, 0,  2 },
@@ -189,6 +188,11 @@ TEST(algorithm, binary_tree_build_multiple_values) {
 TEST(algorithm, binary_tree_build_edge_cases) {
     bardrix::binary_tree<int> tree(int_predicate);
 
+    int values[] = { 1, 2, 3, 4, 5, 6, 7, 8 };
+    tree.build(values, 0);
+
+    EXPECT_EQ(tree.root, nullptr);
+
     // 1 ->
     //  1
     tree.build(1);
@@ -223,11 +227,23 @@ TEST(algorithm, binary_tree_build_edge_cases) {
     EXPECT_EQ(tree.root->left->data, 3);
     EXPECT_EQ(tree.root->right->data, 1);
 
-    tree.insert(3, 2, 1); // Ignored
+    // insert 3, 2, 1 ->
+    //     2
+    //    / \
+    //   3   1
+    //  /     \
+    // 1       3
+    //          \
+    //           2
+
+    tree.insert(3, 2, 1);
 
     EXPECT_EQ(tree.root->data, 2);
     EXPECT_EQ(tree.root->left->data, 3);
     EXPECT_EQ(tree.root->right->data, 1);
+    EXPECT_EQ(tree.root->left->left->data, 1);
+    EXPECT_EQ(tree.root->right->right->data, 3);
+    EXPECT_EQ(tree.root->right->right->left->data, 2);
 }
 
 /// \brief Test the clear method of a binary tree
