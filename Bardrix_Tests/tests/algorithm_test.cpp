@@ -4,6 +4,7 @@
 
 #include <bardrix/algorithm.h>
 #include <bardrix/point3.h>
+#include <bardrix/camera.h>
 
 bool int_predicate(int a, int b) {
     return a < b;
@@ -17,12 +18,14 @@ bool point_predicate(const bardrix::point3& a, const bardrix::point3& b) {
 TEST(algorithm, binary_tree_build_array_points) {
     bardrix::binary_tree<bardrix::point3> tree(point_predicate);
 
-    // 1, 10, 34, 64 ->
+    // 1, 10, 34, 64 (insert 2)->
     //       34
     //      /  \
     //     10  64
     //    /
     //   1
+    //    \
+    //     2
     std::vector<bardrix::point3> points2 = {
             { 1,  2,  3 },
             { 10, 0,  2 },
@@ -31,10 +34,12 @@ TEST(algorithm, binary_tree_build_array_points) {
     };
 
     tree.build(points2.data(), points2.size());
+    tree.insert({ 2,  3,  4 });
 
     EXPECT_EQ(tree.root->data.x, 34);
     EXPECT_EQ(tree.root->left->data.x, 10);
     EXPECT_EQ(tree.root->left->left->data.x, 1);
+    EXPECT_EQ(tree.root->left->left->right->data.x, 2);
     EXPECT_EQ(tree.root->right->data.x, 64);
 }
 
@@ -660,7 +665,7 @@ TEST(algorithm, binary_tree_remove) {
     //      2     6  8
     //     /
     //    1
-    tree.remove(3);
+    EXPECT_TRUE(tree.remove(3));
 
     // 2, 9, 10, 11, 12, 13, 14, 24, 62, 63, 64, 65, 66, 67, 68 ->
     //                 _____24_____
@@ -680,8 +685,11 @@ TEST(algorithm, binary_tree_remove) {
     //          9      13       63     67
     //         / \       \     / \       \
     //        2  10      14   62 64      68
-    tree.remove(11);
-    tree.remove(65);
+    EXPECT_TRUE(tree.remove(11));
+    EXPECT_TRUE(tree.remove(65));
+    EXPECT_FALSE(tree.remove(20));
+    EXPECT_FALSE(tree.remove(0));
+    EXPECT_FALSE(tree.remove(-63));
 
     EXPECT_EQ(tree.root->data, 24);
     EXPECT_EQ(tree.root->left->data, 12);

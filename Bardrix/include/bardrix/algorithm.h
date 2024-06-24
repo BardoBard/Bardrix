@@ -19,6 +19,12 @@ namespace bardrix {
     template<typename T>
     class binary_tree {
     public:
+        static_assert(std::is_convertible_v<decltype(std::declval<T>() == std::declval<T>()), bool>,
+                      "Template argument T must have operator==");
+        static_assert(std::is_convertible_v<decltype(std::declval<T>() != std::declval<T>()), bool>,
+                      "Template argument T must have operator!=");
+        static_assert(std::is_assignable_v<T&, const T&>, "Template argument T must have operator=");
+
         /// \brief Represents a node in the binary tree.
         /// \details The node has a value of type T and two children, left and right.
         class node {
@@ -206,7 +212,7 @@ namespace bardrix {
         ///      2   6   8              \n
         ///     /                       \n
         ///    1                        \n
-        void remove(T val);
+        bool remove(T val);
 
         /// \brief Checks if the binary tree contains the given value, meant to be a helper function for the public contains function.
         /// \param current The current node to check if it contains the value.
@@ -313,8 +319,9 @@ namespace bardrix {
         /// \brief Deletes a node from the binary tree, meant to be a helper function for the public delete_node function.
         /// \param current The current node to delete the value from.
         /// \param val The value of the node to delete.
+        /// \return True if the node was deleted, false otherwise.
         /// \details This function is called recursively to delete the node with the given value from the binary tree.
-        void remove(std::unique_ptr<node>& current, T val);
+        bool remove(std::unique_ptr<node>& current, T val);
 
     }; // class binary_tree
 
@@ -479,8 +486,8 @@ namespace bardrix {
     }
 
     template<typename T>
-    void binary_tree<T>::remove(T val) {
-        remove(root, val);
+    bool binary_tree<T>::remove(T val) {
+        return remove(root, val);
     }
 
     template<typename T>
@@ -494,19 +501,21 @@ namespace bardrix {
 
     // helper function for remove
     template<typename T>
-    void binary_tree<T>::remove(std::unique_ptr<node>& current, T val) {
-        if (!current) return;
+    bool binary_tree<T>::remove(std::unique_ptr<node>& current, T val) {
+        if (!current) return false;
 
-        if (val == current->data) {
-            if (!current->left) current = std::move(current->right);
-            else if (!current->right) current = std::move(current->left);
-            else {
-                const node* min = find_min(current->right.get());
-                current->data = min->data;
-                remove(current->right, min->data);
-            }
-        } else if (predicate(val, current->data)) remove(current->left, val);
-        else remove(current->right, val);
+        if (val != current->data)
+            return predicate(val, current->data) ? remove(current->left, val) : remove(current->right, val);
+
+        if (!current->left) current = std::move(current->right);
+        else if (!current->right) current = std::move(current->left);
+        else {
+            const node* min = find_min(current->right.get());
+            current->data = min->data;
+            remove(current->right, min->data);
+        }
+        return true;
+
     }
 
     // binary_tree implementation end
