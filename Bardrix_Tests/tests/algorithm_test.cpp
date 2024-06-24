@@ -3,57 +3,93 @@
 //
 
 #include <bardrix/algorithm.h>
+#include <bardrix/point3.h>
 
 bool int_predicate(int a, int b) {
     return a < b;
 }
 
-class sphere : public bardrix::shape {
-private:
-    bardrix::point3 position_;
-    bardrix::material material_;
-    double radius_;
+bool point_predicate(const bardrix::point3& a, const bardrix::point3& b) {
+    return a.x < b.x;
+}
 
-public:
-    sphere(bardrix::point3 position, double radius) : position_(std::move(position)), radius_(radius > 0 ? radius : 0),
-                                                      material_() {}
+/// \brief Test the building of a binary tree, with an array of points
+TEST(algorithm, binary_tree_build_array_points) {
+    bardrix::binary_tree<bardrix::point3> tree(point_predicate);
 
-    sphere() : position_(), radius_(0), material_() {}
+    // 1, 10, 34, 64 ->
+    //       34
+    //      /  \
+    //     10  64
+    //    /
+    //   1
+    std::vector<bardrix::point3> points2 = {
+            { 1,  2,  3 },
+            { 10, 0,  2 },
+            { 34, 24, 55 },
+            { 64, 37, 13 },
+    };
 
-    NODISCARD bardrix::vector3 normal_at(const bardrix::point3& point) const override {
-        assert(false);
-        return {};
-    }
+    tree.build(points2.data(), points2.size());
 
-    NODISCARD std::optional<bardrix::point3> intersection(const bardrix::ray& ray) const override {
-        assert(false);
-        return std::nullopt;
-    }
+    EXPECT_EQ(tree.root->data.x, 34);
+    EXPECT_EQ(tree.root->left->data.x, 10);
+    EXPECT_EQ(tree.root->left->left->data.x, 1);
+    EXPECT_EQ(tree.root->right->data.x, 64);
+}
 
-    void set_position(const bardrix::point3& position) override { position_ = position; }
+/// \brief Test the building of a binary tree, with begin and end iterators
+TEST(algorithm, binary_tree_build_iterators) {
+    bardrix::binary_tree<int> tree(int_predicate);
 
-    NODISCARD const bardrix::point3& get_position() const override { return position_; }
+    int values[] = { 1, 2, 3, 4, 5, 6, 7, 8 };
 
-    NODISCARD const bardrix::material& get_material() const override {
-        assert(false);
-        return material_;
-    }
+    // 1, 2, 3, 4, 5, 6, 7, 8 ->
+    //          5
+    //        /   \
+    //       3     7
+    //      / \   / \
+    //     2   4 6   8
+    //    /
+    //   1
+    tree.build(values, values + sizeof values / sizeof values[0]);
 
-    void set_material(const bardrix::material& material) override {
-        assert(false);
-        this->material_ = material;
-    }
+    EXPECT_EQ(tree.root->data, 5);
+    EXPECT_EQ(tree.root->left->data, 3);
+    EXPECT_EQ(tree.root->right->data, 7);
+    EXPECT_EQ(tree.root->left->left->data, 2);
+    EXPECT_EQ(tree.root->left->left->left->data, 1);
+    EXPECT_EQ(tree.root->left->right->data, 4);
+    EXPECT_EQ(tree.root->right->left->data, 6);
+    EXPECT_EQ(tree.root->right->right->data, 8);
 
-    void set_radius(double radius) { this->radius_ = radius > 0 ? radius : 0; }
 
-    NODISCARD double get_radius() const { return radius_; }
+    // 2, 9, 10, 11, 12, 13, 14, 24, 62, 63, 64, 65, 66, 67, 68 ->
+    //            _____24_____
+    //          /              \
+    //        11               65
+    //      /    \           /    \
+    //     9      13       63     67
+    //    / \     / \     / \    /  \
+    //   2  10   12 14   62 64  66  68
+    std::vector<int> values2 = { 2, 9, 10, 11, 12, 13, 14, 24, 62, 63, 64, 65, 66, 67, 68 };
 
-    NODISCARD bardrix::bounding_box bounding_box() const override {
-        return { position_ - bardrix::vector3(radius_, radius_, radius_),
-                 position_ + bardrix::vector3(radius_, radius_, radius_) };
-    }
+    tree.build(values2.begin(), values2.end());
 
-};
+    EXPECT_EQ(tree.root->data, 24);
+    EXPECT_EQ(tree.root->left->data, 11);
+    EXPECT_EQ(tree.root->left->left->data, 9);
+    EXPECT_EQ(tree.root->left->right->data, 13);
+    EXPECT_EQ(tree.root->left->left->left->data, 2);
+    EXPECT_EQ(tree.root->left->left->right->data, 10);
+    EXPECT_EQ(tree.root->left->right->left->data, 12);
+    EXPECT_EQ(tree.root->left->right->right->data, 14);
+    EXPECT_EQ(tree.root->right->data, 65);
+    EXPECT_EQ(tree.root->right->left->data, 63);
+    EXPECT_EQ(tree.root->right->right->data, 67);
+    EXPECT_EQ(tree.root->right->left->left->data, 62);
+    EXPECT_EQ(tree.root->right->right->right->data, 68);
+}
 
 /// \brief Test the building of a binary tree, with an array of values
 TEST(algorithm, binary_tree_build_array) {
@@ -269,6 +305,41 @@ TEST(algorithm, binary_tree_insert_single_value) {
     tree.insert(6);
     tree.insert(3);
     tree.insert(7);
+
+    EXPECT_EQ(tree.root->data, 5);
+    EXPECT_EQ(tree.root->left->data, 3);
+    EXPECT_EQ(tree.root->right->data, 6);
+    EXPECT_EQ(tree.root->right->right->data, 7);
+}
+
+/// \brief Test the insertion of iterators in a binary tree
+TEST(algorithm, binary_tree_insert_iterators) {
+    bardrix::binary_tree<int> tree(int_predicate);
+
+    int values[] = { 5, 6, 3, 7 };
+
+    // 5, 6, 3, 7 ->
+    //       5
+    //     /   \
+    //    3     6
+    //           \
+    //            7
+    tree.insert(values, values + sizeof values / sizeof values[0]);
+
+    EXPECT_EQ(tree.root->data, 5);
+    EXPECT_EQ(tree.root->left->data, 3);
+    EXPECT_EQ(tree.root->right->data, 6);
+    EXPECT_EQ(tree.root->right->right->data, 7);
+
+    tree.clear();
+    // 5, 6, 3, 7 ->
+    //       5
+    //     /   \
+    //    3     6
+    //           \
+    //            7
+    std::vector<int> values2 = { 5, 6, 3, 7 };
+    tree.insert(values2.begin(), values2.end());
 
     EXPECT_EQ(tree.root->data, 5);
     EXPECT_EQ(tree.root->left->data, 3);
@@ -624,4 +695,33 @@ TEST(algorithm, binary_tree_remove) {
     EXPECT_EQ(tree.root->right->right->data, 67);
     EXPECT_EQ(tree.root->right->left->left->data, 62);
     EXPECT_EQ(tree.root->right->right->right->data, 68);
+}
+
+/// \brief Test the height method of a binary tree
+TEST(algorithm, binary_tree_height) {
+    bardrix::binary_tree<int> tree(int_predicate);
+
+    // 1, 2, 3, 4, 5, 6, 7, 8 ->
+    //           5
+    //         /   \
+    //        3     7
+    //       / \   / \
+    //      2  4  6  8
+    //     /
+    //    1
+    tree.build(1, 2, 3, 4, 5, 6, 7, 8);
+
+    EXPECT_EQ(tree.height(), 4);
+
+    // 2, 9, 10, 11, 12, 13, 14, 24, 62, 63, 64, 65, 66, 67, 68 ->
+    //                 _____24_____
+    //               /              \
+    //             11               65
+    //           /    \           /    \
+    //          9      13       63     67
+    //         / \     / \     / \    /  \
+    //        2  10   12 14   62 64  66  68
+    tree.build(2, 9, 10, 11, 12, 13, 14, 24, 62, 63, 64, 65, 66, 67, 68);
+
+    EXPECT_EQ(tree.height(), 4);
 }

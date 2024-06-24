@@ -5,7 +5,6 @@
 #pragma once
 
 #include <bardrix/bardrix.h>
-#include <bardrix/objects.h>
 
 namespace bardrix {
 
@@ -74,7 +73,7 @@ namespace bardrix {
         ///        The use of duplicates is not allowed.
         /// \param values The values to insert into the binary tree.
         /// \param size The number of values to insert into the binary tree.
-        /// \example int values[] = {1, 2, 3, 4, 5, 6, 7, 8}; tree.build(values, 8); // Builds a balanced binary tree with the values 1, 2, 3, 4, 5, 6, 7, and 8. (Assuming the tree is of type int) \n
+        /// \example int values[] = {1, 2, 3, 4, 5, 6, 7, 8}; tree.build(values, 8);                                \n
         ///          5        \n
         ///         / \       \n
         ///        3   7      \n
@@ -84,6 +83,25 @@ namespace bardrix {
         ///    1              \n
         /// \note Use this function for a balanced binary tree.
         void build(const T* values, std::size_t size);
+
+        /// \brief Builds a balanced binary tree from the given values.                                                         \n
+        ///        For a balanced tree the values should be sorted in ascending order. (e.g 1, 2, 3, 4, 5, 6, 7, 8)             \n
+        ///        The sorting should adhere to the predicate given in the constructor.                                         \n
+        ///        The use of duplicates is not allowed.
+        /// \param begin The beginning of the values to insert into the binary tree.
+        /// \param end The end of the values to insert into the binary tree.
+        /// \example std::vector<int> values = {1, 2, 3, 4, 5, 6, 7, 8}; tree.build(values.begin(), values.end());              \n
+        ///          int values[] = {1, 2, 3, 4, 5, 6, 7, 8}; tree.build(values, values + sizeof values / sizeof values[0]);    \n
+        ///          5        \n
+        ///         / \       \n
+        ///        3   7      \n
+        ///       / \ / \     \n
+        ///      2  4 6  8    \n
+        ///     /             \n
+        ///    1              \n
+        /// \note Use this function for a balanced binary tree.
+        template<typename Iterator, typename = std::enable_if_t<std::is_same_v<T, typename std::iterator_traits<Iterator>::value_type>>>
+        void build(Iterator begin, Iterator end);
 
         /// \brief Builds a balanced binary tree from the given values.                                             \n
         ///        For a balanced tree the values should be sorted in ascending order. (e.g 1, 2, 3, 4, 5, 6, 7, 8) \n
@@ -137,8 +155,8 @@ namespace bardrix {
         ///        Use build function for a balanced binary tree.
         /// \param values The values to insert into the binary tree.
         /// \param size The number of values to insert into the binary tree.
-        /// \example int values[] = {1, 2, 3, 4, 5}; tree.insert(values, 5); // Inserts the values 1, 2, 3, 4, and 5 into the binary tree. (Assuming the tree is of type int)
-        /// \example std::vector<int> values = {1, 2, 3, 4, 5}; tree.insert(values.data(), values.size()); \n
+        /// \example int values[] = {1, 2, 3, 4, 5}; tree.insert(values, 5);                                \n
+        ///          std::vector<int> values = {1, 2, 3, 4, 5}; tree.insert(values.data(), values.size());  \n
         ///          1          \n
         ///         / \         \n
         ///        2   3        \n
@@ -149,6 +167,25 @@ namespace bardrix {
         /// \note Do not use this function for a balanced binary tree, use the build function instead.
         /// \note The use of duplicates is not allowed.
         void insert(const T* values, std::size_t size);
+
+        /// \brief Inserts the given values into the binary tree.           \n
+        ///        The values are inserted in the order they are given.     \n
+        ///        Use build function for a balanced binary tree.
+        /// \param begin The beginning of the values to insert into the binary tree.
+        /// \param end The end of the values to insert into the binary tree.
+        /// \example int values[] = {1, 2, 3, 4, 5}; tree.insert(values, values + sizeof values / sizeof values[0]);  \n
+        ///          std::vector<int> values = {1, 2, 3, 4, 5}; tree.insert(values.begin(), values.end());            \n
+        ///          1          \n
+        ///         / \         \n
+        ///        2   3        \n
+        ///             \       \n
+        ///              4      \n
+        ///               \     \n
+        ///                5    \n
+        /// \note Do not use this function for a balanced binary tree, use the build function instead.
+        /// \note The use of duplicates is not allowed.
+        template<typename Iterator, typename = std::enable_if_t<std::is_same_v<T, typename std::iterator_traits<Iterator>::value_type>>>
+        void insert(Iterator begin, Iterator end);
 
         /// \brief Deletes a node from the binary tree.
         /// \param val The value of the node to delete.
@@ -295,6 +332,12 @@ namespace bardrix {
     }
 
     template<typename T>
+    template<typename Iterator, typename>
+    void binary_tree<T>::build(const Iterator begin, const Iterator end) {
+        build(&(*begin), std::distance(begin, end));
+    }
+
+    template<typename T>
     void binary_tree<T>::build(const T* values, std::size_t size) {
         clear();
         if (size == 0) return;
@@ -329,6 +372,13 @@ namespace bardrix {
     void binary_tree<T>::insert(T val, Args... args) {
         insert(val);
         insert(args...);
+    }
+
+    template<typename T>
+    template<typename Iterator, typename>
+    void binary_tree<T>::insert(Iterator begin, Iterator end) {
+        for (auto it = begin; it != end; ++it)
+            insert(*it);
     }
 
     template<typename T>
