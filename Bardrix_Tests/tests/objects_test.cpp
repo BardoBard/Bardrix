@@ -285,7 +285,38 @@ TEST(bounding_box, diagonal) {
     EXPECT_EQ(bardrix::bounding_box({ 0, 0, 0 }, { 0, 0, 0 }).diagonal(), 0);
 }
 
-/// \brief Test the merge of two bounding boxes
+/// \brief Test the merged of two bounding boxes
+TEST(bounding_box, merged) {
+    bardrix::point3 min1 = bardrix::point3(-5.04, 3.4, 0);
+    bardrix::point3 max1 = bardrix::point3(4, 12.44, 6.84);
+    bardrix::bounding_box box1 = bardrix::bounding_box(min1, max1);
+
+    bardrix::point3 min2 = bardrix::point3(-4, 2, 1);
+    bardrix::point3 max2 = bardrix::point3(3, 11, 7);
+    bardrix::bounding_box box2 = bardrix::bounding_box(min2, max2);
+
+    bardrix::bounding_box merged = box1.merged(box2);
+    EXPECT_EQ(merged.get_min(), bardrix::point3(-5.04, 2, 0));
+    EXPECT_EQ(merged.get_max(), bardrix::point3(4, 12.44, 7));
+
+    min2 = bardrix::point3(-6, 6, -1);
+    max2 = bardrix::point3(7, 14, 2);
+    box2 = bardrix::bounding_box(min2, max2);
+
+    merged = box1.merged(box2);
+    EXPECT_EQ(merged.get_min(), bardrix::point3(-6, 3.4, -1));
+    EXPECT_EQ(merged.get_max(), bardrix::point3(7, 14, 6.84));
+
+    merged = bardrix::bounding_box({ 1, 2, 3 }, { 3, 4, 5 }).merged(bardrix::bounding_box({ 1, 2, 3 }, { 3, 4, 5 }));
+    EXPECT_EQ(merged.get_min(), bardrix::point3(1, 2, 3));
+    EXPECT_EQ(merged.get_max(), bardrix::point3(3, 4, 5));
+
+    merged = bardrix::bounding_box({ 0, 0, 0 }, { 0, 0, 0 }).merged(bardrix::bounding_box({ 0, 0, 0 }, { 0, 0, 0 }));
+    EXPECT_EQ(merged.get_min(), bardrix::point3(0, 0, 0));
+    EXPECT_EQ(merged.get_max(), bardrix::point3(0, 0, 0));
+}
+
+/// \brief Test the merge method of bounding_box
 TEST(bounding_box, merge) {
     bardrix::point3 min1 = bardrix::point3(-5.04, 3.4, 0);
     bardrix::point3 max1 = bardrix::point3(4, 12.44, 6.84);
@@ -295,25 +326,134 @@ TEST(bounding_box, merge) {
     bardrix::point3 max2 = bardrix::point3(3, 11, 7);
     bardrix::bounding_box box2 = bardrix::bounding_box(min2, max2);
 
-    bardrix::bounding_box merged = box1.merge(box2);
-    EXPECT_EQ(merged.get_min(), bardrix::point3(-5.04, 2, 0));
-    EXPECT_EQ(merged.get_max(), bardrix::point3(4, 12.44, 7));
+    box1.merge(box2);
+    EXPECT_EQ(box1.get_min(), bardrix::point3(-5.04, 2, 0));
+    EXPECT_EQ(box1.get_max(), bardrix::point3(4, 12.44, 7));
 
     min2 = bardrix::point3(-6, 6, -1);
     max2 = bardrix::point3(7, 14, 2);
     box2 = bardrix::bounding_box(min2, max2);
 
-    merged = box1.merge(box2);
-    EXPECT_EQ(merged.get_min(), bardrix::point3(-6, 3.4, -1));
-    EXPECT_EQ(merged.get_max(), bardrix::point3(7, 14, 6.84));
+    box1 = bardrix::bounding_box(min1, max1);
+    box1.merge(box2);
+    EXPECT_EQ(box1.get_min(), bardrix::point3(-6, 3.4, -1));
+    EXPECT_EQ(box1.get_max(), bardrix::point3(7, 14, 6.84));
 
-    merged = bardrix::bounding_box({ 1, 2, 3 }, { 3, 4, 5 }).merge(bardrix::bounding_box({ 1, 2, 3 }, { 3, 4, 5 }));
-    EXPECT_EQ(merged.get_min(), bardrix::point3(1, 2, 3));
-    EXPECT_EQ(merged.get_max(), bardrix::point3(3, 4, 5));
+    box1 = bardrix::bounding_box({ 1, 2, 3 }, { 3, 4, 5 });
+    box2 = bardrix::bounding_box({ 1, 2, 3 }, { 3, 4, 5 });
+    box1.merge(box2);
+    EXPECT_EQ(box1.get_min(), bardrix::point3(1, 2, 3));
+    EXPECT_EQ(box1.get_max(), bardrix::point3(3, 4, 5));
 
-    merged = bardrix::bounding_box({ 0, 0, 0 }, { 0, 0, 0 }).merge(bardrix::bounding_box({ 0, 0, 0 }, { 0, 0, 0 }));
-    EXPECT_EQ(merged.get_min(), bardrix::point3(0, 0, 0));
-    EXPECT_EQ(merged.get_max(), bardrix::point3(0, 0, 0));
+    box1 = bardrix::bounding_box({ 0, 0, 0 }, { 0, 0, 0 });
+    box2 = bardrix::bounding_box({ 0, 0, 0 }, { 0, 0, 0 });
+    box1.merge(box2);
+    EXPECT_EQ(box1.get_min(), bardrix::point3(0, 0, 0));
+    EXPECT_EQ(box1.get_max(), bardrix::point3(0, 0, 0));
+}
+
+/// \brief Test the expand method of bounding_box
+TEST(bounding_box, expand) {
+    bardrix::point3 min = bardrix::point3(2, 3, 4);
+    bardrix::point3 max = bardrix::point3(7, 6, 7);
+    bardrix::bounding_box box = bardrix::bounding_box(min, max);
+
+    box.expand(1);
+    EXPECT_EQ(box.get_min(), bardrix::point3(1, 2, 3));
+    EXPECT_EQ(box.get_max(), bardrix::point3(8, 7, 8));
+
+    box.expand(0.5);
+    EXPECT_EQ(box.get_min(), bardrix::point3(0.5, 1.5, 2.5));
+    EXPECT_EQ(box.get_max(), bardrix::point3(8.5, 7.5, 8.5));
+
+    box.expand(-1);
+    EXPECT_EQ(box.get_min(), bardrix::point3(1.5, 2.5, 3.5));
+    EXPECT_EQ(box.get_max(), bardrix::point3(7.5, 6.5, 7.5));
+
+    box.expand(-0.5);
+    EXPECT_EQ(box.get_min(), bardrix::point3(2, 3, 4));
+    EXPECT_EQ(box.get_max(), bardrix::point3(7, 6, 7));
+}
+
+/// \brief Test the expand method of bounding_box with edge cases
+TEST(bounding_box, expand_edge_cases) {
+    bardrix::point3 min = bardrix::point3(2, 3, 4);
+    bardrix::point3 max = bardrix::point3(7, 6, 7);
+    bardrix::bounding_box box = bardrix::bounding_box(min, max);
+
+    box.expand(0);
+    EXPECT_EQ(box.get_min(), bardrix::point3(2, 3, 4));
+    EXPECT_EQ(box.get_max(), bardrix::point3(7, 6, 7));
+
+    box.expand(-10);
+    EXPECT_EQ(box.get_min(), bardrix::point3(4.5, 4.5, 5.5));
+    EXPECT_EQ(box.get_max(), bardrix::point3(4.5, 4.5, 5.5));
+}
+
+/// \brief Test the expanded method of bounding_box
+TEST(bounding_box, expanded) {
+    bardrix::point3 min = bardrix::point3(2, 3, 4);
+    bardrix::point3 max = bardrix::point3(7, 6, 7);
+    bardrix::bounding_box box = bardrix::bounding_box(min, max);
+
+    bardrix::bounding_box expanded = box.expanded(1);
+    EXPECT_EQ(expanded.get_min(), bardrix::point3(1, 2, 3));
+    EXPECT_EQ(expanded.get_max(), bardrix::point3(8, 7, 8));
+
+    expanded = box.expanded(0.5);
+    EXPECT_EQ(expanded.get_min(), bardrix::point3(1.5, 2.5, 3.5));
+    EXPECT_EQ(expanded.get_max(), bardrix::point3(7.5, 6.5, 7.5));
+
+    expanded = box.expanded(-1);
+    EXPECT_EQ(expanded.get_min(), bardrix::point3(3, 4, 5));
+    EXPECT_EQ(expanded.get_max(), bardrix::point3(6, 5, 6));
+
+    expanded = box.expanded(-0.5);
+    EXPECT_EQ(expanded.get_min(), bardrix::point3(2.5, 3.5, 4.5));
+    EXPECT_EQ(expanded.get_max(), bardrix::point3(6.5, 5.5, 6.5));
+}
+
+/// \brief Test the expanded method of bounding_box with edge cases
+TEST(bounding_box, expanded_edge_cases) {
+    bardrix::point3 min = bardrix::point3(2, 3, 4);
+    bardrix::point3 max = bardrix::point3(7, 6, 9);
+    bardrix::bounding_box box = bardrix::bounding_box(min, max);
+
+    bardrix::bounding_box expanded = box.expanded(0);
+    EXPECT_EQ(expanded.get_min(), bardrix::point3(2, 3, 4));
+    EXPECT_EQ(expanded.get_max(), bardrix::point3(7, 6, 9));
+
+    expanded = box.expanded(-10);
+    EXPECT_EQ(expanded.get_min(), bardrix::point3(4.5, 4.5, 6.5));
+    EXPECT_EQ(expanded.get_max(), bardrix::point3(4.5, 4.5, 6.5));
+
+    expanded = box.expanded(-2);
+    EXPECT_EQ(expanded.get_min(), bardrix::point3(4, 4.5, 6));
+    EXPECT_EQ(expanded.get_max(), bardrix::point3(5, 4.5, 7));
+}
+
+/// \brief Test the is_empty method of bounding_box
+TEST(bounding_box, is_empty) {
+    bardrix::point3 min = bardrix::point3(2, 3, 4);
+    bardrix::point3 max = bardrix::point3(7, 6, 7);
+    bardrix::bounding_box box = bardrix::bounding_box(min, max);
+
+    EXPECT_FALSE(box.is_empty());
+
+    box = bardrix::bounding_box({1, 2, 3}, {1, 2, 3});
+    EXPECT_TRUE(box.is_empty());
+
+    box = bardrix::bounding_box({0, 0, 0}, {0, 0, 0});
+    EXPECT_TRUE(box.is_empty());
+
+    box = bardrix::bounding_box({1, 2, 3}, {1, 2, 5});
+    EXPECT_FALSE(box.is_empty());
+
+    box = bardrix::bounding_box({1, 2, 3}, {1, 4, 5});
+    EXPECT_FALSE(box.is_empty());
+
+    box = bardrix::bounding_box({5, 3, 3}, {3, 4, 5});
+    EXPECT_FALSE(box.is_empty());
 }
 
 /// \brief Test the bounding_box intersects method with bounding_box
@@ -442,4 +582,238 @@ TEST(bounding_box, intersects_inside) {
     EXPECT_TRUE(box.inside(ray.position));
     ray.set_length(0);
     EXPECT_TRUE(box.inside(ray.position));
+}
+
+///\brief Test the operator+ with a vector3
+TEST(bounding_box, operator_plus_vector3) {
+    bardrix::point3 min = bardrix::point3(-1, -1, -1);
+    bardrix::point3 max = bardrix::point3(1, 1, 1);
+    bardrix::bounding_box box = bardrix::bounding_box(min, max);
+
+    bardrix::vector3 vector = bardrix::vector3(1, 1, 1);
+    bardrix::bounding_box new_box = box + vector;
+
+    EXPECT_EQ(new_box.get_min(), bardrix::point3(0, 0, 0));
+    EXPECT_EQ(new_box.get_max(), bardrix::point3(2, 2, 2));
+
+    vector = bardrix::vector3(-1, -1, -1);
+    new_box = box + vector;
+
+    EXPECT_EQ(new_box.get_min(), bardrix::point3(-2, -2, -2));
+    EXPECT_EQ(new_box.get_max(), bardrix::point3(0, 0, 0));
+
+    vector = bardrix::vector3(0, 0, 0);
+    new_box = box + vector;
+
+    EXPECT_EQ(new_box.get_min(), bardrix::point3(-1, -1, -1));
+    EXPECT_EQ(new_box.get_max(), bardrix::point3(1, 1, 1));
+}
+
+///\brief Test the operator+ with a value
+TEST(bounding_box, operator_plus_value) {
+    bardrix::point3 min = bardrix::point3(-1, -1, -1);
+    bardrix::point3 max = bardrix::point3(1, 1, 1);
+    bardrix::bounding_box box = bardrix::bounding_box(min, max);
+
+    bardrix::bounding_box new_box = box + 1;
+
+    EXPECT_EQ(new_box.get_min(), bardrix::point3(0, 0, 0));
+    EXPECT_EQ(new_box.get_max(), bardrix::point3(2, 2, 2));
+
+    new_box = box + -1;
+
+    EXPECT_EQ(new_box.get_min(), bardrix::point3(-2, -2, -2));
+    EXPECT_EQ(new_box.get_max(), bardrix::point3(0, 0, 0));
+
+    new_box = box + 0;
+
+    EXPECT_EQ(new_box.get_min(), bardrix::point3(-1, -1, -1));
+    EXPECT_EQ(new_box.get_max(), bardrix::point3(1, 1, 1));
+}
+
+///\brief Test the operator+= with a vector3
+TEST(bounding_box, operator_plus_equal_vector3) {
+    bardrix::point3 min = bardrix::point3(-1, -1, -1);
+    bardrix::point3 max = bardrix::point3(1, 1, 1);
+    bardrix::bounding_box box = bardrix::bounding_box(min, max);
+
+    bardrix::vector3 vector = bardrix::vector3(1, 1, 1);
+    box += vector;
+
+    EXPECT_EQ(box.get_min(), bardrix::point3(0, 0, 0));
+    EXPECT_EQ(box.get_max(), bardrix::point3(2, 2, 2));
+
+    vector = bardrix::vector3(-1, -1, -1);
+    box = bardrix::bounding_box(min, max);
+    box += vector;
+
+    EXPECT_EQ(box.get_min(), bardrix::point3(-2, -2, -2));
+    EXPECT_EQ(box.get_max(), bardrix::point3(0, 0, 0));
+
+    vector = bardrix::vector3(0, 0, 0);
+    box = bardrix::bounding_box(min, max);
+    box += vector;
+
+    EXPECT_EQ(box.get_min(), bardrix::point3(-1, -1, -1));
+    EXPECT_EQ(box.get_max(), bardrix::point3(1, 1, 1));
+}
+
+///\brief Test the operator+= with a value
+TEST(bounding_box, operator_plus_equal_value) {
+    bardrix::point3 min = bardrix::point3(-1, -1, -1);
+    bardrix::point3 max = bardrix::point3(1, 1, 1);
+    bardrix::bounding_box box = bardrix::bounding_box(min, max);
+
+    box += 1;
+
+    EXPECT_EQ(box.get_min(), bardrix::point3(0, 0, 0));
+    EXPECT_EQ(box.get_max(), bardrix::point3(2, 2, 2));
+
+    box = bardrix::bounding_box(min, max);
+    box += -1;
+
+    EXPECT_EQ(box.get_min(), bardrix::point3(-2, -2, -2));
+    EXPECT_EQ(box.get_max(), bardrix::point3(0, 0, 0));
+
+    box = bardrix::bounding_box(min, max);
+    box += 0;
+
+    EXPECT_EQ(box.get_min(), bardrix::point3(-1, -1, -1));
+    EXPECT_EQ(box.get_max(), bardrix::point3(1, 1, 1));
+}
+
+///\brief Test the operator- with a vector3
+TEST(bounding_box, operator_minus_vector3) {
+    bardrix::point3 min = bardrix::point3(-1, -1, -1);
+    bardrix::point3 max = bardrix::point3(1, 1, 1);
+    bardrix::bounding_box box = bardrix::bounding_box(min, max);
+
+    bardrix::vector3 vector = bardrix::vector3(1, 1, 1);
+    bardrix::bounding_box new_box = box - vector;
+
+    EXPECT_EQ(new_box.get_min(), bardrix::point3(-2, -2, -2));
+    EXPECT_EQ(new_box.get_max(), bardrix::point3(0, 0, 0));
+
+    vector = bardrix::vector3(-1, -1, -1);
+    new_box = box - vector;
+
+    EXPECT_EQ(new_box.get_min(), bardrix::point3(0, 0, 0));
+    EXPECT_EQ(new_box.get_max(), bardrix::point3(2, 2, 2));
+
+    vector = bardrix::vector3(0, 0, 0);
+    new_box = box - vector;
+
+    EXPECT_EQ(new_box.get_min(), bardrix::point3(-1, -1, -1));
+    EXPECT_EQ(new_box.get_max(), bardrix::point3(1, 1, 1));
+}
+
+///\brief Test the operator- with a value
+TEST(bounding_box, operator_minus_value) {
+    bardrix::point3 min = bardrix::point3(-1, -1, -1);
+    bardrix::point3 max = bardrix::point3(1, 1, 1);
+    bardrix::bounding_box box = bardrix::bounding_box(min, max);
+
+    bardrix::bounding_box new_box = box - 1;
+
+    EXPECT_EQ(new_box.get_min(), bardrix::point3(-2, -2, -2));
+    EXPECT_EQ(new_box.get_max(), bardrix::point3(0, 0, 0));
+
+    new_box = box - -1;
+
+    EXPECT_EQ(new_box.get_min(), bardrix::point3(0, 0, 0));
+    EXPECT_EQ(new_box.get_max(), bardrix::point3(2, 2, 2));
+
+    new_box = box - 0;
+
+    EXPECT_EQ(new_box.get_min(), bardrix::point3(-1, -1, -1));
+    EXPECT_EQ(new_box.get_max(), bardrix::point3(1, 1, 1));
+}
+
+///\brief Test the operator-= with a vector3
+TEST(bounding_box, operator_minus_equal_vector3) {
+    bardrix::point3 min = bardrix::point3(-1, -1, -1);
+    bardrix::point3 max = bardrix::point3(1, 1, 1);
+    bardrix::bounding_box box = bardrix::bounding_box(min, max);
+
+    bardrix::vector3 vector = bardrix::vector3(1, 1, 1);
+    box -= vector;
+
+    EXPECT_EQ(box.get_min(), bardrix::point3(-2, -2, -2));
+    EXPECT_EQ(box.get_max(), bardrix::point3(0, 0, 0));
+
+    vector = bardrix::vector3(-1, -1, -1);
+    box = bardrix::bounding_box(min, max);
+    box -= vector;
+
+    EXPECT_EQ(box.get_min(), bardrix::point3(0, 0, 0));
+    EXPECT_EQ(box.get_max(), bardrix::point3(2, 2, 2));
+
+    vector = bardrix::vector3(0, 0, 0);
+    box = bardrix::bounding_box(min, max);
+    box -= vector;
+
+    EXPECT_EQ(box.get_min(), bardrix::point3(-1, -1, -1));
+    EXPECT_EQ(box.get_max(), bardrix::point3(1, 1, 1));
+}
+
+///\brief Test the operator-= with a value
+TEST(bounding_box, operator_minus_equal_value) {
+    bardrix::point3 min = bardrix::point3(-1, -1, -1);
+    bardrix::point3 max = bardrix::point3(1, 1, 1);
+    bardrix::bounding_box box = bardrix::bounding_box(min, max);
+
+    box -= 1;
+
+    EXPECT_EQ(box.get_min(), bardrix::point3(-2, -2, -2));
+    EXPECT_EQ(box.get_max(), bardrix::point3(0, 0, 0));
+
+    box = bardrix::bounding_box(min, max);
+    box -= -1;
+
+    EXPECT_EQ(box.get_min(), bardrix::point3(0, 0, 0));
+    EXPECT_EQ(box.get_max(), bardrix::point3(2, 2, 2));
+
+    box = bardrix::bounding_box(min, max);
+    box -= 0;
+
+    EXPECT_EQ(box.get_min(), bardrix::point3(-1, -1, -1));
+    EXPECT_EQ(box.get_max(), bardrix::point3(1, 1, 1));
+}
+
+///\brief Test the operator== with two equal bounding boxes
+TEST(bounding_box, operator_equal_equal) {
+    bardrix::bounding_box box1 = bardrix::bounding_box({1, 2, 3}, {3, 4, 5});
+    bardrix::bounding_box box2 = bardrix::bounding_box({1, 2, 3}, {3, 4, 5});
+    EXPECT_TRUE(box1 == box2);
+
+    box1 = bardrix::bounding_box({0, 0, 0}, {0, 0, 0});
+    box2 = bardrix::bounding_box({0, 0, 0}, {0, 0, 0});
+    EXPECT_TRUE(box1 == box2);
+
+    box1 = bardrix::bounding_box({-1, -1, -1}, {1, 1, 1});
+    box2 = bardrix::bounding_box({-1, -1, -1}, {1, -1, 1});
+    EXPECT_FALSE(box1 == box2);
+}
+
+///\brief Test the operator!= with two equal bounding boxes
+TEST(bounding_box, operator_not_equal) {
+    bardrix::bounding_box box1 = bardrix::bounding_box({1, 2, 3}, {3, 4, 5});
+    bardrix::bounding_box box2 = bardrix::bounding_box({1, 2, 3}, {3, 4, 5});
+    EXPECT_FALSE(box1 != box2);
+
+    box1 = bardrix::bounding_box({0, 0, 0}, {0, 0, 0});
+    box2 = bardrix::bounding_box({0, 0, 0}, {0, 0, 0});
+    EXPECT_FALSE(box1 != box2);
+
+    box1 = bardrix::bounding_box({-1, -1, -1}, {1, 1, 1});
+    box2 = bardrix::bounding_box({-1, -1, -1}, {1, -1, 1});
+    EXPECT_TRUE(box1 != box2);
+}
+
+///\brief Test the operator<< with a bounding box
+TEST(bounding_box, operator_stream) {
+    bardrix::bounding_box box = bardrix::bounding_box({1, 2, 3}, {3, 4, 5});
+    std::stringstream stream;
+    stream << box;
+    EXPECT_EQ(stream.str(), "Bounding Box: (Min: (1, 2, 3), Max: (3, 4, 5))");
 }

@@ -174,8 +174,33 @@ namespace bardrix {
 
         /// \brief Merges two bounding boxes
         /// \param box The bounding box to merge with
-        /// \return The merged bounding box
-        NODISCARD bounding_box merge(const bounding_box& box) const noexcept;
+        /// \return A new bounding box merged with the other bounding box
+        NODISCARD bounding_box merged(const bounding_box& box) const noexcept;
+
+        /// \brief Merges two bounding boxes
+        /// \param box The bounding box to merge with
+        /// \return A reference to the bounding box merged with the other bounding box
+        const bounding_box& merge(const bounding_box& box) noexcept;
+
+        /// \brief Expands the bounding box by a value
+        /// \param value The value to expand the bounding box by
+        /// \return A new bounding box expanded by the value
+        /// \note If the value is negative it will shrink the bounding box  \n
+        ///       If the value is positive it will expand the bounding box  \n
+        /// \note If the box is being shrunk it cannot invert the min and max values
+        NODISCARD bounding_box expanded(double value) const noexcept;
+
+        /// \brief Expands the bounding box by a value
+        /// \param value The value to expand the bounding box by
+        /// \return A reference to the bounding box expanded by the value
+        /// \note If the value is negative it will shrink the bounding box  \n
+        ///       If the value is positive it will expand the bounding box  \n
+        /// \note If the box is being shrunk it cannot invert the min and max values
+        const bounding_box& expand(double value) noexcept;
+
+        /// \brief Check if the bounding box has no volume (min == max)
+        /// \return True if the bounding box has no volume, false otherwise
+        NODISCARD bool is_empty() const noexcept;
 
         /// \brief Gets the center of the bounding box
         /// \return The center of the bounding box
@@ -204,6 +229,70 @@ namespace bardrix {
         /// \brief Gets the diagonal of the bounding box
         /// \return The diagonal of the bounding box
         NODISCARD double diagonal() const noexcept;
+
+        /// \brief Moves the bounding box by a vector
+        /// \param vector The vector to move the bounding box by
+        /// \return A new bounding box moved by the vector
+        /// \example bounding_box + vector3(1, 1, 1) -> bounding_box moved by (1, 1, 1)
+        NODISCARD bounding_box operator+(const bardrix::vector3& vector) const noexcept;
+
+        /// \brief Moves the bounding box by a value (x + value, y + value, z + value)
+        /// \param value The value to move the bounding box by
+        /// \return A new bounding box moved by the value
+        /// \example bounding_box + 1 -> bounding_box moved by (1, 1, 1)
+        NODISCARD bounding_box operator+(double value) const noexcept;
+
+        /// \brief Moves the bounding box by a vector
+        /// \param vector The vector to move the bounding box by
+        /// \return A reference to the bounding box moved by the vector
+        /// \example bounding_box += vector3(1, 1, 1) -> bounding_box moved by (1, 1, 1)
+        const bounding_box& operator+=(const bardrix::vector3& vector) noexcept;
+
+        /// \brief Moves the bounding box by a value (x + value, y + value, z + value)
+        /// \param value The value to move the bounding box by
+        /// \return A reference to the bounding box moved by the value
+        /// \example bounding_box += 1 -> bounding_box moved by (1, 1, 1)
+        const bounding_box& operator+=(double value) noexcept;
+
+        /// \brief Moves the bounding box by a vector
+        /// \param vector The vector to move the bounding box by
+        /// \return A new bounding box moved by the vector
+        /// \example bounding_box - vector3(1, 1, 1) -> bounding_box moved by (-1, -1, -1)
+        NODISCARD bounding_box operator-(const bardrix::vector3& vector) const noexcept;
+
+        /// \brief Moves the bounding box by a value (x - value, y - value, z - value)
+        /// \param value The value to move the bounding box by
+        /// \return A new bounding box moved by the value
+        /// \example bounding_box - 1 -> bounding_box moved by (-1, -1, -1)
+        NODISCARD bounding_box operator-(double value) const noexcept;
+
+        /// \brief Moves the bounding box by a vector
+        /// \param vector The vector to move the bounding box by
+        /// \return A reference to the bounding box moved by the vector
+        /// \example bounding_box -= vector3(1, 1, 1) -> bounding_box moved by (-1, -1, -1)
+        const bounding_box& operator-=(const bardrix::vector3& vector) noexcept;
+
+        /// \brief Moves the bounding box by a value (x - value, y - value, z - value)
+        /// \param value The value to move the bounding box by
+        /// \return A reference to the bounding box moved by the value
+        /// \example bounding_box -= 1 -> bounding_box moved by (-1, -1, -1)
+        const bounding_box& operator-=(double value) noexcept;
+
+        /// \brief Check if two bounding boxes are equal
+        /// \param box The bounding box to compare with
+        /// \return True if the bounding boxes are equal, false otherwise
+        NODISCARD bool operator==(const bounding_box& box) const noexcept;
+
+        /// \brief Check if two bounding boxes are different
+        /// \param box The bounding box to compare with
+        /// \return True if the bounding boxes are different, false otherwise
+        NODISCARD bool operator!=(const bounding_box& box) const noexcept;
+
+        /// \brief Displays the bounding box to an output stream
+        /// \param os The output stream to display the bounding box to
+        /// \param box The bounding box to display
+        /// \return The output stream
+        friend std::ostream& operator<<(std::ostream& os, const bounding_box& box);
 
     }; // class bounding_box
 
