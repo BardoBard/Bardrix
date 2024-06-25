@@ -1,9 +1,32 @@
+# [v0.3.3](https://github.com/BardoBard/Bardrix/releases/tag/v0.3.3)
+
+## Overview
+
+Fixed issue [42](https://github.com/BardoBard/Bardrix/issues/42) where the `pragma once` was missing in `sphere.h` (wth?).
+Fixed issue [43](https://github.com/BardoBard/Bardrix/issues/43) where the `+=` was incorrectly formatted in the reference. \
+Fixed issue [44](https://github.com/BardoBard/Bardrix/issues/44) where the diagrams in the reference were incorrectly displayed. \
+
+**Full Changelog**: https://github.com/BardoBard/Bardrix/compare/v0.3.2...v0.3.3
+
+## Documentation Changes
+
+Fixed the issues mentioned above.
+
+## Code Changes
+
+### Minor Changes
+
+Added `close()` to window to close the window. \
+Added `on_key_down(window, key)` to window to handle key presses. \
+Added camera movement to Raytracer example.
+
 # [v0.3.2](https://github.com/BardoBard/Bardrix/releases/tag/v0.3.2)
 
 ## Overview
 
 Added `-=`, `+=` to `point3` with regards to `vector3`. \
-Updated nuget targets file to include `/Zc:__cplusplus` to add support for C++20.
+Updated nuget targets file to include `/Zc:__cplusplus` to add support for C++20. \
+Added `<PrecompiledHeader>NotUsing</PrecompiledHeader>` to `Bardio.Bardrix.targets` now you're able to use a pch.h (oops).
 
 **Full Changelog**: https://github.com/BardoBard/Bardrix/compare/v0.3.1...v0.3.2
 

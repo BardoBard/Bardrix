@@ -68,6 +68,11 @@ void bardrix::window::redraw() const {
         InvalidateRect(hwnd_, nullptr, FALSE);
 }
 
+void bardrix::window::close() const {
+    if (hwnd_)
+        DestroyWindow(hwnd_);
+}
+
 void bardrix::window::run() {
     MSG msg;
     while (GetMessage(&msg, nullptr, 0, 0)) {
@@ -112,6 +117,10 @@ LRESULT CALLBACK bardrix::window::window_proc(HWND hwnd, UINT msg, WPARAM wparam
             EndPaint(hwnd, &ps);
             break;
         }
+        case WM_KEYDOWN:
+            if (p_window->on_keydown)
+                p_window->on_keydown(p_window, wparam);
+            break;
         case WM_SIZE:
             p_window->width_ = LOWORD(lparam);
             p_window->height_ = HIWORD(lparam);
