@@ -1,3 +1,33 @@
+# [v0.4.0](https://github.com/BardoBard/Bardrix/releases/tag/v0.4.0)
+
+**Full Changelog**: https://github.com/BardoBard/Bardrix/compare/v0.3.3...v0.4.0
+
+## Overview
+
+The changes have backward compatibility issues, as the `bounding_box()` virtual function has been added to the `shape`.
+
+Added `bounding_box` to [objects.h](https://github.com/bardobard/bardrix/blob/v0.4.0/Bardrix/include/bardrix/objects.h). \
+Added `bounding_box()` to [shape](https://github.com/bardobard/bardrix/blob/v0.4.0/Bardrix/include/bardrix/objects.h). \
+Added `binary_tree` class to [algorithms.h](https://github.com/bardobard/bardrix/blob/v0.4.0/Bardrix/include/bardrix/algorithms.h). \
+
+## Documentation Changes
+
+Added `bounding_box` to [Bardrix_Reference](https://github.com/bardobard/bardrix/blob/v0.4.0/Docs/Bardrix_Reference.md). \
+Added `binary_tree` to [Bardrix_Reference](https://github.com/bardobard/bardrix/blob/v0.4.0/Docs/Bardrix_Reference.md). \
+Updated class diagrams associated with the new changes.
+
+## Code Changes
+
+### Major Changes
+
+Added `bounding_box` class to objects.h. \
+Added `bounding_box()` to shape. \
+Added `binary_tree` class to algorithms.h.
+
+## Test Changes
+
+Added tests for `bounding_box` and `binary_tree`.
+
 # [v0.3.3](https://github.com/BardoBard/Bardrix/releases/tag/v0.3.3)
 
 ## Overview
