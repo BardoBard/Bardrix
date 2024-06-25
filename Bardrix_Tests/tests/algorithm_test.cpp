@@ -14,7 +14,7 @@ bool point_predicate(const bardrix::point3& a, const bardrix::point3& b) {
 }
 
 /// \brief Test the building of a binary tree, with an array of points
-TEST(algorithm, binary_tree_build_array_points) {
+TEST(binary_tree, build_array_points) {
     bardrix::binary_tree<bardrix::point3> tree(point_predicate);
 
     // 1, 10, 34, 64 (insert 2)->
@@ -43,7 +43,7 @@ TEST(algorithm, binary_tree_build_array_points) {
 }
 
 /// \brief Test the building of a binary tree, with begin and end iterators
-TEST(algorithm, binary_tree_build_iterators) {
+TEST(binary_tree, build_iterators) {
     bardrix::binary_tree<int> tree(int_predicate);
 
     int values[] = { 1, 2, 3, 4, 5, 6, 7, 8 };
@@ -96,7 +96,7 @@ TEST(algorithm, binary_tree_build_iterators) {
 }
 
 /// \brief Test the building of a binary tree, with an array of values
-TEST(algorithm, binary_tree_build_array) {
+TEST(binary_tree, build_array) {
     bardrix::binary_tree<int> tree(int_predicate);
 
     int values[] = { 3, 5, 6, 7 };
@@ -137,7 +137,7 @@ TEST(algorithm, binary_tree_build_array) {
 }
 
 /// \brief Test the building of a binary tree, with multiple values
-TEST(algorithm, binary_tree_build_multiple_values) {
+TEST(binary_tree, build_multiple_values) {
     bardrix::binary_tree<int> tree(int_predicate);
 
     // 1, 3, 4, 5, 6, 7, 8 ->
@@ -185,7 +185,7 @@ TEST(algorithm, binary_tree_build_multiple_values) {
 }
 
 /// \brief Test the building of a binary tree, with edge cases
-TEST(algorithm, binary_tree_build_edge_cases) {
+TEST(binary_tree, build_edge_cases) {
     bardrix::binary_tree<int> tree(int_predicate);
 
     int values[] = { 1, 2, 3, 4, 5, 6, 7, 8 };
@@ -247,7 +247,7 @@ TEST(algorithm, binary_tree_build_edge_cases) {
 }
 
 /// \brief Test the clear method of a binary tree
-TEST(algorithm, binary_tree_clear) {
+TEST(binary_tree, clear) {
     bardrix::binary_tree<int> tree(int_predicate);
 
     // 1, 3, 4, 5, 6, 7, 8 ->
@@ -278,7 +278,7 @@ TEST(algorithm, binary_tree_clear) {
 }
 
 /// \brief Test the insertion of a single value in a binary tree
-TEST(algorithm, binary_tree_insert_array) {
+TEST(binary_tree, insert_array) {
     bardrix::binary_tree<int> tree(int_predicate);
 
     int values[] = { 5, 6, 3, 7 };
@@ -313,7 +313,7 @@ TEST(algorithm, binary_tree_insert_array) {
 }
 
 /// \brief Test the insertion of a single value in a binary tree
-TEST(algorithm, binary_tree_insert_single_value) {
+TEST(binary_tree, insert_single_value) {
     bardrix::binary_tree<int> tree(int_predicate);
 
     // 5, 6, 3, 7 ->
@@ -334,7 +334,7 @@ TEST(algorithm, binary_tree_insert_single_value) {
 }
 
 /// \brief Test the insertion of iterators in a binary tree
-TEST(algorithm, binary_tree_insert_iterators) {
+TEST(binary_tree, insert_iterators) {
     bardrix::binary_tree<int> tree(int_predicate);
 
     int values[] = { 5, 6, 3, 7 };
@@ -369,7 +369,7 @@ TEST(algorithm, binary_tree_insert_iterators) {
 }
 
 /// \brief Test the insertion of multiple values in a binary tree
-TEST(algorithm, binary_tree_insert_multiple_values) {
+TEST(binary_tree, insert_multiple_values) {
     bardrix::binary_tree<int> tree(int_predicate);
 
     // 1, 3, 4, 5, 6, 7, 8 ->
@@ -421,7 +421,7 @@ TEST(algorithm, binary_tree_insert_multiple_values) {
 }
 
 /// \brief Test the contains method of a binary tree
-TEST(algorithm, binary_tree_contains) {
+TEST(binary_tree, contains) {
     bardrix::binary_tree<int> tree(int_predicate);
 
     // 1, 3, 4, 5, 6, 7, 8 ->
@@ -473,7 +473,7 @@ TEST(algorithm, binary_tree_contains) {
 }
 
 /// \brief Test the find method of a binary tree
-TEST(algorithm, binary_tree_find) {
+TEST(binary_tree, find) {
     bardrix::binary_tree<int> tree(int_predicate);
 
     // 1, 3, 4, 5, 6, 7, 8 ->
@@ -536,7 +536,7 @@ TEST(algorithm, binary_tree_find) {
 }
 
 /// \brief Test the is_empty method of a binary tree
-TEST(algorithm, binary_tree_is_empty) {
+TEST(binary_tree, is_empty) {
     bardrix::binary_tree<int> tree(int_predicate);
 
     EXPECT_TRUE(tree.is_empty());
@@ -551,7 +551,7 @@ TEST(algorithm, binary_tree_is_empty) {
 }
 
 /// \brief Test the traverse_in_order method of a binary tree
-TEST(algorithm, binary_tree_traverse_in_order) {
+TEST(binary_tree, traverse_in_order) {
     bardrix::binary_tree<int> tree(int_predicate);
 
     // 1, 3, 4, 5, 6, 7, 8 ->
@@ -586,7 +586,7 @@ TEST(algorithm, binary_tree_traverse_in_order) {
 }
 
 /// \brief Test the traverse_pre_order method of a binary tree
-TEST(algorithm, binary_tree_traverse_pre_order) {
+TEST(binary_tree, traverse_pre_order) {
     bardrix::binary_tree<int> tree(int_predicate);
 
     // 1, 3, 4, 5, 6, 7, 8 ->
@@ -621,7 +621,7 @@ TEST(algorithm, binary_tree_traverse_pre_order) {
 }
 
 /// \brief Test the traverse_post_order method of a binary tree
-TEST(algorithm, binary_tree_traverse_post_order) {
+TEST(binary_tree, traverse_post_order) {
     bardrix::binary_tree<int> tree(int_predicate);
 
     // 1, 3, 4, 5, 6, 7, 8 ->
@@ -656,7 +656,7 @@ TEST(algorithm, binary_tree_traverse_post_order) {
 }
 
 /// \brief Test the find_min method of a binary tree
-TEST(algorithm, binary_tree_find_min) {
+TEST(binary_tree, find_min) {
     bardrix::binary_tree<int> tree(int_predicate);
 
     // 1, 3, 4, 5, 6, 7, 8 ->
@@ -685,7 +685,7 @@ TEST(algorithm, binary_tree_find_min) {
 }
 
 /// \brief Test the find_max method of a binary tree
-TEST(algorithm, binary_tree_find_max) {
+TEST(binary_tree, find_max) {
     bardrix::binary_tree<int> tree(int_predicate);
 
     // 1, 3, 4, 5, 6, 7, 8 ->
@@ -718,7 +718,7 @@ TEST(algorithm, binary_tree_find_max) {
 }
 
 /// \brief Test the remove method of a binary tree
-TEST(algorithm, binary_tree_remove) {
+TEST(binary_tree, remove) {
     bardrix::binary_tree<int> tree(int_predicate);
 
     // 1, 2, 3, 4, 5, 6, 7, 8 ->
@@ -814,7 +814,7 @@ TEST(algorithm, binary_tree_remove) {
 }
 
 /// \brief Test the remove method of a binary tree, with edge cases
-TEST(algorithm, binary_tree_remove_edge_cases) {
+TEST(binary_tree, remove_edge_cases) {
     bardrix::binary_tree<int> tree(int_predicate);
 
     tree.build(1);
@@ -849,7 +849,7 @@ TEST(algorithm, binary_tree_remove_edge_cases) {
 }
 
 /// \brief Test the height method of a binary tree
-TEST(algorithm, binary_tree_height) {
+TEST(binary_tree, height) {
     bardrix::binary_tree<int> tree(int_predicate);
 
     // 1, 2, 3, 4, 5, 6, 7, 8 ->
