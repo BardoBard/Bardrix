@@ -151,6 +151,25 @@ TEST(bounding_box, inside) {
     EXPECT_FALSE(box.inside(bardrix::point3(4.05, 9.74, 0)));
     EXPECT_FALSE(box.inside(bardrix::point3(-5.04, 6.17, 6.9)));
 }
+/// \brief Test the edge case of the bounding_box inside method
+TEST(bounding_box, inside_edge_cases) {
+    bardrix::point3 min = bardrix::point3(-5.04, 3.4, 0);
+    bardrix::point3 max = bardrix::point3(4, 12.44, 6.84);
+    bardrix::bounding_box box = bardrix::bounding_box(min, max);
+
+    EXPECT_TRUE(box.inside(bardrix::point3(-5.04, 3.4, 0)));
+    EXPECT_TRUE(box.inside(bardrix::point3(4, 12.44, 6.84)));
+    EXPECT_TRUE(box.inside(bardrix::point3(-5.04, 12.44, 6.84)));
+    EXPECT_TRUE(box.inside(bardrix::point3(4, 3.4, 6.84)));
+    EXPECT_TRUE(box.inside(bardrix::point3(-5.04, 3.4, 6.84)));
+    EXPECT_TRUE(box.inside(bardrix::point3(4, 12.44, 0)));
+    EXPECT_TRUE(box.inside(bardrix::point3(-5.04, 6.17, 4)));
+
+    EXPECT_FALSE(box.inside(bardrix::point3(-5.05, 3.4, 0)));
+    EXPECT_FALSE(box.inside(bardrix::point3(4.01, 12.44, 6.84)));
+    EXPECT_FALSE(box.inside(bardrix::point3(-5.04, 12.45, 6.84)));
+    EXPECT_FALSE(box.inside(bardrix::point3(4, 3.4, 6.85)));
+}
 
 /// \brief Test the bounding_box inside method with another box
 TEST(bounding_box, inside_box) {
@@ -186,6 +205,29 @@ TEST(bounding_box, inside_box) {
     EXPECT_TRUE(box.inside(bardrix::bounding_box(min, max)));
 
     EXPECT_TRUE(bardrix::bounding_box({ 1, 2, 3 }, { 1, 2, 3 }).inside(bardrix::bounding_box({ 1, 2, 3 }, { 1, 2, 3 })));
+}
+
+/// \brief Test the bounding_box inside method with another box with edge cases
+TEST(bounding_box, inside_box_edge_cases) {
+    bardrix::point3 min = bardrix::point3(-5.04, 3.4, 0);
+    bardrix::point3 max = bardrix::point3(4, 12.44, 6.84);
+    bardrix::bounding_box box = bardrix::bounding_box(min, max);
+
+    bardrix::point3 min2 = bardrix::point3(-5.04, 3.4, 0);
+    bardrix::point3 max2 = bardrix::point3(4, 12.44, 6.84);
+    EXPECT_TRUE(box.inside(bardrix::bounding_box(min2, max2)));
+
+    // Different box.x
+    EXPECT_FALSE(box.inside(bardrix::bounding_box({ -5.05, 3.4, 0 }, { 4, 12.44, 6.84 })));
+    EXPECT_FALSE(box.inside(bardrix::bounding_box({ 4.01, 3.4, 0 }, { 4, 12.44, 6.84 })));
+
+    // Different box.y
+    EXPECT_FALSE(box.inside(bardrix::bounding_box({ -5.04, 3.39, 0 }, { 4, 12.44, 6.84 })));
+    EXPECT_TRUE(box.inside(bardrix::bounding_box({ -5.04, 12.43, 0 }, { 4, 12.44, 6.84 })));
+
+    // Different box.z
+    EXPECT_TRUE(box.inside(bardrix::bounding_box({ -5.04, 3.4, 6 }, { 4, 12.44, 6.84 })));
+    EXPECT_TRUE(box.inside(bardrix::bounding_box({ -5.04, 3.4, 0 }, { 4, 12.44, 0 })));
 }
 
 /// \brief Test center of bounding_box
@@ -311,6 +353,10 @@ TEST(bounding_box, merged) {
     EXPECT_EQ(merged.get_min(), bardrix::point3(1, 2, 3));
     EXPECT_EQ(merged.get_max(), bardrix::point3(3, 4, 5));
 
+    merged = bardrix::bounding_box({ 0, 0, 0 }, { 1, 2, 3 }).merged(bardrix::bounding_box({ 0, 0, 0 }, { 0, 0, 0 }));
+    EXPECT_EQ(merged.get_min(), bardrix::point3(0, 0, 0));
+    EXPECT_EQ(merged.get_max(), bardrix::point3(1, 2, 3));
+
     merged = bardrix::bounding_box({ 0, 0, 0 }, { 0, 0, 0 }).merged(bardrix::bounding_box({ 0, 0, 0 }, { 0, 0, 0 }));
     EXPECT_EQ(merged.get_min(), bardrix::point3(0, 0, 0));
     EXPECT_EQ(merged.get_max(), bardrix::point3(0, 0, 0));
@@ -345,9 +391,13 @@ TEST(bounding_box, merge) {
     EXPECT_EQ(box1.get_min(), bardrix::point3(1, 2, 3));
     EXPECT_EQ(box1.get_max(), bardrix::point3(3, 4, 5));
 
+    box1 = bardrix::bounding_box({ 0, 0, 0 }, { 1, 2, 3 });
+    box1.merge(bardrix::bounding_box({ 0, 0, 0 }, { 0, 0, 0 }));
+    EXPECT_EQ(box1.get_min(), bardrix::point3(0, 0, 0));
+    EXPECT_EQ(box1.get_max(), bardrix::point3(1, 2, 3));
+
     box1 = bardrix::bounding_box({ 0, 0, 0 }, { 0, 0, 0 });
-    box2 = bardrix::bounding_box({ 0, 0, 0 }, { 0, 0, 0 });
-    box1.merge(box2);
+    box1.merge(bardrix::bounding_box({ 0, 0, 0 }, { 0, 0, 0 }));
     EXPECT_EQ(box1.get_min(), bardrix::point3(0, 0, 0));
     EXPECT_EQ(box1.get_max(), bardrix::point3(0, 0, 0));
 }
@@ -440,19 +490,19 @@ TEST(bounding_box, is_empty) {
 
     EXPECT_FALSE(box.is_empty());
 
-    box = bardrix::bounding_box({1, 2, 3}, {1, 2, 3});
+    box = bardrix::bounding_box({ 1, 2, 3 }, { 1, 2, 3 });
     EXPECT_TRUE(box.is_empty());
 
-    box = bardrix::bounding_box({0, 0, 0}, {0, 0, 0});
+    box = bardrix::bounding_box({ 0, 0, 0 }, { 0, 0, 0 });
     EXPECT_TRUE(box.is_empty());
 
-    box = bardrix::bounding_box({1, 2, 3}, {1, 2, 5});
+    box = bardrix::bounding_box({ 1, 2, 3 }, { 1, 2, 5 });
     EXPECT_FALSE(box.is_empty());
 
-    box = bardrix::bounding_box({1, 2, 3}, {1, 4, 5});
+    box = bardrix::bounding_box({ 1, 2, 3 }, { 1, 4, 5 });
     EXPECT_FALSE(box.is_empty());
 
-    box = bardrix::bounding_box({5, 3, 3}, {3, 4, 5});
+    box = bardrix::bounding_box({ 5, 3, 3 }, { 3, 4, 5 });
     EXPECT_FALSE(box.is_empty());
 }
 
@@ -476,21 +526,16 @@ TEST(bounding_box, intersects_box) {
 
 /// \brief Test the bounding_box intersects method with bounding_box edge cases
 TEST(bounding_box, intersects_box_edge_cases) {
-    EXPECT_TRUE(bardrix::bounding_box({ 2, 3, 4 }, { 7, 6, 7 }).intersects(
-            bardrix::bounding_box({ 2, 3, 4 }, { 7, 6, 7 }))); // Same box
-    EXPECT_TRUE(bardrix::bounding_box({ -2, -3, 4 }, { 7, -6, -7 }).intersects(
-            bardrix::bounding_box({ -2, -3, 4 }, { 7, -6, -7 }))); // Same box
+    EXPECT_TRUE(bardrix::bounding_box({ 2, 3, 4 }, { 7, 6, 7 }).intersects(bardrix::bounding_box({ 2, 3, 4 }, { 7, 6, 7 }))); // Same box
+    EXPECT_TRUE(bardrix::bounding_box({ -2, -3, 4 }, { 7, -6, -7 }).intersects(bardrix::bounding_box({ -2, -3, 4 }, { 7, -6, -7 }))); // Same box
 
-    EXPECT_TRUE(bardrix::bounding_box({ 2, 3, 4 }, { 7, 6, 7 }).intersects(
-            bardrix::bounding_box({ 2, 3, 4 }, { 7, 6, 5 }))); // No Depth
-    EXPECT_TRUE(bardrix::bounding_box({ 2, 3, 4 }, { 7, 6, 7 }).intersects(
-            bardrix::bounding_box({ 2, 3, 4 }, { 7, 4, 7 }))); // No Height
-    EXPECT_TRUE(bardrix::bounding_box({ 2, 3, 4 }, { 7, 6, 7 }).intersects(
-            bardrix::bounding_box({ 2, 3, 4 }, { 5, 6, 7 }))); // No Width
+    EXPECT_TRUE(bardrix::bounding_box({ 2, 3, 4 }, { 7, 6, 7 }).intersects(bardrix::bounding_box({ 2, 3, 4 }, { 7, 6, 5 }))); // No Depth
+    EXPECT_TRUE(bardrix::bounding_box({ 2, 3, 4 }, { 7, 6, 7 }).intersects(bardrix::bounding_box({ 2, 3, 4 }, { 7, 4, 7 }))); // No Height
+    EXPECT_TRUE(bardrix::bounding_box({ 2, 3, 4 }, { 7, 6, 7 }).intersects(bardrix::bounding_box({ 2, 3, 4 }, { 5, 6, 7 }))); // No Width
 }
 
 /// \brief Test the bounding_box intersects method with ray
-TEST(bounding_box, intersects) {
+TEST(bounding_box, intersects_ray) {
     bardrix::point3 min = bardrix::point3(-5.04, 3.4, 0);
     bardrix::point3 max = bardrix::point3(4, 12.44, 6.84);
     bardrix::bounding_box box = bardrix::bounding_box(min, max);
@@ -525,7 +570,7 @@ TEST(bounding_box, intersects) {
 }
 
 /// \brief Test the bounding_box intersects method with ray negative x, y, z directions
-TEST(bounding_box, intersects_negative_direction) {
+TEST(bounding_box, intersects_ray_negative_direction) {
     bardrix::point3 min = bardrix::point3(-5.04, 3.4, 0);
     bardrix::point3 max = bardrix::point3(4, 12.44, 6.84);
     bardrix::bounding_box box = bardrix::bounding_box(min, max);
@@ -552,7 +597,7 @@ TEST(bounding_box, intersects_negative_direction) {
 }
 
 /// \brief Test the bounding_box intersects method with distances of small values
-TEST(bounding_box, intersects_small_distance) {
+TEST(bounding_box, intersects_ray_small_distance) {
     bardrix::point3 min = bardrix::point3(-5.04, 3.4, 0);
     bardrix::point3 max = bardrix::point3(4, 12.44, 6.84);
     bardrix::bounding_box box = bardrix::bounding_box(min, max);
@@ -568,7 +613,7 @@ TEST(bounding_box, intersects_small_distance) {
 }
 
 /// \brief Test the bounding_box intersects method where the ray is inside the box
-TEST(bounding_box, intersects_inside) {
+TEST(bounding_box, intersects_ray_inside) {
     bardrix::point3 min = bardrix::point3(-5.04, 3.4, 0);
     bardrix::point3 max = bardrix::point3(4, 12.44, 6.84);
     bardrix::bounding_box box = bardrix::bounding_box(min, max);
@@ -576,12 +621,18 @@ TEST(bounding_box, intersects_inside) {
 
     bardrix::ray ray = bardrix::ray(bardrix::point3(0, 0, 0), bardrix::vector3(1, 2, 2), distance);
     EXPECT_TRUE(box.intersects(ray));
+    ray = bardrix::ray(bardrix::point3(-5.04, 3.4, 0), bardrix::vector3(-1, -2, -2), distance);
+    EXPECT_TRUE(box.intersects(ray));
 
     ray = bardrix::ray(box.center(), bardrix::vector3(1.78419, 2.6324, 2), distance);
     EXPECT_TRUE(box.intersects(ray));
     EXPECT_TRUE(box.inside(ray.position));
     ray.set_length(0);
     EXPECT_TRUE(box.inside(ray.position));
+
+    box = bardrix::bounding_box({ 0, 0, 0 }, { 0, 0, 0 });
+    ray.position = bardrix::point3(0, 0, 0);
+    EXPECT_TRUE(box.intersects(ray));
 }
 
 ///\brief Test the operator+ with a vector3
@@ -782,37 +833,37 @@ TEST(bounding_box, operator_minus_equal_value) {
 
 ///\brief Test the operator== with two equal bounding boxes
 TEST(bounding_box, operator_equal_equal) {
-    bardrix::bounding_box box1 = bardrix::bounding_box({1, 2, 3}, {3, 4, 5});
-    bardrix::bounding_box box2 = bardrix::bounding_box({1, 2, 3}, {3, 4, 5});
+    bardrix::bounding_box box1 = bardrix::bounding_box({ 1, 2, 3 }, { 3, 4, 5 });
+    bardrix::bounding_box box2 = bardrix::bounding_box({ 1, 2, 3 }, { 3, 4, 5 });
     EXPECT_TRUE(box1 == box2);
 
-    box1 = bardrix::bounding_box({0, 0, 0}, {0, 0, 0});
-    box2 = bardrix::bounding_box({0, 0, 0}, {0, 0, 0});
+    box1 = bardrix::bounding_box({ 0, 0, 0 }, { 0, 0, 0 });
+    box2 = bardrix::bounding_box({ 0, 0, 0 }, { 0, 0, 0 });
     EXPECT_TRUE(box1 == box2);
 
-    box1 = bardrix::bounding_box({-1, -1, -1}, {1, 1, 1});
-    box2 = bardrix::bounding_box({-1, -1, -1}, {1, -1, 1});
+    box1 = bardrix::bounding_box({ -1, -1, -1 }, { 1, 1, 1 });
+    box2 = bardrix::bounding_box({ -1, -1, -1 }, { 1, -1, 1 });
     EXPECT_FALSE(box1 == box2);
 }
 
 ///\brief Test the operator!= with two equal bounding boxes
 TEST(bounding_box, operator_not_equal) {
-    bardrix::bounding_box box1 = bardrix::bounding_box({1, 2, 3}, {3, 4, 5});
-    bardrix::bounding_box box2 = bardrix::bounding_box({1, 2, 3}, {3, 4, 5});
+    bardrix::bounding_box box1 = bardrix::bounding_box({ 1, 2, 3 }, { 3, 4, 5 });
+    bardrix::bounding_box box2 = bardrix::bounding_box({ 1, 2, 3 }, { 3, 4, 5 });
     EXPECT_FALSE(box1 != box2);
 
-    box1 = bardrix::bounding_box({0, 0, 0}, {0, 0, 0});
-    box2 = bardrix::bounding_box({0, 0, 0}, {0, 0, 0});
+    box1 = bardrix::bounding_box({ 0, 0, 0 }, { 0, 0, 0 });
+    box2 = bardrix::bounding_box({ 0, 0, 0 }, { 0, 0, 0 });
     EXPECT_FALSE(box1 != box2);
 
-    box1 = bardrix::bounding_box({-1, -1, -1}, {1, 1, 1});
-    box2 = bardrix::bounding_box({-1, -1, -1}, {1, -1, 1});
+    box1 = bardrix::bounding_box({ -1, -1, -1 }, { 1, 1, 1 });
+    box2 = bardrix::bounding_box({ -1, -1, -1 }, { 1, -1, 1 });
     EXPECT_TRUE(box1 != box2);
 }
 
 ///\brief Test the operator<< with a bounding box
 TEST(bounding_box, operator_stream) {
-    bardrix::bounding_box box = bardrix::bounding_box({1, 2, 3}, {3, 4, 5});
+    bardrix::bounding_box box = bardrix::bounding_box({ 1, 2, 3 }, { 3, 4, 5 });
     std::stringstream stream;
     stream << box;
     EXPECT_EQ(stream.str(), "Bounding Box: (Min: (1, 2, 3), Max: (3, 4, 5))");

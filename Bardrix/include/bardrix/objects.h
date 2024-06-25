@@ -174,29 +174,29 @@ namespace bardrix {
 
         /// \brief Merges two bounding boxes
         /// \param box The bounding box to merge with
-        /// \return A new bounding box merged with the other bounding box
-        NODISCARD bounding_box merged(const bounding_box& box) const noexcept;
-
-        /// \brief Merges two bounding boxes
-        /// \param box The bounding box to merge with
         /// \return A reference to the bounding box merged with the other bounding box
         const bounding_box& merge(const bounding_box& box) noexcept;
 
-        /// \brief Expands the bounding box by a value
-        /// \param value The value to expand the bounding box by
-        /// \return A new bounding box expanded by the value
-        /// \note If the value is negative it will shrink the bounding box  \n
-        ///       If the value is positive it will expand the bounding box  \n
-        /// \note If the box is being shrunk it cannot invert the min and max values
-        NODISCARD bounding_box expanded(double value) const noexcept;
+        /// \brief Merges two bounding boxes
+        /// \param box The bounding box to merge with
+        /// \return A new bounding box merged with the other bounding box
+        NODISCARD bounding_box merged(const bounding_box& box) const noexcept;
 
         /// \brief Expands the bounding box by a value
-        /// \param value The value to expand the bounding box by
+        /// \param distance The distance to expand the bounding box by
         /// \return A reference to the bounding box expanded by the value
         /// \note If the value is negative it will shrink the bounding box  \n
         ///       If the value is positive it will expand the bounding box  \n
         /// \note If the box is being shrunk it cannot invert the min and max values
-        const bounding_box& expand(double value) noexcept;
+        const bounding_box& expand(double distance) noexcept;
+
+        /// \brief Expands the bounding box by a value
+        /// \param distance The distance to expand the bounding box by
+        /// \return A new bounding box expanded by the value
+        /// \note If the value is negative it will shrink the bounding box  \n
+        ///       If the value is positive it will expand the bounding box  \n
+        /// \note If the box is being shrunk it cannot invert the min and max values
+        NODISCARD bounding_box expanded(double distance) const noexcept;
 
         /// \brief Check if the bounding box has no volume (min == max)
         /// \return True if the bounding box has no volume, false otherwise
@@ -301,13 +301,21 @@ namespace bardrix {
     /// \note This is but a base class, it can be inherited to create more complex materials
     class shape {
     public:
+        /// \brief Sets the position of the shape
+        /// \param position The position to set
+        virtual void set_position(const bardrix::point3& position) = 0;
+
         /// \brief Gets the position of the shape
         /// \return The position of the shape
         NODISCARD virtual const bardrix::point3& get_position() const = 0;
 
-        /// \brief Sets the position of the shape
-        /// \param position The position to set
-        virtual void set_position(const bardrix::point3& position) = 0;
+        /// \brief Sets the material of the shape
+        /// \param material The material to set
+        virtual void set_material(const bardrix::material& material) = 0;
+
+        /// \brief Gets the material of the shape
+        /// \return The material of the shape
+        NODISCARD virtual const bardrix::material& get_material() const = 0;
 
         /// \brief Intersection of a ray with the shape
         /// \param ray The ray to intersect with
@@ -322,14 +330,6 @@ namespace bardrix {
         /// \brief Gets the bounding box of the shape
         /// \return The bounding box of the shape
         NODISCARD virtual bardrix::bounding_box bounding_box() const = 0;
-
-        /// \brief Gets the material of the shape
-        /// \return The material of the shape
-        NODISCARD virtual const bardrix::material& get_material() const = 0;
-
-        /// \brief Sets the material of the shape
-        /// \param material The material to set
-        virtual void set_material(const bardrix::material& material) = 0;
 
         /// \brief Virtual destructor for shape
         virtual ~shape() = default;

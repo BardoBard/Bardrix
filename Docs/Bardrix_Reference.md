@@ -15,7 +15,10 @@
     - [camera](#camera)
 - [Objects](#objects)
     - [material](#material)
+    - [bounding_box](#boundingbox)
     - [shape](#shape)
+- [Algorithm](#algorithm)
+    - [binary_tree](#binarytree)
 
 ## Bardrix
 
@@ -895,6 +898,126 @@ It has a color, ambient, diffuse, specular, shininess.
     - `get_shininess()`
         - **Returns** the shininess of the material.
 
+### bounding_box
+
+A class that represents a bounding box (AABB) for an object in the scene. \
+It has a minimum and maximum point.
+
+- Constructors:
+    - Parameterized constructor
+        - Initializes the bounding box to the given minimum and maximum points.
+        - The given minimum and maximum points will be set to the lowest and highest values, this means that the
+          minimum point will have the lowest x, y, and z values and the maximum point will have the highest x, y, and z
+          values. (4, 2, 5), (2, 4, 2) -> (2, 2, 2), (4, 4, 5).
+- Setters/Getters:
+    - `set_min_max(min : point3, max : point3)`
+        - Sets the minimum and maximum points of the bounding box.
+        - The given minimum and maximum points will be set to the lowest and highest values, this means that the minimum
+          point will have the lowest x, y, and z values and the maximum point will have the highest x, y, and z values.
+          (4, 2, 5), (2, 4, 2) -> (2, 2, 2), (4, 4, 5).
+    - `get_min()`
+        - **Returns** the minimum point of the bounding box.
+    - `get_max()`
+        - **Returns** the maximum point of the bounding box.
+- Methods:
+    - `inside(point : point3)`
+        - Checks if the given point is inside the bounding box.
+        - **Returns** a boolean value, true if the point is inside the bounding box.
+        - **Degenerate cases**:
+            - If the point is on the edge of the bounding box, it will be considered inside.
+            - This also includes no width, height, or depth.
+    - `inside(box : bounding_box)`
+        - Checks if the given bounding box is inside the bounding box.
+        - **Returns** a boolean value, true if the bounding box is inside the bounding box.
+        - **Degenerate cases**:
+            - If the bounding box is on the edge of the bounding box, it will be considered inside.
+            - This also includes no width, height, or depth.
+    - `intersect(box : bounding_box)`
+        - Checks if the given bounding box intersects with the bounding box.
+        - **Returns** a boolean value, true if the bounding box intersects with the bounding box.
+        - **Degenerate cases**:
+            - If the bounding box is on the edge of the bounding box, it will be considered intersecting.
+            - This also includes no width, height, or depth.
+    - `intersect(ray : ray)`
+        - Checks if the given ray intersects with the bounding box.
+        - **Returns** a boolean value, true if the ray intersects with the bounding box.
+        - **Degenerate cases**:
+            - If the direction is (0, 0, 0) at all it will be invalid, no matter if it's inside the bounding box.
+            - If the ray is on the edge of the bounding box or inside the bounding box, it will be considered
+              intersecting, this includes a ray with length of zero.
+            - This also includes no width, height, or depth.
+    - `merge(box : bounding_box)`
+        - Merges the given bounding box with this bounding box.
+        - **Returns** a reference to the bounding box.
+    - `merged(box : bounding_box)`
+        - Merges the given bounding box with this bounding box.
+        - **Returns** a new bounding box, the merged bounding box.
+    - `expand(distance : double)`
+        - Expands the bounding box by the given distance.
+        - If the distance is less than zero, it will shrink
+        - **Returns** a reference to the bounding box.
+        - **Degenerate cases**:
+            - If the shrink is greater than the width, height, or depth, the bounding box will be set to a point at the
+              center. (2, 3, 4), (7, 6, 9), expand(-10) -> (4.5, 4.5, 6.5), (4.5, 4.5, 6.5), which is the center.
+    - `expanded(distance : double)`
+        - Expands the bounding box by the given distance.
+        - If the distance is less than zero, it will shrink
+        - **Returns** a new bounding box, the expanded bounding box.
+        - **Degenerate cases**:
+            - If the shrink is greater than the width, height, or depth, the bounding box will be set to a point at the
+              center. (2, 3, 4), (7, 6, 9), expand(-10) -> (4.5, 4.5, 6.5), (4.5, 4.5, 6.5), which is the center.
+    - `is_empty()`
+        - Checks if the bounding box is empty, meaning it has no width, height, or depth.
+        - **Returns** a boolean value, true if the bounding box is empty.
+    - `center()`
+        - Calculates the center of the bounding box.
+        - **Returns** the center of the bounding box.
+    - `width()`
+        - Calculates the width of the bounding box.
+        - **Returns** the width of the bounding box.
+    - `height()`
+        - Calculates the height of the bounding box.
+        - **Returns** the height of the bounding box.
+    - `depth()`
+        - Calculates the depth of the bounding box.
+        - **Returns** the depth of the bounding box.
+    - `volume()`
+        - Calculates the volume of the bounding box.
+        - **Returns** the volume of the bounding box.
+    - `area()`
+        - Calculates the area of the bounding box.
+        - **Returns** the area of the bounding box.
+    - `diagonal()`
+        - Calculates the diagonal of the bounding box, which is the distance between the minimum and maximum points.
+        - **Returns** the diagonal of the bounding box in the form of a double.
+- Operators:
+    - `+`
+        - Adds a vector to the minimum and maximum points of the bounding box.
+        - Adds a scalar(double) to the minimum and maximum points of the bounding box.
+        - **Returns** a new bounding box.
+    - `-`
+        - Subtracts a vector from the minimum and maximum points of the bounding box.
+        - Subtracts a scalar(double) from the minimum and maximum points of the bounding box.
+        - **Returns** a new bounding box.
+    - `+=`
+        - Adds a vector to the minimum and maximum points of the bounding box.
+        - Adds a scalar(double) to the minimum and maximum points of the bounding box.
+        - **Returns** a reference to the bounding box.
+    - `-=`
+        - Subtracts a vector from the minimum and maximum points of the bounding box.
+        - Subtracts a scalar(double) from the minimum and maximum points of the bounding box.
+        - **Returns** a reference to the bounding box.
+    - `==`
+        - Compares the minimum and maximum points of the two bounding boxes.
+        - **Returns** a boolean value, true if the bounding boxes are equal.
+    - `!=`
+        - Compares the minimum and maximum points of the two bounding boxes.
+        - **Returns** a boolean value, true if the bounding boxes are not equal.
+    - `<<`
+        - Outputs the components of the bounding box to the output stream.
+        - Outputs: "Bounding Box: (Min: (x, y, z), Max: (x, y, z))".
+        - **Returns** a reference to the output stream.
+
 ### shape
 
 Abstract class, only used for inheritance, serves as a base for all the shapes; like `sphere` and `triangle`. \
@@ -917,6 +1040,328 @@ All methods are pure virtual, and must be implemented in the derived classes.
         - **Returns** an optional `point3` of the intersection point.
             - If the ray intersects with the shape, it should return the intersection point.
             - If the ray does not intersect with the shape, it should return an std::nullopt.
+    - `bounding_box()`
+        - Calculates the bounding box of the shape.
+        - **Returns** the bounding box of the shape.
     - `normal_at(point : point3)`
         - Calculates the normal of the shape at the given point.
         - **Returns** the normal of the shape at the point.
+
+## Algorithm
+
+This part includes classes that are used for the algorithms, like binary_tree, bvh_tree etc.
+
+![bardrix-algorithm.png](Images/bardrix-algorithm.png)
+
+### binary_tree
+
+A class that represents a binary tree. \
+It has a left and right child, and a data value, which can be any type. \
+It's a templated class (template <typename T>), which means it can be used with any type. \
+In order to use the binary tree, the type must have the following operators defined:
+
+- `==`
+- `!=`
+- `=`
+
+If the type does not have these operators defined, it will not compile. \
+A binary tree looks like:
+
+```
+    5
+   / \
+  3   7
+ / \ / \
+1  4 6  8
+```
+
+Where the left node is less than the parent node and the right node is greater than the parent node. \
+We can use this knowledge to search for a value in the tree, or to insert a value in the tree.
+
+- Constructors:
+    - Parameterized constructor
+        - Initializes the given predicate function, which is used for comparing the data values.
+        - For example if you're using `int` as the type, you can define the predicate function
+          as `bool compare(int a, int b) { return a < b; }`.
+- Methods:
+    - `clear()`
+        - Clears the binary tree and deletes all the nodes.
+    - `build(begin : Iterator, end : Iterator)`
+        - **Example**:
+            ```cpp
+            binary_tree<int> tree;
+            std::vector<int> values = {1, 3, 4, 5, 6, 7, 8};
+            tree.build(values.begin(), values.end());
+            ```
+          ```cpp
+            binary_tree<int> tree;
+            int values[] = {1, 3, 4, 5, 6, 7, 8};
+            tree.build(values, values + sizeof values / sizeof values[0]);
+            ```
+    - `build(val : T, Args... args)`
+        - **Example**:
+            ```cpp
+            binary_tree<int> tree;
+            tree.build(1, 3, 4, 5, 6, 7, 8);
+            ```
+    - `build(values : const T*, size : size_t)`
+        - **Example**:
+            ```cpp
+            binary_tree<int> tree;
+            int values[] = {1, 3, 4, 5, 6, 7, 8};
+            tree.build(values, sizeof(values) / sizeof(values[0]));
+            ```
+        - **Result**:
+            ```
+                5
+               / \
+              3   7
+             / \ / \
+            1  4 6  8
+            ```
+        - Builds the binary tree with the given values.
+        - It builds a balanced binary tree, which means that the tree will be as balanced as possible.
+        - **Complexity**:
+            - O(n), where n is the number of values that are given.
+        - **Note**:
+            - The values must be in ascending order aligned with the predicate function. You can accomplish this by
+              using the `std::sort` function. (`std::sort(values.begin(), values.end(), predicate);`).
+            - The tree will be cleared then rebuilt, even if the tree is empty.
+        - **Degenerate cases**:
+            - If the values are not in ascending order aligned with the predicate function, the tree will be built
+              incorrectly.
+    - `insert(val : T, Args... args)`
+        - **Example**:
+            ```cpp
+            binary_tree<int> tree;
+            tree.insert(5, 3, 7, 1, 4, 6, 8);
+            ```
+    - `insert(begin : Iterator, end : Iterator)`
+        - **Example**:
+            ```cpp
+            binary_tree<int> tree;
+            std::vector<int> values = {5, 3, 7, 1, 4, 6, 8};
+            tree.insert(values.begin(), values.end());
+            ```
+    - `insert(values : const T*, size : size_t)`
+        - Inserts the given values into the binary tree.
+        - **Example**:
+            ```cpp
+            binary_tree<int> tree;
+            tree.insert(5, 3, 7, 1, 4, 6, 8);
+            ```
+        - **Result**:
+            ```
+                5
+               / \
+              3   7
+             / \ / \
+            1  4 6  8
+            ```
+          If you do decide to insert the values in a different order, it will not be balanced:
+            ```cpp
+            binary_tree<int> tree;
+            tree.insert(2, 1, 3, 4, 5);
+            ```
+            ```
+                2
+               / \
+              1   3
+                   \
+                    4
+                     \
+                      5
+           ```
+        - **Complexity**:
+            - O(log n), where n is the number of nodes in the tree.
+            - O(n), worst case if the tree is unbalanced.
+        - **Note**:
+            - The values will be inserted in the order they are given.
+            - Use this method only after building the tree, otherwise you might get an unbalanced tree.
+            - Duplicates are allowed.
+    - `remove(val : T)`
+        - Removes the given value from the binary tree, then looks for a replacement. It doesn't rebalance the tree.
+        - **Returns** a boolean value, true if the value was removed.
+        - **Example**:
+            ```cpp
+            binary_tree<int> tree;
+            tree.build(1, 2, 3, 4, 5, 6, 7, 8);
+            tree.remove(3);
+            ```
+        - **Result**:
+            ```
+                  5
+                 / \
+                3   7
+               / \ / \
+              2  4 6  8
+             /
+            1
+            ```
+          Will be turned into:
+            ```
+                  5
+                 / \
+                4   7
+               /   / \
+              2   6   8
+             /
+            1
+            ```
+        - **Complexity**: 
+            - O(log n), where n is the number of nodes in the tree.
+            - O(n), worst case if the tree is unbalanced.
+        - **Degenerate cases**:
+            - If the value is not in the tree, nothing will happen.
+    - `find(val : T)`
+        - **Example**:
+            ```cpp
+            binary_tree<int> tree;
+            tree.build(1, 2, 3, 4, 5, 6, 7, 8);
+            const node* found = tree.find(3);
+            ```
+    - `find(current : const node*, val : T)`
+        - Finds the given value in the binary tree.
+        - **Returns** The node that contains the value, if the value is not found, it will return nullptr.
+        - **Example**:
+            ```cpp
+            binary_tree<int> tree;
+            tree.build(1, 2, 3, 4, 5, 6, 7, 8);
+            const node* found = tree.find(root.get(), 3);
+            ```
+        - **Complexity**:
+            - O(log n), where n is the number of nodes in the tree.
+            - O(n), worst case if the tree is unbalanced.
+    - `traverse_in_order(callback : std::function<void(const T&)>`
+         - **Example**: 
+            ```cpp
+            binary_tree<int> tree;
+            tree.build(1, 3, 4, 5, 6, 7, 8);
+            tree.traverse_in_order([](const int& value) { std::cout << value << ' '; });
+            ```
+    - `traverse_in_order(const node* current, callback : std::function<void(const T&)>`
+        - Traverses the binary tree in order.
+        - **Example**:
+            ```cpp
+            binary_tree<int> tree;
+            tree.build(1, 3, 4, 5, 6, 7, 8);
+            tree.traverse_in_order(root.get(), [](const int& value) { std::cout << value << ' '; });
+            ```
+        - **Result**:
+            ```
+                    (4) 5
+                   /        \
+              (2) 3          7 (6)
+                 / \       /   \
+            (1) 1   4 (3) 6 (5) 8 (7)
+            ```
+            ```
+            1 3 4 5 6 7 8
+            ```
+        - **Complexity**:
+            - O(n), where n is the number of nodes in the tree.
+    - `traverse_pre_order(callback : std::function<void(const T&)>`
+         - **Example**: 
+            ```cpp
+            binary_tree<int> tree;
+            tree.build(1, 3, 4, 5, 6, 7, 8);
+            tree.traverse_pre_order([](const int& value) { std::cout << value << ' '; });
+            ```
+    - `traverse_pre_order(const node* current, callback : std::function<void(const T&)>`
+        - Traverses the binary tree in pre-order.
+        - **Example**:
+            ```cpp
+            binary_tree<int> tree;
+            tree.build(1, 3, 4, 5, 6, 7, 8);
+            tree.traverse_pre_order(root.get(), [](const int& value) { std::cout << value << ' '; });
+            ```
+        - **Result**:
+             ```
+                    (1) 5
+                   /        \
+              (2) 3          7 (5)
+                 / \       /   \
+            (3) 1   4 (4) 6 (6) 8 (7)
+            ```
+            ```
+            5 3 1 4 7 6 8
+            ```
+        - **Complexity**:
+            - O(n), where n is the number of nodes in the tree.
+    - `traverse_post_order(callback : std::function<void(const T&)>`
+        - **Example**:
+            ```cpp
+            binary_tree<int> tree;
+            tree.build(1, 3, 4, 5, 6, 7, 8);
+            tree.traverse_post_order([](const int& value) { std::cout << value << ' '; });
+            ```
+    - `traverse_post_order(const node* current, callback : std::function<void(const T&)>`
+        - Traverses the binary tree in post-order.
+        - **Example**:
+            ```cpp
+            binary_tree<int> tree;
+            tree.build(1, 3, 4, 5, 6, 7, 8);
+            tree.traverse_post_order(root.get(), [](const int& value) { std::cout << value << ' '; });
+            ```
+        - **Result**: 
+            ```
+                    (7) 5
+                   /        \
+              (3) 3          7 (6)
+                 / \       /   \
+            (1) 1   4 (2) 6 (4) 8 (5)
+            ```
+            ```
+            1 4 3 6 8 7 5
+            ```
+        - **Complexity**:
+            - O(n), where n is the number of nodes in the tree.
+    - `find_min()`
+        - **Example**:
+            ```cpp
+            binary_tree<int> tree;
+            tree.build(1, 3, 4, 5, 6, 7, 8);
+            const node* min = tree.find_min(); // 1
+            ```
+    - `find_min(const node* current)`
+        - Finds the minimum value in the binary tree.
+        - **Returns** The node that contains the minimum value.
+        - **Example**:
+            ```cpp
+            binary_tree<int> tree;
+            tree.build(1, 3, 4, 5, 6, 7, 8);
+            const node* min = tree.find_min(root.get()); // 1
+            ```
+        - **Complexity**:
+            - O(log n), where n is the number of nodes in the tree.
+            - O(n), worst case if the tree is unbalanced.
+        - **Note**:
+            - The minimum value is the leftmost value in the tree.
+    - `find_max()`
+        - **Example**:
+            ```cpp
+            binary_tree<int> tree;
+            tree.build(1, 3, 4, 5, 6, 7, 8);
+            const node* max = tree.find_max(); // 8
+            ```
+    - `find_max(const node* current)` 
+        - Finds the maximum value in the binary tree.
+        - **Returns** The node that contains the maximum value.
+        - **Example**:
+            ```cpp
+            binary_tree<int> tree;
+            tree.build(1, 3, 4, 5, 6, 7, 8);
+            const node* max = tree.find_max(root.get()); // 8
+            ```
+        - **Complexity**:
+            - O(log n), where n is the number of nodes in the tree.
+            - O(n), worst case if the tree is unbalanced.
+        - **Note**:
+            - The maximum value is the rightmost value in the tree.
+    - `is_empty()`
+        - **Returns** a boolean value, true if the tree is empty.
+    - `height()`
+    - `height(current : const node*)`
+        - **Returns** the height of the binary tree.
+        - **Complexity**:
+            - O(n), where n is the number of nodes in the tree.

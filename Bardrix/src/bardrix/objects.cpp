@@ -88,7 +88,7 @@ namespace bardrix {
         const double tmin = std::max(std::max(std::min(t1, t2), std::min(t3, t4)), std::min(t5, t6));
         const double tmax = std::min(std::min(std::max(t1, t2), std::max(t3, t4)), std::max(t5, t6));
 
-        return tmax >= tmin && ray.get_length() >= tmin;
+        return greater_than_or_nearly_equal(tmax, tmin) && greater_than_or_nearly_equal(ray.get_length(), tmin);
     }
 
     bounding_box bounding_box::merged(const bounding_box& box) const noexcept {
@@ -103,15 +103,15 @@ namespace bardrix {
         return *this;
     }
 
-    bounding_box bounding_box::expanded(double value) const noexcept {
+    bounding_box bounding_box::expanded(double distance) const noexcept {
         bounding_box temp = *this;
-        temp.expand(value);
+        temp.expand(distance);
         return temp;
     }
 
-    const bounding_box& bounding_box::expand(double value) noexcept {
-        min_ -= value;
-        max_ += value;
+    const bounding_box& bounding_box::expand(double distance) noexcept {
+        min_ -= distance;
+        max_ += distance;
 
         // We cannot shrink past the center
         if (width() < 0) min_.x = max_.x = center().x;

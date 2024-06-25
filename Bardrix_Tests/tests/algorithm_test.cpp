@@ -550,8 +550,8 @@ TEST(algorithm, binary_tree_is_empty) {
     EXPECT_TRUE(tree.is_empty());
 }
 
-/// \brief Test the traverse method of a binary tree
-TEST(algorithm, binary_tree_traverse) {
+/// \brief Test the traverse_in_order method of a binary tree
+TEST(algorithm, binary_tree_traverse_in_order) {
     bardrix::binary_tree<int> tree(int_predicate);
 
     // 1, 3, 4, 5, 6, 7, 8 ->
@@ -566,13 +566,7 @@ TEST(algorithm, binary_tree_traverse) {
     tree.traverse_in_order([&values](int value) { values.push_back(value); });
 
     EXPECT_EQ(values.size(), 7);
-    EXPECT_EQ(values[0], 1);
-    EXPECT_EQ(values[1], 3);
-    EXPECT_EQ(values[2], 4);
-    EXPECT_EQ(values[3], 5);
-    EXPECT_EQ(values[4], 6);
-    EXPECT_EQ(values[5], 7);
-    EXPECT_EQ(values[6], 8);
+    EXPECT_EQ(values, std::vector<int>({ 1, 3, 4, 5, 6, 7, 8 }));
 
     // 2, 9, 10, 11, 12, 13, 14, 24, 62, 63, 64, 65, 66, 67, 68 ->
     //            _____24_____
@@ -588,13 +582,77 @@ TEST(algorithm, binary_tree_traverse) {
     tree.traverse_in_order([&values](int value) { values.push_back(value); });
 
     EXPECT_EQ(values.size(), 15);
-    EXPECT_EQ(values[0], 2);
-    EXPECT_EQ(values[1], 9);
-    EXPECT_EQ(values[2], 10);
-    EXPECT_EQ(values[3], 11);
-    EXPECT_EQ(values[4], 12);
-    EXPECT_EQ(values[5], 13);
-    EXPECT_EQ(values[6], 14);
+    EXPECT_EQ(values, std::vector<int>({ 2, 9, 10, 11, 12, 13, 14, 24, 62, 63, 64, 65, 66, 67, 68 }));
+}
+
+/// \brief Test the traverse_pre_order method of a binary tree
+TEST(algorithm, binary_tree_traverse_pre_order) {
+    bardrix::binary_tree<int> tree(int_predicate);
+
+    // 1, 3, 4, 5, 6, 7, 8 ->
+    //       5
+    //     /   \
+    //    3     7
+    //   / \   / \
+    //  1   4 6   8
+    tree.build(1, 3, 4, 5, 6, 7, 8);
+
+    std::vector<int> values;
+    tree.traverse_pre_order([&values](int value) { values.push_back(value); });
+
+    EXPECT_EQ(values.size(), 7);
+    EXPECT_EQ(values, std::vector<int>({ 5, 3, 1, 4, 7, 6, 8 }));
+
+    // 2, 9, 10, 11, 12, 13, 14, 24, 62, 63, 64, 65, 66, 67, 68 ->
+    //            _____24_____
+    //          /              \
+    //        11               65
+    //      /    \           /    \
+    //     9      13       63     67
+    //    / \     / \     / \    /  \
+    //   2  10   12 14   62 64  66  68
+    tree.build(2, 9, 10, 11, 12, 13, 14, 24, 62, 63, 64, 65, 66, 67, 68);
+
+    values.clear();
+    tree.traverse_pre_order([&values](int value) { values.push_back(value); });
+
+    EXPECT_EQ(values.size(), 15);
+    EXPECT_EQ(values, std::vector<int>({ 24, 11, 9, 2, 10, 13, 12, 14, 65, 63, 62, 64, 67, 66, 68 }));
+}
+
+/// \brief Test the traverse_post_order method of a binary tree
+TEST(algorithm, binary_tree_traverse_post_order) {
+    bardrix::binary_tree<int> tree(int_predicate);
+
+    // 1, 3, 4, 5, 6, 7, 8 ->
+    //       5
+    //     /   \
+    //    3     7
+    //   / \   / \
+    //  1   4 6   8
+    tree.build(1, 3, 4, 5, 6, 7, 8);
+
+    std::vector<int> values;
+    tree.traverse_post_order([&values](int value) { values.push_back(value); });
+
+    EXPECT_EQ(values.size(), 7);
+    EXPECT_EQ(values, std::vector<int>({ 1, 4, 3, 6, 8, 7, 5 }));
+
+    // 2, 9, 10, 11, 12, 13, 14, 24, 62, 63, 64, 65, 66, 67, 68 ->
+    //            _____24_____
+    //          /              \
+    //        11               65
+    //      /    \           /    \
+    //     9      13       63     67
+    //    / \     / \     / \    /  \
+    //   2  10   12 14   62 64  66  68
+    tree.build(2, 9, 10, 11, 12, 13, 14, 24, 62, 63, 64, 65, 66, 67, 68);
+
+    values.clear();
+    tree.traverse_post_order([&values](int value) { values.push_back(value); });
+
+    EXPECT_EQ(values.size(), 15);
+    EXPECT_EQ(values, std::vector<int>({ 2, 10, 9, 12, 14, 13, 11, 62, 64, 63, 66, 68, 67, 65, 24 }));
 }
 
 /// \brief Test the find_min method of a binary tree
@@ -719,6 +777,75 @@ TEST(algorithm, binary_tree_remove) {
     EXPECT_EQ(tree.root->right->right->data, 67);
     EXPECT_EQ(tree.root->right->left->left->data, 62);
     EXPECT_EQ(tree.root->right->right->right->data, 68);
+
+    // 2, 9, 10, 11, 12, 13, 14, 24, 62, 63, 64, 65, 66, 67, 68 ->
+    //                 _____24_____
+    //               /              \
+    //             11               65
+    //           /    \           /    \
+    //          9      13       63     67
+    //         / \     / \     / \    /  \
+    //        2  10   12 14   62 64  66  68
+    tree.build(2, 9, 10, 11, 12, 13, 14, 24, 62, 63, 64, 65, 66, 67, 68);
+
+    // This will be turned into:
+    //                 _____14_____
+    //               /              \
+    //             11               65
+    //           /    \           /    \
+    //          9      13       63     67
+    //         / \     /       / \    /  \
+    //        2  10   12      62 64  66  68
+
+    EXPECT_TRUE(tree.remove(24, true));
+
+    EXPECT_EQ(tree.root->data, 14);
+    EXPECT_EQ(tree.root->left->data, 11);
+    EXPECT_EQ(tree.root->left->left->data, 9);
+    EXPECT_EQ(tree.root->left->right->data, 13);
+    EXPECT_EQ(tree.root->left->left->left->data, 2);
+    EXPECT_EQ(tree.root->left->left->right->data, 10);
+    EXPECT_EQ(tree.root->left->right->left->data, 12);
+    EXPECT_EQ(tree.root->right->data, 65);
+    EXPECT_EQ(tree.root->right->left->data, 63);
+    EXPECT_EQ(tree.root->right->right->data, 67);
+    EXPECT_EQ(tree.root->right->left->left->data, 62);
+    EXPECT_EQ(tree.root->right->right->right->data, 68);
+}
+
+/// \brief Test the remove method of a binary tree, with edge cases
+TEST(algorithm, binary_tree_remove_edge_cases) {
+    bardrix::binary_tree<int> tree(int_predicate);
+
+    tree.build(1);
+
+    EXPECT_TRUE(tree.remove(1));
+    EXPECT_EQ(tree.root, nullptr);
+
+    // 1, 2, 3, 4 ->
+    //     3
+    //    / \
+    //   2   4
+    //  /
+    // 1
+    tree.build(1, 2, 3, 4);
+    EXPECT_TRUE(tree.remove(2));
+    EXPECT_EQ(tree.root->data, 3);
+    EXPECT_EQ(tree.root->left->data, 1);
+    EXPECT_EQ(tree.root->right->data, 4);
+
+    tree.build(1, 2, 3, 4);
+    EXPECT_TRUE(tree.remove(3));
+    EXPECT_EQ(tree.root->data, 4);
+    EXPECT_EQ(tree.root->left->data, 2);
+    EXPECT_EQ(tree.root->left->left->data, 1);
+
+
+    tree.build(1, 2, 3, 4);
+    EXPECT_TRUE(tree.remove(3, true));
+    EXPECT_EQ(tree.root->data, 2);
+    EXPECT_EQ(tree.root->left->data, 1);
+    EXPECT_EQ(tree.root->right->data, 4);
 }
 
 /// \brief Test the height method of a binary tree
