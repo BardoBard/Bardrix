@@ -35,6 +35,13 @@ namespace bardrix {
         /// \param direction The direction of the ray, it'll be normalized
         ray(const point3& position, const vector3& direction) noexcept;
 
+        /// \brief Constructor for ray, initializes position and end
+        /// \param position The position of the ray
+        /// \param end The end of the ray
+        /// \details The direction will be normalized \n
+        ///          The length will be the distance between the position and the end
+        ray(const point3&  position, const point3& end) noexcept;
+
         /// \brief Constructor for ray, initializes position, direction and length
         /// \param position The position of the ray
         /// \param direction The direction of the ray, it'll be normalized
@@ -75,21 +82,21 @@ namespace bardrix {
 
         /// \brief Operator to print the ray to an output stream
         /// \param os The output stream
-        /// \param r The ray to print
+        /// \param ray The ray to print
         /// \return The output stream
-        friend std::ostream& operator<<(std::ostream& os, const ray& r);
+        friend std::ostream& operator<<(std::ostream& os, const ray& ray);
 
         /// \brief Equality operator
-        /// \param r The ray to compare
+        /// \param ray The ray to compare
         /// \return True if the rays are equal
         /// \example ray(point3(1, 2, 3), vector3(1, 0, 0)) == ray(point3(1, 2, 3), vector3(1, 0, 0)) -> true
-        bool operator==(const ray& r) const noexcept;
+        bool operator==(const ray& ray) const noexcept;
 
         /// \brief Inequality operator
-        /// \param r The ray to compare
+        /// \param ray The ray to compare
         /// \return True if the rays are not equal
         /// \example ray(point3(1, 2, 3), vector3(1, 0, 0)) != ray(point3(1, 2, 3), vector3(0, 1, 0)) -> true
-        bool operator!=(const ray& r) const noexcept;
+        bool operator!=(const ray& ray) const noexcept;
 
     }; // class ray
 

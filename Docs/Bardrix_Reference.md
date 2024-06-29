@@ -379,6 +379,9 @@ Copy and move constructors are implicitly defined.
         - Initializes the ray to the given position and direction.
             - The direction length will be used to set the length of the ray.
             - The direction will be normalized for you.
+        - Initializes the ray to the given position and end point. (position, end)
+            - The direction will be calculated for you.
+            - The length of the ray will be set to the distance between the position and end point.
         - Initializes the direction.
             - The direction length will be used to set the length of the ray.
             - The direction will be normalized for you.

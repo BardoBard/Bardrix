@@ -24,9 +24,14 @@ Added `bounding_box` class to objects.h. \
 Added `bounding_box()` to shape. \
 Added `binary_tree` class to algorithms.h.
 
+### Minor Changes
+
+Added `ray(position : point3, end : point3)` to ray.
+
 ## Test Changes
 
-Added tests for `bounding_box` and `binary_tree`.
+Added tests for `bounding_box` and `binary_tree`. \
+Added tests for `ray(position : point3, end : point3)`.
 
 # [v0.3.3](https://github.com/BardoBard/Bardrix/releases/tag/v0.3.3)
 
