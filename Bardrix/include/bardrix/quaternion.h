@@ -94,35 +94,7 @@ namespace bardrix {
         /// \example quaternion::rotate_radians(point3(1, 2, 3), vector3(1, 0, 0), bardrix::pi) == point3(1, -2, -3)
         template<class T>
         NODISCARD static auto rotate_radians(const T& dim3, const vector3& rotation_vector,
-                                             double theta) noexcept -> dimension3::enable_if_dimension3<T, T> {
-            if (dim3 == 0 || rotation_vector == 0)
-                return dim3;
-
-            if (nearly_equal(theta, 0))
-                return dim3;
-
-            theta /= 2;
-
-            //get cos and sin
-            const double cos = std::cos(theta);
-            const double sin = std::sin(theta);
-
-            //get unitvector
-            const vector3 unit_vector = rotation_vector.normalized() * sin;
-
-            //quaternion
-            const quaternion q = quaternion(unit_vector.x, unit_vector.y, unit_vector.z, cos);
-
-            //conjugated quaternion of Q
-            const quaternion con_q = q.conjugated();
-
-            //quaternion from given point
-            const quaternion p = quaternion(dim3.x, dim3.y, dim3.z, 0);
-
-            const quaternion result = (con_q * p) * q;
-
-            return {result.x, result.y, result.z};
-        }
+                                             double theta) noexcept -> dimension3::enable_if_dimension3<T, T>;
 
         /// \brief Rotates a 3D object around an axis by an angle in degrees
         /// \tparam T The type of the point, e.g. point3, vector3, etc.
@@ -135,9 +107,7 @@ namespace bardrix {
         /// \example quaternion::rotate_degrees(point3(1, 2, 3), vector3(1, 0, 0), 180) == point3(1, -2, -3)
         template<class T>
         NODISCARD static auto rotate_degrees(const T& dim3, const vector3& rotation_vector,
-                                             double theta) noexcept -> dimension3::enable_if_dimension3<T, T> {
-            return rotate_radians(dim3, rotation_vector, degrees_to_radians(theta));
-        }
+                                             double theta) noexcept -> dimension3::enable_if_dimension3<T, T>;
 
         /// \brief Mirrors a 3D object around an axis
         /// \tparam T The type of the point, e.g. point3, vector3, etc.
@@ -148,26 +118,7 @@ namespace bardrix {
         /// \details If all the components of the given 3D object or rotation vector are 0, it will return the same 3D object (unmodified)
         /// \example quaternion::mirror(point3(1, 2, 3), vector3(1, 0, 0)) == point3(1, -2, -3)
         template<class T>
-        NODISCARD static auto mirror(const T& dim3, const vector3& mirror_vector) noexcept -> dimension3::enable_if_dimension3<T, T> {
-            if (dim3 == 0 || mirror_vector == 0)
-                return dim3;
-
-            //get unitvector (aka normalized vector)
-            const vector3 unit_vector = mirror_vector.normalized();
-
-            //quaternion
-            const quaternion q = quaternion( unit_vector.x, unit_vector.y, unit_vector.z, 0);
-
-            //conjugated quaternion of Q
-            const quaternion con_q = q.conjugated();
-
-            //quaternion from given point
-            const quaternion p = quaternion(dim3.x, dim3.y, dim3.z, 0);
-
-            const quaternion result = (con_q * p) * q;
-
-            return {result.x, result.y, result.z};
-        }
+        NODISCARD static auto mirror(const T& dim3, const vector3& mirror_vector) noexcept -> dimension3::enable_if_dimension3<T, T>;
 
         /// \brief Print the quaternion to an output stream
         /// \param os The output stream
@@ -176,5 +127,69 @@ namespace bardrix {
         std::ostream& print(std::ostream& os) const override;
 
     }; // quaternion
+
+    // Implementation of template functions
+
+    template<class T>
+    auto quaternion::rotate_radians(const T& dim3, const vector3& rotation_vector,
+                                    double theta) noexcept -> dimension3::enable_if_dimension3<T, T> {
+        if (dim3 == 0 || rotation_vector == 0)
+            return dim3;
+
+        if (nearly_equal(theta, 0))
+            return dim3;
+
+        theta /= 2;
+
+        //get cos and sin
+        const double cos = std::cos(theta);
+        const double sin = std::sin(theta);
+
+        //get unitvector
+        const vector3 unit_vector = rotation_vector.normalized() * sin;
+
+        //quaternion
+        const quaternion q = quaternion(unit_vector.x, unit_vector.y, unit_vector.z, cos);
+
+        //conjugated quaternion of Q
+        const quaternion con_q = q.conjugated();
+
+        //quaternion from given point
+        const quaternion p = quaternion(dim3.x, dim3.y, dim3.z, 0);
+
+        const quaternion result = (con_q * p) * q;
+
+        return {result.x, result.y, result.z};
+    }
+
+    template<class T>
+    auto quaternion::mirror(const T& dim3, const vector3& mirror_vector) noexcept -> dimension3::enable_if_dimension3<T, T> {
+        if (dim3 == 0 || mirror_vector == 0)
+            return dim3;
+
+        //get unitvector (aka normalized vector)
+        const vector3 unit_vector = mirror_vector.normalized();
+
+        //quaternion
+        const quaternion q = quaternion( unit_vector.x, unit_vector.y, unit_vector.z, 0);
+
+        //conjugated quaternion of Q
+        const quaternion con_q = q.conjugated();
+
+        //quaternion from given point
+        const quaternion p = quaternion(dim3.x, dim3.y, dim3.z, 0);
+
+        const quaternion result = (con_q * p) * q;
+
+        return {result.x, result.y, result.z};
+    }
+
+    template<class T>
+    auto quaternion::rotate_degrees(const T& dim3, const vector3& rotation_vector,
+                                    double theta) noexcept -> dimension3::enable_if_dimension3<T, T> {
+        return rotate_radians(dim3, rotation_vector, degrees_to_radians(theta));
+    }
+
+    // end of template functions
 
 } // bardrix
