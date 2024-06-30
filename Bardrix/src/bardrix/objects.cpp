@@ -8,7 +8,7 @@ namespace bardrix {
 
     /// MATERIAL
 
-    material::material() noexcept: material(0, 1, 0, 0, bardrix::color::white()) {}
+    material::material() noexcept: material(0, 1, 0, 1, bardrix::color::white()) {}
 
     material::material(const double ambient, const double diffuse, const double specular,
                        const double shininess) noexcept
@@ -167,6 +167,34 @@ namespace bardrix {
 
     double bounding_box::diagonal() const noexcept {
         return min_.vector_to(max_).length();
+    }
+
+    axis bounding_box::longest_axis() const noexcept {
+        if (is_empty()) return axis::x;
+
+        double x = width();
+        double y = height();
+        double z = depth();
+
+        if (x > y && x > z) return axis::x;
+        if (y > x && y > z) return axis::y;
+        if (z > x && z > y) return axis::z;
+
+        return nearly_equal(x, y) ? axis::x : axis::y;
+    }
+
+    axis bounding_box::shortest_axis() const noexcept {
+        if (is_empty()) return axis::x;
+
+        double x = width();
+        double y = height();
+        double z = depth();
+
+        if (x < y && x < z) return axis::x;
+        if (y < x && y < z) return axis::y;
+        if (z < x && z < y) return axis::z;
+
+        return nearly_equal(x, y) ? axis::x : axis::y;
     }
 
     bounding_box bounding_box::operator+(const vector3& vector) const noexcept {

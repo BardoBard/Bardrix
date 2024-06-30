@@ -35,7 +35,11 @@ Added `sphere` to objects.h.
 
 ### Minor Changes
 
-Added `ray(position : point3, end : point3)` to ray.
+Added `ray(position : point3, end : point3)` to ray. \
+Updated `material` default constructor to have a shininess of 1, which is the minimum value. \
+Added `longest_axis()` and `shortest_axis()` to `bounding_box`. \
+Added `enum class axis` to bardrix.h, where `axis::none` is 0, `axis::x` is 1, `axis::y` is 2, `axis::z` is 4 and `axis::w` is 8. \
+Added `operator[axis]` to `dimension3`and `dimension4`.
 
 ## Test Changes
 
@@ -43,6 +47,9 @@ Added tests for `bounding_box` and `binary_tree`. \
 Added tests for `ray(position : point3, end : point3)`. \
 Added tests for `sphere` in [objects.h](https://github.com/bardobard/bardrix/blob/v0.4.0/Bardrix/include/bardrix/objects.h). \
 Added tests for `bvh_tree` in [algorithms.h](https://github.com/bardobard/bardrix/blob/v0.4.0/Bardrix/include/bardrix/algorithms.h).
+
+Added tests for `longest_axis()` and `shortest_axis()` in `bounding_box`. \
+Added tests for `operator[axis]` in `dimension3`and `dimension4`.
 
 # [v0.3.3](https://github.com/BardoBard/Bardrix/releases/tag/v0.3.3)
 

@@ -25,17 +25,13 @@ namespace bardrix {
 
     // bvh_tree
 
-    bool bvh_tree::shape_predicate(const std::shared_ptr<bardrix::shape>& shape_lhs,
-                                   const std::shared_ptr<bardrix::shape>& shape_rhs) {
+    bool bvh_tree::longest_axis_predicate(const std::shared_ptr<bardrix::shape>& shape_lhs,
+                                   const std::shared_ptr<bardrix::shape>& shape_rhs, axis axis) noexcept {
         return shape_lhs && shape_rhs &&
-               shape_lhs->bounding_box().center().x < shape_rhs->bounding_box().center().x;
+               shape_lhs->bounding_box().center()[axis] < shape_rhs->bounding_box().center()[axis];
     }
 
-    bool bvh_tree::bvh_predicate(const bvh_data& box_lhs, const bvh_data& box_rhs) noexcept {
-        return shape_predicate(box_lhs.shape, box_rhs.shape);
-    }
-
-    bvh_tree::bvh_tree() : binary_tree<bvh_data>(bvh_predicate) {}
+    bvh_tree::bvh_tree() : binary_tree<bvh_data>(nullptr) {}
 
     void bvh_tree::intersections(const ray& ray, std::vector<const bardrix::shape*>& out_hits) const noexcept {
         intersections(root, ray, out_hits);

@@ -17,9 +17,10 @@
     - [material](#material)
     - [bounding_box](#boundingbox)
     - [shape](#shape)
+    - [sphere](#sphere)
 - [Algorithm](#algorithm)
     - [binary_tree](#binarytree)
-    - [bvh](#bvh)
+    - [bvh_tree](#bvhtree)
 
 ## Bardrix
 
@@ -178,6 +179,12 @@ Abstract class, only used for inheritance, serves as a base for 3D classes; like
 It has base variables for `x`, `y` and `z`.
 
 - Methods:
+    - `min()`
+        - Calculates the minimum value of the components.
+        - **Returns** a new `dimension3` object with the minimum values.
+    - `max()`
+        - Calculates the maximum value of the components.
+        - **Returns** a new `dimension3` object with the maximum values.
     - `print(std::ostream &os)`
         - Pure virtual function that requires the derived classes to implement the output of the components to the
           output stream.
@@ -262,6 +269,9 @@ It has base variables for `x`, `y` and `z`.
         - The implementation of which is within the derived classes under the `print` method, as it is a pure virtual
           function.
         - **Returns** a reference to the output stream.
+    - `[axis]`
+        - Accesses the components of the `dimension3` object by axis (uses `enum class axis`).
+        - **Returns** a reference to the component.
 
 ### vector3
 
@@ -411,6 +421,10 @@ Copy and move constructors are implicitly defined.
         - Outputs the components of the ray to the output stream.
         - **Returns** a reference to the output stream. (position, direction, length)
 - Operators:
+    - `<<`
+        - Outputs the components of the ray to the output stream.
+        - Uses the `print` method to output the components.
+        - **Returns** a reference to the output stream.
     - `==`
         - Compares the position, direction, and length of the two rays.
         - **Returns** a boolean value, true if the rays are equal.
@@ -424,6 +438,12 @@ Abstract class, only used for inheritance, serves as a base for 3D classes; like
 It has base variables for `x`, `y`, `z`, and `w`.
 
 - Methods:
+    - `min()`
+        - Calculates the minimum value of the components.
+        - **Returns** a new `dimension4` object with the minimum values.
+    - `max()`
+        - Calculates the maximum value of the components.
+        - **Returns** a new `dimension4` object with the maximum values.
     - `print(std::ostream &os)`
         - Pure virtual function that requires the derived classes to implement the output of the components to the
           output stream.
@@ -509,6 +529,9 @@ It has base variables for `x`, `y`, `z`, and `w`.
         - The implementation of which is within the derived classes under the `print` method, as it is a pure virtual
           function.
         - **Returns** a reference to the output stream.
+    - `[axis]`
+        - Accesses the components of the `dimension4` object by axis (uses `enum class axis`).
+        - **Returns** a reference to the component.
 
 ### quaternion
 
@@ -1051,6 +1074,52 @@ All methods are pure virtual, and must be implemented in the derived classes.
         - Calculates the normal of the shape at the given point.
         - **Returns** the normal of the shape at the point.
 
+### sphere
+
+A class that represents a sphere in the scene. \
+It has a radius and a position and a material. It inherits from the `shape` class.
+
+- Constructors:
+    - Default constructor
+        - Initializes the sphere to a radius of 1, a position of (0, 0, 0) and a default material.
+    - Parameterized constructor
+        - Initializes the sphere to the given position and radius.
+        - Initializes the sphere to the given position, material and radius.
+- Setters/Getters:
+    - `set_radius(radius : double)`
+        - Sets the radius of the sphere.
+        - **Degenerate cases**:
+            - If the radius is less than zero, it will be set to zero.
+    - `get_radius()`
+        - **Returns** the radius of the sphere.
+    - `set_position(position : point3)`
+        - Sets the position of the sphere.
+    - `get_position()`
+        - **Returns** the position of the sphere.
+    - `set_material(material : material)`
+        - Sets the material of the sphere.
+    - `get_material()`
+        - **Returns** the material of the sphere.
+- Methods:
+    - `intersect(ray : ray)`
+        - Checks if the ray intersects with the sphere and calculates the intersection point.
+        - **Returns** an optional `point3` of the intersection point.
+            - If the ray intersects with the sphere, it should return the intersection point.
+            - If the ray does not intersect with the sphere, it should return an std::nullopt.
+    - `bounding_box()`
+        - Calculates the bounding box of the sphere.
+        - **Returns** a new bounding box of the sphere.
+    - `normal_at(point : point3)`
+        - Calculates the normal of the sphere at the given point.
+        - **Returns** the normal of the sphere at the point.
+- Operators:
+    - `==`
+        - Compares the position, radius, and material of the two spheres.
+        - **Returns** a boolean value, true if the spheres are equal.
+    - `!=`
+        - Compares the position, radius, and material of the two spheres.
+        - **Returns** a boolean value, true if the spheres are not equal.
+
 ## Algorithm
 
 This part includes classes that are used for the algorithms, like binary_tree, bvh_tree etc.
@@ -1212,7 +1281,7 @@ We can use this knowledge to search for a value in the tree, or to insert a valu
              /
             1
             ```
-        - **Complexity**: 
+        - **Complexity**:
             - O(log n), where n is the number of nodes in the tree.
             - O(n), worst case if the tree is unbalanced.
         - **Degenerate cases**:
@@ -1237,12 +1306,12 @@ We can use this knowledge to search for a value in the tree, or to insert a valu
             - O(log n), where n is the number of nodes in the tree.
             - O(n), worst case if the tree is unbalanced.
     - `traverse_in_order(callback : std::function<void(const T&)>`
-         - **Example**: 
-            ```cpp
-            binary_tree<int> tree;
-            tree.build(1, 3, 4, 5, 6, 7, 8);
-            tree.traverse_in_order([](const int& value) { std::cout << value << ' '; });
-            ```
+        - **Example**:
+           ```cpp
+           binary_tree<int> tree;
+           tree.build(1, 3, 4, 5, 6, 7, 8);
+           tree.traverse_in_order([](const int& value) { std::cout << value << ' '; });
+           ```
     - `traverse_in_order(const node* current, callback : std::function<void(const T&)>`
         - Traverses the binary tree in order.
         - **Example**:
@@ -1265,12 +1334,12 @@ We can use this knowledge to search for a value in the tree, or to insert a valu
         - **Complexity**:
             - O(n), where n is the number of nodes in the tree.
     - `traverse_pre_order(callback : std::function<void(const T&)>`
-         - **Example**: 
-            ```cpp
-            binary_tree<int> tree;
-            tree.build(1, 3, 4, 5, 6, 7, 8);
-            tree.traverse_pre_order([](const int& value) { std::cout << value << ' '; });
-            ```
+        - **Example**:
+           ```cpp
+           binary_tree<int> tree;
+           tree.build(1, 3, 4, 5, 6, 7, 8);
+           tree.traverse_pre_order([](const int& value) { std::cout << value << ' '; });
+           ```
     - `traverse_pre_order(const node* current, callback : std::function<void(const T&)>`
         - Traverses the binary tree in pre-order.
         - **Example**:
@@ -1307,7 +1376,7 @@ We can use this knowledge to search for a value in the tree, or to insert a valu
             tree.build(1, 3, 4, 5, 6, 7, 8);
             tree.traverse_post_order(root.get(), [](const int& value) { std::cout << value << ' '; });
             ```
-        - **Result**: 
+        - **Result**:
             ```
                     (7) 5
                    /        \
@@ -1348,7 +1417,7 @@ We can use this knowledge to search for a value in the tree, or to insert a valu
             tree.build(1, 3, 4, 5, 6, 7, 8);
             const node* max = tree.find_max(); // 8
             ```
-    - `find_max(const node* current)` 
+    - `find_max(const node* current)`
         - Finds the maximum value in the binary tree.
         - **Returns** The node that contains the maximum value.
         - **Example**:
@@ -1377,48 +1446,51 @@ It is a binary tree that is used for optimizing the intersection tests with the 
 
 ![example_bvh.png](Images/example-bvh.png)
 
-In the example we can see a bounding_box around the shapes, this is the outer most bounding box (there are more internal boxes).
+In the example we can see a bounding_box around the shapes, this is the outer most bounding box (there are more internal
+boxes).
 
 - Constructors:
     - Default constructor
-        - Initializes the predicate.
+        - Initializes.
 - Methods:
-- `construct_bvh(shapes : shared_ptr<shape>*, size : size_t)`
-    - **Example**:
-        ```cpp
-        bardrix::bvh_tree tree;
-        std::shared_ptr<bardrix::shape> shapes[] = {sphere1, sphere2, sphere3};
-        tree.construct_bvh(shapes, size);
-        ```
-- `construct_bvh(begin : Iterator, end : Iterator)`
-    - Constructs the bounding volume hierarchy tree with the given shapes.
-    - **Example**:
-        ```cpp
-        bardrix::bvh_tree tree;
-        std::vector<std::shared_ptr<bardrix::shape>> shapes = {sphere1, sphere2, sphere3};
-        tree.construct_bvh(shapes.begin(), shapes.end());
-        ```
-    - **Complexity**:
-        - O(N log N) time complexity, where N is the number of shapes to construct the BVH tree from.
-        - However, this might be deceptive, as the true complexity is O(3N log N) due to merging the bounding boxes.
-    - **Note**:
-        - The shapes will be sorted based on the x-axis of the bounding box.
-        - The shape can be of any base.
-        - The tree will be cleared then rebuilt, even if the tree or shapes are empty.
-- `intersections(ray : ray, out_hits : vector<const shape*>&)`
-    - Returns the hit shapes from the ray, in the form of an out vector. 
-    - **Example**:
-        ```cpp
-        bardrix::bvh_tree tree;
-        std::shared_ptr<bardrix::shape> shapes[] = {sphere1, sphere2, sphere3};
-        tree.construct_bvh(shapes, size);
-      
-        std::vector<const bardrix::shape*> hits;
-        tree.intersections(ray, hits);
-        ```
-    - **Complexity**:
-        - O(N) worst case time complexity, where N is the number of nodes in the BVH tree.
-        - It's hard to determine the average and best case due to the nature of the ray hitting the bounding boxes, but it's generally faster than O(N).
-    - **Note**:
-        - The out vector will not be cleared before adding the hit shapes.
-        - The out_hits will not be sorted based on the distance from the ray origin.
+    - `construct_longest_axis(shapes : shared_ptr<shape>*, size : size_t)`
+        - **Example**:
+          ```cpp
+            bardrix::bvh_tree tree;
+            std::shared_ptr<bardrix::shape> shapes[] = {sphere1, sphere2, sphere3};
+            tree.construct_longest_axis(shapes, size);
+          ```
+    - `construct_longest_axis(begin : Iterator, end : Iterator)`
+        - Constructs the bounding volume hierarchy tree with the given shapes.
+        - It uses the longest axis algorithm to construct the tree.
+        - **Example**:
+          ```cpp
+          bardrix::bvh_tree tree;
+          std::vector<std::shared_ptr<bardrix::shape>> shapes = {sphere1, sphere2, sphere3};
+          tree.construct_longest_axis(shapes.begin(), shapes.end());
+          ```
+        - **Complexity**:
+            - O(N log N) time complexity, where N is the number of shapes to construct the BVH tree from.
+            - However, this might be deceptive, as the true complexity is O(3N log N) due to merging the bounding boxes.
+        - **Note**:
+            - The shapes will be sorted based on the x-axis of the bounding box.
+            - The shape can be of any base.
+            - The tree will be cleared then rebuilt, even if the tree or shapes are empty.
+    - `intersections(ray : ray, out_hits : vector<const shape*>&)`
+        - Returns the hit shapes from the ray, in the form of an out vector.
+        - **Example**:
+          ```cpp
+              bardrix::bvh_tree tree;
+              std::shared_ptr<bardrix::shape> shapes[] = {sphere1, sphere2, sphere3};
+              tree.construct_longest_axis(shapes, size);
+        
+              std::vector<const bardrix::shape*> hits;
+              tree.intersections(ray, hits);
+          ```
+        - **Complexity**:
+            - O(N) worst case time complexity, where N is the number of nodes in the BVH tree.
+            - It's hard to determine the average and best case due to the nature of the ray hitting the bounding boxes,
+              but it's generally faster than O(N).
+        - **Note**:
+            - The out vector will not be cleared before adding the hit shapes.
+            - The out_hits will not be sorted based on the distance from the ray origin.

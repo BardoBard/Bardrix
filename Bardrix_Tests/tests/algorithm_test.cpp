@@ -1027,7 +1027,7 @@ bool includes_all_shapes(const std::vector<const bardrix::shape*>& hits, const s
 }
 
 /// \brief Test the construction of a BVH tree
-TEST(bvh_tree, construct_bvh) {
+TEST(bvh_tree, construct_longest_axis) {
     bardrix::bvh_tree bvh;
 
     std::shared_ptr<bardrix::sphere> shapes[] {
@@ -1040,19 +1040,18 @@ TEST(bvh_tree, construct_bvh) {
             std::make_shared<bardrix::sphere>(bardrix::point3(8.66, -8.60, 0), 10),
     };
 
-    bvh.construct_bvh<bardrix::sphere>(shapes, 0);
-    bvh.construct_bvh(shapes, sizeof shapes / sizeof shapes[0]);
+    bvh.construct_longest_axis<bardrix::sphere>(shapes, 0);
+    bvh.construct_longest_axis(shapes, sizeof shapes / sizeof shapes[0]);
 
     std::vector<const bardrix::shape*> hits;
     bvh.intersections(bardrix::ray(bardrix::point3(26.03874, 31.6748, 2.25401), bardrix::point3(-14.64, -18.48, -1.6)), hits);
     EXPECT_EQ(hits.size(), 1);
     EXPECT_TRUE(includes_all_shapes(hits, std::vector<const bardrix::shape*>({ shapes[1].get() })));
 
-    bvh.construct_bvh(shapes2.begin(), shapes2.end());
-    bvh.construct_bvh(shapes2.begin(), shapes2.begin());
-    bvh.construct_bvh(shapes2.data(), 0);
+    bvh.construct_longest_axis(shapes2.begin(), shapes2.end());
+    bvh.construct_longest_axis(shapes2.begin(), shapes2.begin());
+    bvh.construct_longest_axis(shapes2.data(), 0);
 }
-
 
 /// \brief Test the intersect method of a BVH tree
 TEST(bvh_tree, intersect) {
@@ -1072,7 +1071,7 @@ TEST(bvh_tree, intersect) {
             std::make_shared<bardrix::sphere>(bardrix::point3(1.30, 0.01, 0), 1)         // 10
     };
 
-    bvh.construct_bvh(shapes.begin(), shapes.end());
+    bvh.construct_longest_axis(shapes.begin(), shapes.end());
     std::vector<const bardrix::shape*> hits;
 
     bvh.intersections(bardrix::ray(bardrix::point3(26.03874, 31.6748, 2.25401), bardrix::point3(-14.64, -18.48, -1.6)),
@@ -1101,7 +1100,7 @@ TEST(bvh_tree, intersect_2) {
             std::make_shared<bardrix::sphere>(bardrix::sphere(bardrix::point3{ 2, 6, 2 }, 1))
     };
 
-    bvh.construct_bvh(spheres.begin(), spheres.end());
+    bvh.construct_longest_axis(spheres.begin(), spheres.end());
     std::vector<const bardrix::shape*> hits;
     bvh.intersections(bardrix::ray{ bardrix::point3{ 5, 6, 7 }, bardrix::point3{ -3.11, -3, -2 }}, hits);
     EXPECT_EQ(hits.size(), 1);
@@ -1118,7 +1117,7 @@ TEST(bvh_tree, intersect_3) {
             std::make_shared<bardrix::sphere>(bardrix::sphere(bardrix::point3{ 0, 0, 1 }, 3))  // 2
     };
 
-    bvh.construct_bvh(shapes.begin(), shapes.end());
+    bvh.construct_longest_axis(shapes.begin(), shapes.end());
     std::vector<const bardrix::shape*> hits;
 
     bvh.intersections(bardrix::ray{ bardrix::point3{ 3, 4, 5 }, bardrix::point3{ -2, -6, 1 }}, hits);
@@ -1149,7 +1148,7 @@ TEST(bvh_tree, intersect_edge_cases) {
             std::make_shared<bardrix::sphere>(bardrix::sphere(bardrix::point3{ 0, 0, 0 }, 0)), // 1
     };
 
-    bvh.construct_bvh(shapes, sizeof shapes / sizeof shapes[0]);
+    bvh.construct_longest_axis(shapes, sizeof shapes / sizeof shapes[0]);
     std::vector<const bardrix::shape*> hits;
 
     bvh.intersections(bardrix::ray{ bardrix::point3{ 0, 0, 0 }, bardrix::vector3{ 1, 1, 1 }}, hits);

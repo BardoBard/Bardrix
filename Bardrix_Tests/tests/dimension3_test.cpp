@@ -442,3 +442,12 @@ TEST(dimension3, stream) {
     ss << dim3;
     ASSERT_EQ(ss.str(), "(1, 2, 3)");
 }
+
+/// \brief Test the operator[] of dimension3
+TEST(dimension3, operator_brackets) {
+    dim3_test dim3{1, 2, 3};
+
+    ASSERT_EQ(dim3[bardrix::axis::x], 1);
+    ASSERT_EQ(dim3[bardrix::axis::y], 2);
+    ASSERT_EQ(dim3[bardrix::axis::z], 3);
+}

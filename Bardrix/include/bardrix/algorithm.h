@@ -473,42 +473,30 @@ namespace bardrix {
     /// \brief Represents a binary tree used for building a bounding volume hierarchy (BVH).    \n
     ///        The BVH is used for optimizing ray intersections with shapes, as it reduces the number of shapes to check for intersections.
     class bvh_tree : private binary_tree<bvh_data> {
-    private:
-        static bool shape_predicate(const std::shared_ptr<bardrix::shape>& shape_lhs,
-                                    const std::shared_ptr<bardrix::shape>& shape_rhs);
-
-    protected:
-        /// \brief Predicate used to compare two BVH data.
-        /// \param box_lhs The left-hand side BVH data.
-        /// \param box_rhs The right-hand side BVH data.
-        /// \return True if the left-hand side BVH data should be inserted to the left of the right-hand side BVH data, false otherwise.
-        /// \note This predicate is used to sort the BVH data in the binary tree. \n
-        ///       The predicate uses shape_predicate to compare the shapes of the BVH data.
-        static bool bvh_predicate(const bvh_data& box_lhs, const bvh_data& box_rhs) noexcept;
-
     public:
         explicit bvh_tree();
 
-        /// \brief Constructs a BVH tree from the given shapes.
+        /// \brief Constructs a BVH tree from the given shapes, using the longest axis algorithm.
+        /// \tparam Shape Base of bardrix::shape.
         /// \param shapes The shapes to construct the BVH tree from.
         /// \param size The number of shapes to construct the BVH tree from.
         /// \example std::shared_ptr<bardrix::shape> shapes[] = {sphere1, sphere2, sphere3}; \n
-        ///          tree.construct_bvh(shapes, sizeof shapes / sizeof shapes[0]);
+        ///          tree.construct_longest_axis(shapes, sizeof shapes / sizeof shapes[0]);
         template<typename Shape, typename = std::enable_if_t<std::is_base_of_v<bardrix::shape, Shape>>>
-        void construct_bvh(std::shared_ptr<Shape>* shapes, std::size_t size) noexcept;
+        void construct_longest_axis(std::shared_ptr<Shape>* shapes, std::size_t size) noexcept;
 
-        /// \brief Constructs a BVH tree from the given shapes.
+        /// \brief Constructs a BVH tree from the given shapes, using the longest axis algorithm.
         /// \tparam Iterator Iterator must be of type std::shared_ptr<shape>::iterator, but can be derived from shape.
         /// \param begin The beginning of the shapes to construct the BVH tree from.
         /// \param end The end of the shapes to construct the BVH tree from.
         /// \example std::vector<std::shared_ptr<bardrix::shape>> shapes = {sphere1, sphere2, sphere3}; \n
-        ///          tree.construct_bvh(shapes.begin(), shapes.end());
+        ///          tree.construct_longest_axis(shapes.begin(), shapes.end());
         /// \details O(N log N) time complexity, where N is the number of shapes to construct the BVH tree from. \n
-        ///          However this might be deceptive, as the true complexity is O(3N log N) due to merging the bounding boxes.
+        ///          However this might be deceptive, as the true complexity is O(4N log N) due to merging the bounding boxes.
         template<typename Iterator, typename = std::enable_if_t<
                 std::is_base_of_v<bardrix::shape, typename std::iterator_traits<Iterator>::value_type::element_type> &&
                 std::is_same_v<std::shared_ptr<typename std::iterator_traits<Iterator>::value_type::element_type>, typename std::iterator_traits<Iterator>::value_type>>>
-        void construct_bvh(const Iterator& begin, const Iterator& end) noexcept;
+        void construct_longest_axis(const Iterator& begin, const Iterator& end) noexcept;
 
         /// \brief Gives all the shapes that intersect with the given ray, in the form of out_hits.
         /// \param ray The ray to check for intersections with the shapes.
@@ -520,8 +508,16 @@ namespace bardrix {
         void intersections(const bardrix::ray& ray, std::vector<const bardrix::shape*>& out_hits) const noexcept;
 
     private:
-        /// \brief Constructs a BVH tree from the given shapes. \n
-        ///        This function is a helper function for the public construct_bvh function.
+        /// \brief Helper function for the longest axis predicate.
+        /// \param shape_lhs The left-hand side shape to compare.
+        /// \param shape_rhs The right-hand side shape to compare.
+        /// \param axis The axis to compare the shapes on.
+        /// \return True if the left-hand side shape is less than the right-hand side shape on the given axis, false otherwise.
+        static bool longest_axis_predicate(const std::shared_ptr<bardrix::shape>& shape_lhs,
+                                           const std::shared_ptr<bardrix::shape>& shape_rhs, axis axis) noexcept;
+
+        /// \brief Constructs a BVH tree from the given shapes, using the longest axis algorithm. \n
+        ///        This function is a helper function for the public construct_longest_axis function.
         /// \tparam Iterator Iterator must be of type std::shared_ptr<shape>::iterator, but can be derived from shape.
         /// \param current The current node to construct the BVH tree from.
         /// \param begin The beginning of the shapes to construct the BVH tree from.
@@ -529,7 +525,7 @@ namespace bardrix {
         template<typename Iterator, typename = std::enable_if_t<
                 std::is_base_of_v<bardrix::shape, typename std::iterator_traits<Iterator>::value_type::element_type> &&
                 std::is_same_v<std::shared_ptr<typename std::iterator_traits<Iterator>::value_type::element_type>, typename std::iterator_traits<Iterator>::value_type>>>
-        void construct_bvh(std::unique_ptr<bvh_tree::node>& current, const Iterator& begin, const Iterator& end) noexcept;
+        void construct_longest_axis(std::unique_ptr<bvh_tree::node>& current, const Iterator& begin, const Iterator& end) noexcept;
 
         /// \brief Gives all the shapes that intersect with the given ray, in the form of out_hits. \n
         ///        This function is a helper function for the public intersect function.
@@ -537,7 +533,7 @@ namespace bardrix {
         /// \param ray The ray to check for intersections with the shapes.
         /// \param out_hits The shapes that intersect with the given ray.
         void intersections(const std::unique_ptr<node>& current, const bardrix::ray& ray,
-                       std::vector<const bardrix::shape*>& out_hits) const noexcept;
+                           std::vector<const bardrix::shape*>& out_hits) const noexcept;
 
     }; // class bvh_tree
 
@@ -618,7 +614,8 @@ namespace bardrix {
     }
 
     template<typename T>
-    const typename binary_tree<T>::node* binary_tree<T>::find(const binary_tree::node* current, const T& val) const noexcept {
+    const typename binary_tree<T>::node*
+    binary_tree<T>::find(const binary_tree::node* current, const T& val) const noexcept {
         if (!current) return nullptr;
         if (val == current->data) return current;
 
@@ -796,19 +793,33 @@ namespace bardrix {
     // bvh_tree implementation start
 
     template<typename Iterator, typename>
-    void bvh_tree::construct_bvh(const Iterator& begin, const Iterator& end) noexcept {
+    void bvh_tree::construct_longest_axis(const Iterator& begin, const Iterator& end) noexcept {
         clear();
         if (begin == end) return;
+
+
+        // Calculate the bounding box that encompasses all shapes
+        bardrix::bounding_box box = (*begin)->bounding_box();
+        for (auto it = std::next(begin); it != end; ++it)
+            box = box.merge((*it)->bounding_box());
+
+        // Calculate the longest axis
+        axis longest_axis = box.longest_axis();
+
+        // Sort the shapes based on their centers along the longest axis
         std::vector<std::shared_ptr<bardrix::shape>> sorted_shapes(begin, end);
-        std::sort(sorted_shapes.begin(), sorted_shapes.end(), shape_predicate);
+        std::sort(sorted_shapes.begin(), sorted_shapes.end(),
+                  [longest_axis](const auto& a, const auto& b) {
+                      return longest_axis_predicate(a, b, longest_axis);
+                  });
 
         // Build the BVH tree from the sorted shapes
-        construct_bvh(root, sorted_shapes.begin(), sorted_shapes.end());
+        construct_longest_axis(root, sorted_shapes.begin(), sorted_shapes.end());
     }
 
-    // helper function for construct_bvh
+    // helper function for construct_longest_axis
     template<typename Iterator, typename>
-    void bvh_tree::construct_bvh(std::unique_ptr<bvh_tree::node>& current, const Iterator& begin,
+    void bvh_tree::construct_longest_axis(std::unique_ptr<bvh_tree::node>& current, const Iterator& begin,
                                  const Iterator& end) noexcept {
         if (begin == end) {
             current = nullptr;
@@ -830,13 +841,13 @@ namespace bardrix {
         current = std::make_unique<node>(bvh_data(box));
 
         auto middle = begin + std::distance(begin, end) / 2;
-        construct_bvh(current->left, begin, middle);
-        construct_bvh(current->right, middle, end);
+        construct_longest_axis(current->left, begin, middle);
+        construct_longest_axis(current->right, middle, end);
     }
 
     template<typename Shape, typename>
-    void bvh_tree::construct_bvh(std::shared_ptr<Shape>* shapes, std::size_t size) noexcept {
-        construct_bvh(shapes, shapes + size);
+    void bvh_tree::construct_longest_axis(std::shared_ptr<Shape>* shapes, std::size_t size) noexcept {
+        construct_longest_axis(shapes, shapes + size);
     }
 
     // bvh_tree implementation end

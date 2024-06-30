@@ -42,7 +42,7 @@ namespace bardrix {
         ///        Shininess is the size of the specular highlight
         ///        Think of it as the size of the reflection of the light
         /// \details Shininess has to be between 1 and infinity, where 1 leads to broad highlights and infinity leads to sharp highlights
-        double shininess_ = 0;
+        double shininess_ = 1;
 
     public:
         /// \brief Default constructor for material
@@ -240,6 +240,20 @@ namespace bardrix {
         /// \return The diagonal of the bounding box
         NODISCARD double diagonal() const noexcept;
 
+        /// \brief Gets the axis with the longest length
+        /// \return The axis with the longest length
+        /// \note If the axes have the same length, it will return axis::x.
+        /// \note If the box is empty it will return axis::x.
+        /// \example bardrix::axis axis = bounding_box.longest_axis();
+        NODISCARD axis longest_axis() const noexcept;
+
+        /// \brief Gets the axis with the shortest length
+        /// \return The axis with the shortest length
+        /// \note If the axes have the same length, it will return axis::x.
+        /// \note If the box is empty it will return axis::x.
+        /// \example bardrix::axis axis = bounding_box.shortest_axis();
+        NODISCARD axis shortest_axis() const noexcept;
+
         /// \brief Moves the bounding box by a vector
         /// \param vector The vector to move the bounding box by
         /// \return A new bounding box moved by the vector
@@ -359,14 +373,14 @@ namespace bardrix {
         double radius_;
 
     public:
-        /// \brief Default constructor for sphere (radius = 1, position = {0, 0, 0}, material = (color = white, ambient = 0, diffuse = 1, specular = 0, shininess = 0))
+        /// \brief Default constructor for sphere (radius = 1, position = {0, 0, 0}, material = (color = white, ambient = 0, diffuse = 1, specular = 0, shininess = 1))
         sphere();
 
-        /// \brief Constructor for sphere (position = {0, 0, 0}, material = (color = white, ambient = 0, diffuse = 1, specular = 0, shininess = 0))
+        /// \brief Constructor for sphere (position = {0, 0, 0}, material = (color = white, ambient = 0, diffuse = 1, specular = 0, shininess = 1))
         /// \param radius The radius of the sphere
         explicit sphere(double radius);
 
-        /// \brief Constructor for sphere (material (color = white, ambient = 0, diffuse = 1, specular = 0, shininess = 0))
+        /// \brief Constructor for sphere (material (color = white, ambient = 0, diffuse = 1, specular = 0, shininess = 1))
         /// \param position The position of the sphere
         /// \param radius The radius of the sphere
         sphere(const bardrix::point3& position, double radius);

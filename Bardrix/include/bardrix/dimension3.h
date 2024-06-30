@@ -476,9 +476,15 @@ namespace bardrix {
         /// \param os Output stream
         /// \param dimension3 Dimension3 to output
         /// \return A reference to the output stream
-        friend std::ostream& operator<<(std::ostream& os, const dimension3& dimension3){
-            return dimension3.print(os);
-        }
+        friend std::ostream& operator<<(std::ostream& os, const dimension3& dimension3);
+
+        /// \brief Get the value of a dimension
+        /// \param axis The axis to get the value
+        /// \return The value of the axis
+        /// \throws std::invalid_argument If the axis is invalid
+        /// \note axis::x = 0, axis::y = 1, axis::z = 2
+        /// \example point3(1, 2, 3)[axis::x] -> 1
+        NODISCARD double& operator[](axis axis);
 
     }; // class dimension3
 

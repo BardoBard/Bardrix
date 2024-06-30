@@ -382,6 +382,28 @@ TEST(bounding_box, diagonal) {
     EXPECT_EQ(bardrix::bounding_box({ 0, 0, 0 }, { 0, 0, 0 }).diagonal(), 0);
 }
 
+/// \brief Test the longest_axis method of bounding_box
+TEST(bounding_box, longest_axis) {
+    EXPECT_EQ(bardrix::bounding_box({ 0, 2, 3 }, { 3, 4, 5 }).longest_axis(), bardrix::axis::x);
+    EXPECT_EQ(bardrix::bounding_box({ 1, 2, 3 }, { 1, 4, 5 }).longest_axis(), bardrix::axis::y);
+    EXPECT_EQ(bardrix::bounding_box({ 1, 2, 3 }, { 1, 2, 5 }).longest_axis(), bardrix::axis::z);
+    EXPECT_EQ(bardrix::bounding_box({ 1, 2, 3 }, { 1, 2, 3 }).longest_axis(), bardrix::axis::x);
+    EXPECT_EQ(bardrix::bounding_box({ 0, 0, 0 }, { 0, 0, 0 }).longest_axis(), bardrix::axis::x);
+    EXPECT_EQ(bardrix::bounding_box({ 0, 0, 0 }, { 1, 1, 1 }).longest_axis(), bardrix::axis::x);
+    EXPECT_EQ(bardrix::bounding_box({ 0, 0, 0 }, { 0, 1, 1 }).longest_axis(), bardrix::axis::y);
+}
+
+/// \brief Test the shortest_axis method of bounding_box
+TEST(bounding_box, shortest_axis) {
+    EXPECT_EQ(bardrix::bounding_box({ 1, 2, 3 }, { 3, 4, 3 }).shortest_axis(), bardrix::axis::z);
+    EXPECT_EQ(bardrix::bounding_box({ 1, 2, 3 }, { 2, 2, 5 }).shortest_axis(), bardrix::axis::y);
+    EXPECT_EQ(bardrix::bounding_box({ 1, 2, 3 }, { 1, 4, 5 }).shortest_axis(), bardrix::axis::x);
+    EXPECT_EQ(bardrix::bounding_box({ 1, 2, 3 }, { 1, 2, 3 }).shortest_axis(), bardrix::axis::x);
+    EXPECT_EQ(bardrix::bounding_box({ 0, 0, 0 }, { 0, 0, 0 }).shortest_axis(), bardrix::axis::x);
+    EXPECT_EQ(bardrix::bounding_box({ 0, 0, 0 }, { 1, 1, 1 }).shortest_axis(), bardrix::axis::x);
+    EXPECT_EQ(bardrix::bounding_box({ 0, 0, 0 }, { 1, 0, 0 }).shortest_axis(), bardrix::axis::y);
+}
+
 /// \brief Test the merged of two bounding boxes
 TEST(bounding_box, merged) {
     bardrix::point3 min1 = bardrix::point3(-5.04, 3.4, 0);
