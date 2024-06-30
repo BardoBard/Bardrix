@@ -19,6 +19,7 @@
     - [shape](#shape)
 - [Algorithm](#algorithm)
     - [binary_tree](#binarytree)
+    - [bvh](#bvh)
 
 ## Bardrix
 
@@ -1368,3 +1369,56 @@ We can use this knowledge to search for a value in the tree, or to insert a valu
         - **Returns** the height of the binary tree.
         - **Complexity**:
             - O(n), where n is the number of nodes in the tree.
+
+### bvh_tree
+
+A class that represents a bounding volume hierarchy tree. \
+It is a binary tree that is used for optimizing the intersection tests with the objects in the scene.
+
+![example_bvh.png](Images/example-bvh.png)
+
+In the example we can see a bounding_box around the shapes, this is the outer most bounding box (there are more internal boxes).
+
+- Constructors:
+    - Default constructor
+        - Initializes the predicate.
+- Methods:
+- `construct_bvh(shapes : shared_ptr<shape>*, size : size_t)`
+    - **Example**:
+        ```cpp
+        bardrix::bvh_tree tree;
+        std::shared_ptr<bardrix::shape> shapes[] = {sphere1, sphere2, sphere3};
+        tree.construct_bvh(shapes, size);
+        ```
+- `construct_bvh(begin : Iterator, end : Iterator)`
+    - Constructs the bounding volume hierarchy tree with the given shapes.
+    - **Example**:
+        ```cpp
+        bardrix::bvh_tree tree;
+        std::vector<std::shared_ptr<bardrix::shape>> shapes = {sphere1, sphere2, sphere3};
+        tree.construct_bvh(shapes.begin(), shapes.end());
+        ```
+    - **Complexity**:
+        - O(N log N) time complexity, where N is the number of shapes to construct the BVH tree from.
+        - However, this might be deceptive, as the true complexity is O(3N log N) due to merging the bounding boxes.
+    - **Note**:
+        - The shapes will be sorted based on the x-axis of the bounding box.
+        - The shape can be of any base.
+        - The tree will be cleared then rebuilt, even if the tree or shapes are empty.
+- `intersections(ray : ray, out_hits : vector<const shape*>&)`
+    - Returns the hit shapes from the ray, in the form of an out vector. 
+    - **Example**:
+        ```cpp
+        bardrix::bvh_tree tree;
+        std::shared_ptr<bardrix::shape> shapes[] = {sphere1, sphere2, sphere3};
+        tree.construct_bvh(shapes, size);
+      
+        std::vector<const bardrix::shape*> hits;
+        tree.intersections(ray, hits);
+        ```
+    - **Complexity**:
+        - O(N) worst case time complexity, where N is the number of nodes in the BVH tree.
+        - It's hard to determine the average and best case due to the nature of the ray hitting the bounding boxes, but it's generally faster than O(N).
+    - **Note**:
+        - The out vector will not be cleared before adding the hit shapes.
+        - The out_hits will not be sorted based on the distance from the ray origin.

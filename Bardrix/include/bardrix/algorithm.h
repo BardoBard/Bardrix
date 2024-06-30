@@ -484,17 +484,18 @@ namespace bardrix {
         /// \return True if the left-hand side BVH data should be inserted to the left of the right-hand side BVH data, false otherwise.
         /// \note This predicate is used to sort the BVH data in the binary tree. \n
         ///       The predicate uses shape_predicate to compare the shapes of the BVH data.
-        static bool bvh_predicate(const bvh_data& box_lhs, const bvh_data& box_rhs);
+        static bool bvh_predicate(const bvh_data& box_lhs, const bvh_data& box_rhs) noexcept;
 
     public:
         explicit bvh_tree();
 
         /// \brief Constructs a BVH tree from the given shapes.
-        /// \param shape The shapes to construct the BVH tree from.
+        /// \param shapes The shapes to construct the BVH tree from.
         /// \param size The number of shapes to construct the BVH tree from.
         /// \example std::shared_ptr<bardrix::shape> shapes[] = {sphere1, sphere2, sphere3}; \n
         ///          tree.construct_bvh(shapes, sizeof shapes / sizeof shapes[0]);
-        void construct_bvh(std::shared_ptr<bardrix::shape>* shape, std::size_t size) noexcept;
+        template<typename Shape, typename = std::enable_if_t<std::is_base_of_v<bardrix::shape, Shape>>>
+        void construct_bvh(std::shared_ptr<Shape>* shapes, std::size_t size) noexcept;
 
         /// \brief Constructs a BVH tree from the given shapes.
         /// \tparam Iterator Iterator must be of type std::shared_ptr<shape>::iterator, but can be derived from shape.
@@ -513,10 +514,10 @@ namespace bardrix {
         /// \param ray The ray to check for intersections with the shapes.
         /// \param out_hits The shapes that intersect with the given ray.
         /// \example std::vector<const bardrix::shape*> hits; \n
-        ///          tree.intersect(ray, hits);
+        ///          tree.intersections(ray, hits);
         /// \details O(N) worst case time complexity, where N is the number of nodes in the BVH tree. \n
         ///          It's hard to determine the average and best case due to the nature of the ray hitting the bounding boxes, but it's generally faster than O(N).
-        void intersect(const bardrix::ray& ray, std::vector<const bardrix::shape*>& out_hits) const noexcept;
+        void intersections(const bardrix::ray& ray, std::vector<const bardrix::shape*>& out_hits) const noexcept;
 
     private:
         /// \brief Constructs a BVH tree from the given shapes. \n
@@ -535,7 +536,7 @@ namespace bardrix {
         /// \param current The current node to check for intersections with the ray.
         /// \param ray The ray to check for intersections with the shapes.
         /// \param out_hits The shapes that intersect with the given ray.
-        void intersect(const std::unique_ptr<node>& current, const bardrix::ray& ray,
+        void intersections(const std::unique_ptr<node>& current, const bardrix::ray& ray,
                        std::vector<const bardrix::shape*>& out_hits) const noexcept;
 
     }; // class bvh_tree
@@ -796,6 +797,8 @@ namespace bardrix {
 
     template<typename Iterator, typename>
     void bvh_tree::construct_bvh(const Iterator& begin, const Iterator& end) noexcept {
+        clear();
+        if (begin == end) return;
         std::vector<std::shared_ptr<bardrix::shape>> sorted_shapes(begin, end);
         std::sort(sorted_shapes.begin(), sorted_shapes.end(), shape_predicate);
 
@@ -829,6 +832,11 @@ namespace bardrix {
         auto middle = begin + std::distance(begin, end) / 2;
         construct_bvh(current->left, begin, middle);
         construct_bvh(current->right, middle, end);
+    }
+
+    template<typename Shape, typename>
+    void bvh_tree::construct_bvh(std::shared_ptr<Shape>* shapes, std::size_t size) noexcept {
+        construct_bvh(shapes, shapes + size);
     }
 
     // bvh_tree implementation end

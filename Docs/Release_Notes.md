@@ -6,15 +6,22 @@
 
 The changes have backward compatibility issues, as the `bounding_box()` virtual function has been added to the `shape`.
 
+Added `sphere` to [objects.h](https://github.com/bardobard/bardrix/blob/v0.4.0/Bardrix/include/bardrix/objects.h). \
 Added `bounding_box` to [objects.h](https://github.com/bardobard/bardrix/blob/v0.4.0/Bardrix/include/bardrix/objects.h). \
 Added `bounding_box()` to [shape](https://github.com/bardobard/bardrix/blob/v0.4.0/Bardrix/include/bardrix/objects.h). \
 Added `binary_tree` class to [algorithms.h](https://github.com/bardobard/bardrix/blob/v0.4.0/Bardrix/include/bardrix/algorithms.h). \
+Added `bvh_tree` class to [algorithms.h](https://github.com/bardobard/bardrix/blob/v0.4.0/Bardrix/include/bardrix/algorithms.h).
+
+Removed `sphere` from examples, it's now a bardrix object.
 
 ## Documentation Changes
 
 Added `bounding_box` to [Bardrix_Reference](https://github.com/bardobard/bardrix/blob/v0.4.0/Docs/Bardrix_Reference.md). \
 Added `binary_tree` to [Bardrix_Reference](https://github.com/bardobard/bardrix/blob/v0.4.0/Docs/Bardrix_Reference.md). \
+Added `bvh_tree` to [Bardrix_Reference](https://github.com/bardobard/bardrix/blob/v0.4.0/Docs/Bardrix_Reference.md). \
 Updated class diagrams associated with the new changes.
+
+Added changes from examples that used `sphere` to `bardrix::sphere` in Raytracing.
 
 ## Code Changes
 
@@ -22,7 +29,9 @@ Updated class diagrams associated with the new changes.
 
 Added `bounding_box` class to objects.h. \
 Added `bounding_box()` to shape. \
-Added `binary_tree` class to algorithms.h.
+Added `binary_tree` class to algorithms.h. \
+Added `bvh_tree` class to algorithms.h. \
+Added `sphere` to objects.h.
 
 ### Minor Changes
 
@@ -31,7 +40,9 @@ Added `ray(position : point3, end : point3)` to ray.
 ## Test Changes
 
 Added tests for `bounding_box` and `binary_tree`. \
-Added tests for `ray(position : point3, end : point3)`.
+Added tests for `ray(position : point3, end : point3)`. \
+Added tests for `sphere` in [objects.h](https://github.com/bardobard/bardrix/blob/v0.4.0/Bardrix/include/bardrix/objects.h). \
+Added tests for `bvh_tree` in [algorithms.h](https://github.com/bardobard/bardrix/blob/v0.4.0/Bardrix/include/bardrix/algorithms.h).
 
 # [v0.3.3](https://github.com/BardoBard/Bardrix/releases/tag/v0.3.3)
 

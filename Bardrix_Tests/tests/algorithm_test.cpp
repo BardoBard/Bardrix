@@ -1020,25 +1020,37 @@ TEST(binary_tree, height) {
 
 // BVH TREE
 
+bool includes_all_shapes(const std::vector<const bardrix::shape*>& hits, const std::vector<const bardrix::shape*>& expecteds) {
+    return std::all_of(expecteds.begin(), expecteds.end(), [&hits](const bardrix::shape* shape) {
+        return std::find(hits.begin(), hits.end(), shape) != hits.end();
+    });
+}
+
 /// \brief Test the construction of a BVH tree
 TEST(bvh_tree, construct_bvh) {
     bardrix::bvh_tree bvh;
 
-    std::shared_ptr<bardrix::shape> shapes[] {
+    std::shared_ptr<bardrix::sphere> shapes[] {
             std::make_shared<bardrix::sphere>(bardrix::point3(-7, 5, -2), 2),
-            std::make_shared<bardrix::sphere>(bardrix::point3(-7.39, -6.33, 7.38), 0.2)
+            std::make_shared<bardrix::sphere>(bardrix::point3(-7.39, -6.33, 7.38), 10)
     };
 
     std::vector<std::shared_ptr<bardrix::shape>> shapes2 {
             std::make_shared<bardrix::sphere>(bardrix::point3(-3.3, -8.96, -4), 0.8),
-            std::make_shared<bardrix::sphere>(bardrix::point3(8.66, -8.60, 0), 1),
+            std::make_shared<bardrix::sphere>(bardrix::point3(8.66, -8.60, 0), 10),
     };
 
+    bvh.construct_bvh<bardrix::sphere>(shapes, 0);
     bvh.construct_bvh(shapes, sizeof shapes / sizeof shapes[0]);
-    bvh.construct_bvh(shapes, 0);
+
+    std::vector<const bardrix::shape*> hits;
+    bvh.intersections(bardrix::ray(bardrix::point3(26.03874, 31.6748, 2.25401), bardrix::point3(-14.64, -18.48, -1.6)), hits);
+    EXPECT_EQ(hits.size(), 1);
+    EXPECT_TRUE(includes_all_shapes(hits, std::vector<const bardrix::shape*>({ shapes[1].get() })));
 
     bvh.construct_bvh(shapes2.begin(), shapes2.end());
     bvh.construct_bvh(shapes2.begin(), shapes2.begin());
+    bvh.construct_bvh(shapes2.data(), 0);
 }
 
 
@@ -1063,20 +1075,20 @@ TEST(bvh_tree, intersect) {
     bvh.construct_bvh(shapes.begin(), shapes.end());
     std::vector<const bardrix::shape*> hits;
 
-    bvh.intersect(bardrix::ray(bardrix::point3(26.03874, 31.6748, 2.25401), bardrix::point3(-14.64, -18.48, -1.6)),
+    bvh.intersections(bardrix::ray(bardrix::point3(26.03874, 31.6748, 2.25401), bardrix::point3(-14.64, -18.48, -1.6)),
                   hits);
     EXPECT_EQ(hits.size(), 3);
-    EXPECT_EQ(hits, std::vector<const bardrix::shape*>({ shapes[4].get(), shapes[8].get(), shapes[10].get() }));
+    EXPECT_TRUE(includes_all_shapes(hits, std::vector<const bardrix::shape*>({ shapes[4].get(), shapes[8].get(), shapes[10].get() })));
 
     hits.clear();
-    bvh.intersect(bardrix::ray(bardrix::point3(-1.69, -29.97, 13.43), bardrix::point3(-11.82, 11.13, 2.95)), hits);
+    bvh.intersections(bardrix::ray(bardrix::point3(-1.69, -29.97, 13.43), bardrix::point3(-11.82, 11.13, 2.95)), hits);
     EXPECT_EQ(hits.size(), 2);
-    EXPECT_EQ(hits, std::vector<const bardrix::shape*>({ shapes[1].get(), shapes[9].get() }));
+    EXPECT_TRUE(includes_all_shapes(hits, std::vector<const bardrix::shape*>({ shapes[1].get(), shapes[9].get() })));
 
     hits.clear();
-    bvh.intersect(bardrix::ray(bardrix::point3(-1.69, -29.97, 13.43), bardrix::point3(-7.26, 6.29, -2.91)), hits);
+    bvh.intersections(bardrix::ray(bardrix::point3(-1.69, -29.97, 13.43), bardrix::point3(-7.26, 6.29, -2.91)), hits);
     EXPECT_EQ(hits.size(), 2);
-    EXPECT_EQ(hits, std::vector<const bardrix::shape*>({ shapes[0].get(), shapes[9].get() }));
+    EXPECT_TRUE(includes_all_shapes(hits, std::vector<const bardrix::shape*>({ shapes[0].get(), shapes[9].get() })));
 }
 
 /// \brief Test the intersect method of a BVH tree
@@ -1091,9 +1103,9 @@ TEST(bvh_tree, intersect_2) {
 
     bvh.construct_bvh(spheres.begin(), spheres.end());
     std::vector<const bardrix::shape*> hits;
-    bvh.intersect(bardrix::ray{ bardrix::point3{ 5, 6, 7 }, bardrix::point3{ -3.11, -3, -2 }}, hits);
+    bvh.intersections(bardrix::ray{ bardrix::point3{ 5, 6, 7 }, bardrix::point3{ -3.11, -3, -2 }}, hits);
     EXPECT_EQ(hits.size(), 1);
-    EXPECT_EQ(hits, std::vector<const bardrix::shape*>({ spheres[0].get() }));
+    EXPECT_TRUE(includes_all_shapes(hits, std::vector<const bardrix::shape*>({ spheres[0].get() })));
 }
 
 /// \brief Test the intersect method of a BVH tree
@@ -1109,22 +1121,22 @@ TEST(bvh_tree, intersect_3) {
     bvh.construct_bvh(shapes.begin(), shapes.end());
     std::vector<const bardrix::shape*> hits;
 
-    bvh.intersect(bardrix::ray{ bardrix::point3{ 3, 4, 5 }, bardrix::point3{ -2, -6, 1 }}, hits);
+    bvh.intersections(bardrix::ray{ bardrix::point3{ 3, 4, 5 }, bardrix::point3{ -2, -6, 1 }}, hits);
     EXPECT_EQ(hits.size(), 1);
-    EXPECT_EQ(hits, std::vector<const bardrix::shape*>({ shapes[2].get() }));
+    EXPECT_TRUE(includes_all_shapes(hits, std::vector<const bardrix::shape*>({ shapes[2].get() })));
 
     hits.clear();
-    bvh.intersect(bardrix::ray{ bardrix::point3{ 3, 4, 5 }, bardrix::point3{ -1, 1, 1 }}, hits);
+    bvh.intersections(bardrix::ray{ bardrix::point3{ 3, 4, 5 }, bardrix::point3{ -1, 1, 1 }}, hits);
     EXPECT_EQ(hits.size(), 2);
-    EXPECT_EQ(hits, std::vector<const bardrix::shape*>({ shapes[1].get(), shapes[2].get() }));
+    EXPECT_TRUE(includes_all_shapes(hits, std::vector<const bardrix::shape*>({ shapes[1].get(), shapes[2].get() })));
 
     hits.clear();
-    bvh.intersect(bardrix::ray{ bardrix::point3{ 3, 4, 5 }, bardrix::point3{ 1, 0, 1 }}, hits);
+    bvh.intersections(bardrix::ray{ bardrix::point3{ 3, 4, 5 }, bardrix::point3{ 1, 0, 1 }}, hits);
     EXPECT_EQ(hits.size(), 3);
-    EXPECT_EQ(hits, std::vector<const bardrix::shape*>({ shapes[0].get(), shapes[1].get(), shapes[2].get() }));
+    EXPECT_TRUE(includes_all_shapes(hits, std::vector<const bardrix::shape*>({ shapes[0].get(), shapes[1].get(), shapes[2].get() })));
 
     hits.clear();
-    bvh.intersect(bardrix::ray{ bardrix::point3{ 3, 4, 5 }, bardrix::point3{ 3, 2, -3 }}, hits);
+    bvh.intersections(bardrix::ray{ bardrix::point3{ 3, 4, 5 }, bardrix::point3{ 3, 2, -3 }}, hits);
     EXPECT_EQ(hits.size(), 0);
 }
 
@@ -1140,16 +1152,16 @@ TEST(bvh_tree, intersect_edge_cases) {
     bvh.construct_bvh(shapes, sizeof shapes / sizeof shapes[0]);
     std::vector<const bardrix::shape*> hits;
 
-    bvh.intersect(bardrix::ray{ bardrix::point3{ 0, 0, 0 }, bardrix::vector3{ 1, 1, 1 }}, hits);
+    bvh.intersections(bardrix::ray{ bardrix::point3{ 0, 0, 0 }, bardrix::vector3{ 1, 1, 1 }}, hits);
     EXPECT_EQ(hits.size(), 2);
-    EXPECT_EQ(hits, std::vector<const bardrix::shape*>({ shapes[0].get(), shapes[1].get() }));
+    EXPECT_TRUE(includes_all_shapes(hits, std::vector<const bardrix::shape*>({ shapes[0].get(), shapes[1].get() })));
 
     hits.clear();
-    bvh.intersect(bardrix::ray{ bardrix::point3{ 1, 0, 0 }, bardrix::vector3{ 0, 0, 0 }}, hits);
+    bvh.intersections(bardrix::ray{ bardrix::point3{ 1, 0, 0 }, bardrix::vector3{ 0, 0, 0 }}, hits);
     EXPECT_EQ(hits.size(), 0);
 
     hits.clear();
-    bvh.intersect(bardrix::ray{ bardrix::point3{ 1, 0, 0 }, bardrix::vector3{ -1, 0, 0 }}, hits);
+    bvh.intersections(bardrix::ray{ bardrix::point3{ 1, 0, 0 }, bardrix::vector3{ -1, 0, 0 }}, hits);
     EXPECT_EQ(hits.size(), 2);
-    EXPECT_EQ(hits, std::vector<const bardrix::shape*>({ shapes[0].get(), shapes[1].get() }));
+    EXPECT_TRUE(includes_all_shapes(hits, std::vector<const bardrix::shape*>({ shapes[0].get(), shapes[1].get() })));
 }
