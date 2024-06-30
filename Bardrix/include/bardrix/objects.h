@@ -113,6 +113,16 @@ namespace bardrix {
         /// \example material.set_shininess(0.5); -> shininess = 1
         /// \example material.set_shininess(50); -> shininess = 50
         void set_shininess(double shininess);
+
+        /// \brief Check if two materials are equal
+        /// \param material The material to compare with
+        /// \return True if the materials are equal, false otherwise
+        NODISCARD bool operator==(const bardrix::material& material) const noexcept;
+
+        /// \brief Check if two materials are different
+        /// \param material The material to compare with
+        /// \return True if the materials are different, false otherwise
+        NODISCARD bool operator!=(const bardrix::material& material) const noexcept;
     };
 
     /// \brief Bounding Box, used as acceleration structures
@@ -335,5 +345,92 @@ namespace bardrix {
         virtual ~shape() = default;
 
     }; // class shape
+
+    /// \brief Sphere shape
+    class sphere : public bardrix::shape {
+    protected:
+        /// \brief Center of the sphere
+        bardrix::point3 position_;
+
+        // \brief Material of the sphere
+        bardrix::material material_;
+
+        /// \brief Radius of the sphere
+        double radius_;
+
+    public:
+        /// \brief Default constructor for sphere (radius = 1, position = {0, 0, 0}, material = (color = white, ambient = 0, diffuse = 1, specular = 0, shininess = 0))
+        sphere();
+
+        /// \brief Constructor for sphere (position = {0, 0, 0}, material = (color = white, ambient = 0, diffuse = 1, specular = 0, shininess = 0))
+        /// \param radius The radius of the sphere
+        explicit sphere(double radius);
+
+        /// \brief Constructor for sphere (material (color = white, ambient = 0, diffuse = 1, specular = 0, shininess = 0))
+        /// \param position The position of the sphere
+        /// \param radius The radius of the sphere
+        sphere(const bardrix::point3& position, double radius);
+
+        /// \brief Constructor for sphere
+        /// \param position The position of the sphere
+        /// \param material The material of the sphere
+        /// \param radius The radius of the sphere
+        sphere(bardrix::point3 position, const bardrix::material& material, double radius);
+
+        /// \brief Gets the material of the sphere
+        /// \return The material of the sphere
+        NODISCARD const bardrix::material& get_material() const override;
+
+        /// \brief Gets the radius of the sphere
+        /// \return The radius of the sphere
+        NODISCARD const double& get_radius() const;
+
+        /// \brief Gets the position of the sphere
+        /// \return The position of the sphere
+        NODISCARD const bardrix::point3& get_position() const override;
+
+        /// \brief Sets the material of the sphere
+        /// \param material The material to set
+        void set_material(const bardrix::material& material) override;
+
+        /// \brief Sets the radius of the sphere
+        /// \param radius The radius to set
+        /// \note If the radius is less than 0, it will be set to 0
+        void set_radius(double radius);
+
+        /// \brief Sets the position of the sphere
+        /// \param position The position to set
+        void set_position(const bardrix::point3& position) override;
+
+        /// \brief Get the normal at a point on the sphere
+        /// \param intersection The point to get the normal at
+        /// \return The normal at the point
+        /// \example Bardrix::vector3 normal = sphere.normal_at(intersection);
+        NODISCARD bardrix::vector3 normal_at(const bardrix::point3& intersection) const override;
+
+        /// \brief Get the intersection point of a ray with the sphere
+        /// \param ray The ray to check for intersection
+        /// \return The intersection point if it exists, otherwise std::nullopt (this means no intersection)
+        /// \example Std::optional<bardrix::point3> intersection = sphere.intersection(ray);
+        /// \example If (intersection.has_value()) { /* Do something with the intersection point */ }
+        /// \details If the intersection point is inside the sphere, it will return an std::nullopt
+        NODISCARD std::optional<bardrix::point3> intersection(const bardrix::ray& ray) const override;
+
+        /// \brief Get the bounding box of the sphere
+        /// \return The bounding box of the sphere
+        /// \example bardrix::bounding_box box = sphere.bounding_box();
+        NODISCARD bardrix::bounding_box bounding_box() const override;
+
+        /// \brief Check if two spheres are equal
+        /// \param sphere The sphere to compare with
+        /// \return True if the spheres are equal, false otherwise
+        NODISCARD bool operator==(const bardrix::sphere& sphere) const noexcept;
+
+        /// \brief Check if two spheres are different
+        /// \param sphere The sphere to compare with
+        /// \return True if the spheres are different, false otherwise
+        NODISCARD bool operator!=(const bardrix::sphere& sphere) const noexcept;
+
+    }; // class sphere
 
 } // namespace bardrix

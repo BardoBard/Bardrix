@@ -33,7 +33,7 @@ TEST(binary_tree, build_array_points) {
     };
 
     tree.build(points2.data(), points2.size());
-    tree.insert({ 2,  3,  4 });
+    tree.insert({ 2, 3, 4 });
 
     EXPECT_EQ(tree.root->data.x, 34);
     EXPECT_EQ(tree.root->left->data.x, 10);
@@ -244,6 +244,147 @@ TEST(binary_tree, build_edge_cases) {
     EXPECT_EQ(tree.root->left->left->data, 1);
     EXPECT_EQ(tree.root->right->right->data, 3);
     EXPECT_EQ(tree.root->right->right->left->data, 2);
+}
+
+/// \brief Test the rebuild method of a binary tree
+TEST(binary_tree, rebuild) {
+    bardrix::binary_tree<int> tree(int_predicate);
+
+    // 5, 7, 3, 1, 4, 6, 8 ->
+    //       1
+    //     /   \
+    //    3     4
+    //   / \   / \
+    //  5   7 6   8
+    tree.build(5, 7, 3, 1, 4, 6, 8);
+
+    EXPECT_EQ(tree.root->data, 1);
+    EXPECT_EQ(tree.root->left->data, 7);
+    EXPECT_EQ(tree.root->right->data, 6);
+    EXPECT_EQ(tree.root->left->left->data, 5);
+    EXPECT_EQ(tree.root->left->right->data, 3);
+    EXPECT_EQ(tree.root->right->left->data, 4);
+    EXPECT_EQ(tree.root->right->right->data, 8);
+
+    // 5, 7, 3, 1, 4, 6, 8 ->
+    //       1
+    //     /   \
+    //    3     4
+    //   / \   / \
+    //  5   7 6   8
+    tree.rebuild();
+
+    EXPECT_EQ(tree.root->data, 1);
+    EXPECT_EQ(tree.root->left->data, 7);
+    EXPECT_EQ(tree.root->right->data, 6);
+    EXPECT_EQ(tree.root->left->left->data, 5);
+    EXPECT_EQ(tree.root->left->right->data, 3);
+    EXPECT_EQ(tree.root->right->left->data, 4);
+    EXPECT_EQ(tree.root->right->right->data, 8);
+
+    tree.clear();
+
+    // 5, 3, 6, 7, 8 ->
+    //          5
+    //         / \
+    //        3   6
+    //             \
+    //              7
+    //               \
+    //                8
+    tree.insert(5, 3, 6, 7, 8);
+
+    EXPECT_EQ(tree.root->data, 5);
+    EXPECT_EQ(tree.root->left->data, 3);
+    EXPECT_EQ(tree.root->right->data, 6);
+    EXPECT_EQ(tree.root->right->right->data, 7);
+    EXPECT_EQ(tree.root->right->right->right->data, 8);
+
+    // 3, 5, 6, 7, 8 ->
+    //         6
+    //        / \
+    //       5   8
+    //      /   /
+    //     3   7
+    tree.rebuild();
+
+    EXPECT_EQ(tree.root->data, 6);
+    EXPECT_EQ(tree.root->left->data, 5);
+    EXPECT_EQ(tree.root->right->data, 8);
+    EXPECT_EQ(tree.root->left->left->data, 3);
+    EXPECT_EQ(tree.root->right->left->data, 7);
+
+    tree.clear();
+
+    // 2, 9, 10, 12, 11, 14, 13, 24, 62, 63, 64, 65, 66, 67, 68 ->
+    //            2
+    //             \
+    //              9
+    //               \
+    //                10
+    //                 \
+    //                  12
+    //                /    \
+    //               11    14
+    //                    /  \
+    //                   13  24
+    //                         \
+    //                         62
+    //                          \
+    //                           63
+    //                            \
+    //                             64
+    //                              \
+    //                               65
+    //                                \
+    //                                 66
+    //                                  \
+    //                                   67
+    //                                    \
+    //                                     68
+    tree.insert(2, 9, 10, 12, 11, 14, 13, 24, 62, 63, 64, 65, 66, 67, 68);
+
+    EXPECT_EQ(tree.root->data, 2);
+    EXPECT_EQ(tree.root->right->data, 9);
+    EXPECT_EQ(tree.root->right->right->data, 10);
+    EXPECT_EQ(tree.root->right->right->right->data, 12);
+    EXPECT_EQ(tree.root->right->right->right->left->data, 11);
+    EXPECT_EQ(tree.root->right->right->right->right->data, 14);
+    EXPECT_EQ(tree.root->right->right->right->right->left->data, 13);
+    EXPECT_EQ(tree.root->right->right->right->right->right->data, 24);
+    EXPECT_EQ(tree.root->right->right->right->right->right->right->data, 62);
+    EXPECT_EQ(tree.root->right->right->right->right->right->right->right->data, 63);
+    EXPECT_EQ(tree.root->right->right->right->right->right->right->right->right->data, 64);
+    EXPECT_EQ(tree.root->right->right->right->right->right->right->right->right->right->data, 65);
+    EXPECT_EQ(tree.root->right->right->right->right->right->right->right->right->right->right->data, 66);
+    EXPECT_EQ(tree.root->right->right->right->right->right->right->right->right->right->right->right->data, 67);
+    EXPECT_EQ(tree.root->right->right->right->right->right->right->right->right->right->right->right->right->data, 68);
+
+    // 2, 9, 10, 11, 12, 13, 14, 24, 62, 63, 64, 65, 66, 67, 68 ->
+    //            _____24_____
+    //          /              \
+    //        11               65
+    //      /    \           /    \
+    //     9      13       63     67
+    //    / \     / \     / \    /  \
+    //   2  10   12 14   62 64  66  68
+    tree.rebuild();
+
+    EXPECT_EQ(tree.root->data, 24);
+    EXPECT_EQ(tree.root->left->data, 11);
+    EXPECT_EQ(tree.root->left->left->data, 9);
+    EXPECT_EQ(tree.root->left->right->data, 13);
+    EXPECT_EQ(tree.root->left->left->left->data, 2);
+    EXPECT_EQ(tree.root->left->left->right->data, 10);
+    EXPECT_EQ(tree.root->left->right->left->data, 12);
+    EXPECT_EQ(tree.root->left->right->right->data, 14);
+    EXPECT_EQ(tree.root->right->data, 65);
+    EXPECT_EQ(tree.root->right->left->data, 63);
+    EXPECT_EQ(tree.root->right->right->data, 67);
+    EXPECT_EQ(tree.root->right->left->left->data, 62);
+    EXPECT_EQ(tree.root->right->left->right->data, 64);
+    EXPECT_EQ(tree.root->right->right->left->data, 66);
+    EXPECT_EQ(tree.root->right->right->right->data, 68);
 }
 
 /// \brief Test the clear method of a binary tree
@@ -756,11 +897,12 @@ TEST(binary_tree, remove) {
     //               /              \
     //             12               66
     //           /    \           /    \
-    //          9      13       63     67
-    //         / \       \     / \       \
-    //        2  10      14   62 64      68
+    //          9      14       63     67
+    //         / \             / \       \
+    //        2  10           62 64      68
     EXPECT_TRUE(tree.remove(11));
     EXPECT_TRUE(tree.remove(65));
+    EXPECT_TRUE(tree.remove(13));
     EXPECT_FALSE(tree.remove(20));
     EXPECT_FALSE(tree.remove(0));
     EXPECT_FALSE(tree.remove(-63));
@@ -768,10 +910,9 @@ TEST(binary_tree, remove) {
     EXPECT_EQ(tree.root->data, 24);
     EXPECT_EQ(tree.root->left->data, 12);
     EXPECT_EQ(tree.root->left->left->data, 9);
-    EXPECT_EQ(tree.root->left->right->data, 13);
+    EXPECT_EQ(tree.root->left->right->data, 14);
     EXPECT_EQ(tree.root->left->left->left->data, 2);
     EXPECT_EQ(tree.root->left->left->right->data, 10);
-    EXPECT_EQ(tree.root->left->right->right->data, 14);
     EXPECT_EQ(tree.root->right->data, 66);
     EXPECT_EQ(tree.root->right->left->data, 63);
     EXPECT_EQ(tree.root->right->right->data, 67);
@@ -875,4 +1016,140 @@ TEST(binary_tree, height) {
     tree.build(2, 9, 10, 11, 12, 13, 14, 24, 62, 63, 64, 65, 66, 67, 68);
 
     EXPECT_EQ(tree.height(), 4);
+}
+
+// BVH TREE
+
+/// \brief Test the construction of a BVH tree
+TEST(bvh_tree, construct_bvh) {
+    bardrix::bvh_tree bvh;
+
+    std::shared_ptr<bardrix::shape> shapes[] {
+            std::make_shared<bardrix::sphere>(bardrix::point3(-7, 5, -2), 2),
+            std::make_shared<bardrix::sphere>(bardrix::point3(-7.39, -6.33, 7.38), 0.2)
+    };
+
+    std::vector<std::shared_ptr<bardrix::shape>> shapes2 {
+            std::make_shared<bardrix::sphere>(bardrix::point3(-3.3, -8.96, -4), 0.8),
+            std::make_shared<bardrix::sphere>(bardrix::point3(8.66, -8.60, 0), 1),
+    };
+
+    bvh.construct_bvh(shapes, sizeof shapes / sizeof shapes[0]);
+    bvh.construct_bvh(shapes, 0);
+
+    bvh.construct_bvh(shapes2.begin(), shapes2.end());
+    bvh.construct_bvh(shapes2.begin(), shapes2.begin());
+}
+
+
+/// \brief Test the intersect method of a BVH tree
+TEST(bvh_tree, intersect) {
+    bardrix::bvh_tree bvh;
+
+    std::vector<std::shared_ptr<bardrix::shape>> shapes{
+            std::make_shared<bardrix::sphere>(bardrix::point3(-7, 5, -2), 2),            // 0
+            std::make_shared<bardrix::sphere>(bardrix::point3(-7.39, -6.33, 7.38), 0.2), // 1
+            std::make_shared<bardrix::sphere>(bardrix::point3(-3.3, -8.96, -4), 0.8),    // 2
+            std::make_shared<bardrix::sphere>(bardrix::point3(8.66, -8.60, 0), 1),       // 3
+            std::make_shared<bardrix::sphere>(bardrix::point3(4.39, 6.26, 0), 1.2),      // 4
+            std::make_shared<bardrix::sphere>(bardrix::point3(8.48, 3.98, 2.15), 0.4),   // 5
+            std::make_shared<bardrix::sphere>(bardrix::point3(9.30, -6.54, 3), 1.2),     // 6
+            std::make_shared<bardrix::sphere>(bardrix::point3(-3.60, 7.66, 0), 0.5),     // 7
+            std::make_shared<bardrix::sphere>(bardrix::point3(-5.52, -8.01, 0), 1.6),    // 8
+            std::make_shared<bardrix::sphere>(bardrix::point3(-2.64, -12.15, 7.37), 4),  // 9
+            std::make_shared<bardrix::sphere>(bardrix::point3(1.30, 0.01, 0), 1)         // 10
+    };
+
+    bvh.construct_bvh(shapes.begin(), shapes.end());
+    std::vector<const bardrix::shape*> hits;
+
+    bvh.intersect(bardrix::ray(bardrix::point3(26.03874, 31.6748, 2.25401), bardrix::point3(-14.64, -18.48, -1.6)),
+                  hits);
+    EXPECT_EQ(hits.size(), 3);
+    EXPECT_EQ(hits, std::vector<const bardrix::shape*>({ shapes[4].get(), shapes[8].get(), shapes[10].get() }));
+
+    hits.clear();
+    bvh.intersect(bardrix::ray(bardrix::point3(-1.69, -29.97, 13.43), bardrix::point3(-11.82, 11.13, 2.95)), hits);
+    EXPECT_EQ(hits.size(), 2);
+    EXPECT_EQ(hits, std::vector<const bardrix::shape*>({ shapes[1].get(), shapes[9].get() }));
+
+    hits.clear();
+    bvh.intersect(bardrix::ray(bardrix::point3(-1.69, -29.97, 13.43), bardrix::point3(-7.26, 6.29, -2.91)), hits);
+    EXPECT_EQ(hits.size(), 2);
+    EXPECT_EQ(hits, std::vector<const bardrix::shape*>({ shapes[0].get(), shapes[9].get() }));
+}
+
+/// \brief Test the intersect method of a BVH tree
+TEST(bvh_tree, intersect_2) {
+    bardrix::bvh_tree bvh;
+
+    std::vector<std::shared_ptr<bardrix::sphere>> spheres{
+            std::make_shared<bardrix::sphere>(bardrix::sphere(bardrix::point3{ 0, 0, 0 }, 1)),
+            std::make_shared<bardrix::sphere>(bardrix::sphere(bardrix::point3{ 1, -1, 1 }, 1)),
+            std::make_shared<bardrix::sphere>(bardrix::sphere(bardrix::point3{ 2, 6, 2 }, 1))
+    };
+
+    bvh.construct_bvh(spheres.begin(), spheres.end());
+    std::vector<const bardrix::shape*> hits;
+    bvh.intersect(bardrix::ray{ bardrix::point3{ 5, 6, 7 }, bardrix::point3{ -3.11, -3, -2 }}, hits);
+    EXPECT_EQ(hits.size(), 1);
+    EXPECT_EQ(hits, std::vector<const bardrix::shape*>({ spheres[0].get() }));
+}
+
+/// \brief Test the intersect method of a BVH tree
+TEST(bvh_tree, intersect_3) {
+    bardrix::bvh_tree bvh;
+
+    std::vector<std::shared_ptr<bardrix::shape>> shapes{
+            std::make_shared<bardrix::sphere>(bardrix::sphere(bardrix::point3{ 1, 0, 0 }, 1)), // 0
+            std::make_shared<bardrix::sphere>(bardrix::sphere(bardrix::point3{ 0, 1, 0 }, 2)), // 1
+            std::make_shared<bardrix::sphere>(bardrix::sphere(bardrix::point3{ 0, 0, 1 }, 3))  // 2
+    };
+
+    bvh.construct_bvh(shapes.begin(), shapes.end());
+    std::vector<const bardrix::shape*> hits;
+
+    bvh.intersect(bardrix::ray{ bardrix::point3{ 3, 4, 5 }, bardrix::point3{ -2, -6, 1 }}, hits);
+    EXPECT_EQ(hits.size(), 1);
+    EXPECT_EQ(hits, std::vector<const bardrix::shape*>({ shapes[2].get() }));
+
+    hits.clear();
+    bvh.intersect(bardrix::ray{ bardrix::point3{ 3, 4, 5 }, bardrix::point3{ -1, 1, 1 }}, hits);
+    EXPECT_EQ(hits.size(), 2);
+    EXPECT_EQ(hits, std::vector<const bardrix::shape*>({ shapes[1].get(), shapes[2].get() }));
+
+    hits.clear();
+    bvh.intersect(bardrix::ray{ bardrix::point3{ 3, 4, 5 }, bardrix::point3{ 1, 0, 1 }}, hits);
+    EXPECT_EQ(hits.size(), 3);
+    EXPECT_EQ(hits, std::vector<const bardrix::shape*>({ shapes[0].get(), shapes[1].get(), shapes[2].get() }));
+
+    hits.clear();
+    bvh.intersect(bardrix::ray{ bardrix::point3{ 3, 4, 5 }, bardrix::point3{ 3, 2, -3 }}, hits);
+    EXPECT_EQ(hits.size(), 0);
+}
+
+/// \brief Test the intersect method of a BVH tree with edge cases
+TEST(bvh_tree, intersect_edge_cases) {
+    bardrix::bvh_tree bvh;
+
+    std::shared_ptr<bardrix::shape> shapes[]{
+            std::make_shared<bardrix::sphere>(bardrix::sphere(bardrix::point3{ 0, 0, 0 }, 0)), // 0
+            std::make_shared<bardrix::sphere>(bardrix::sphere(bardrix::point3{ 0, 0, 0 }, 0)), // 1
+    };
+
+    bvh.construct_bvh(shapes, sizeof shapes / sizeof shapes[0]);
+    std::vector<const bardrix::shape*> hits;
+
+    bvh.intersect(bardrix::ray{ bardrix::point3{ 0, 0, 0 }, bardrix::vector3{ 1, 1, 1 }}, hits);
+    EXPECT_EQ(hits.size(), 2);
+    EXPECT_EQ(hits, std::vector<const bardrix::shape*>({ shapes[0].get(), shapes[1].get() }));
+
+    hits.clear();
+    bvh.intersect(bardrix::ray{ bardrix::point3{ 1, 0, 0 }, bardrix::vector3{ 0, 0, 0 }}, hits);
+    EXPECT_EQ(hits.size(), 0);
+
+    hits.clear();
+    bvh.intersect(bardrix::ray{ bardrix::point3{ 1, 0, 0 }, bardrix::vector3{ -1, 0, 0 }}, hits);
+    EXPECT_EQ(hits.size(), 2);
+    EXPECT_EQ(hits, std::vector<const bardrix::shape*>({ shapes[0].get(), shapes[1].get() }));
 }

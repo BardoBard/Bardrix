@@ -105,6 +105,60 @@ TEST(material, set_shininess) {
     EXPECT_EQ(material.get_shininess(), 1.5);
 }
 
+/// \brief Test the material equality operator
+TEST(material, equality_operator) {
+    bardrix::material material1 = bardrix::material(0.1, 0.2, 0.3, 1);
+    bardrix::material material2 = bardrix::material(0.1, 0.2, 0.3, 1);
+
+    EXPECT_EQ(material1, material2);
+
+    material2.set_ambient(0.5);
+    EXPECT_NE(material1, material2);
+
+    material2 = bardrix::material(0.1, 0.2, 0.3, 1);
+    material2.set_diffuse(0.5);
+    EXPECT_NE(material1, material2);
+
+    material2 = bardrix::material(0.1, 0.2, 0.3, 1);
+    material2.set_specular(0.5);
+    EXPECT_NE(material1, material2);
+
+    material2 = bardrix::material(0.1, 0.2, 0.3, 1);
+    material2.set_shininess(1.5);
+    EXPECT_NE(material1, material2);
+
+    material2 = bardrix::material(0.1, 0.2, 0.3, 1);
+    material2.color = bardrix::color::red();
+    EXPECT_NE(material1, material2);
+}
+
+/// \brief Test the material inequality operator
+TEST(material, inequality_operator) {
+    bardrix::material material1 = bardrix::material(0.1, 0.2, 0.3, 1);
+    bardrix::material material2 = bardrix::material(0.1, 0.2, 0.3, 1);
+
+    EXPECT_FALSE(material1 != material2);
+
+    material2.set_ambient(0.5);
+    EXPECT_TRUE(material1 != material2);
+
+    material2 = bardrix::material(0.1, 0.2, 0.3, 1);
+    material2.set_diffuse(0.5);
+    EXPECT_TRUE(material1 != material2);
+
+    material2 = bardrix::material(0.1, 0.2, 0.3, 1);
+    material2.set_specular(0.5);
+    EXPECT_TRUE(material1 != material2);
+
+    material2 = bardrix::material(0.1, 0.2, 0.3, 1);
+    material2.set_shininess(1.5);
+    EXPECT_TRUE(material1 != material2);
+
+    material2 = bardrix::material(0.1, 0.2, 0.3, 1);
+    material2.color = bardrix::color::red();
+    EXPECT_TRUE(material1 != material2);
+}
+
 /// BOUNDING BOX
 
 /// \brief Test the bounding_box constructor
@@ -204,7 +258,8 @@ TEST(bounding_box, inside_box) {
     // Test the inside method with a box that is inside the other box
     EXPECT_TRUE(box.inside(bardrix::bounding_box(min, max)));
 
-    EXPECT_TRUE(bardrix::bounding_box({ 1, 2, 3 }, { 1, 2, 3 }).inside(bardrix::bounding_box({ 1, 2, 3 }, { 1, 2, 3 })));
+    EXPECT_TRUE(
+            bardrix::bounding_box({ 1, 2, 3 }, { 1, 2, 3 }).inside(bardrix::bounding_box({ 1, 2, 3 }, { 1, 2, 3 })));
 }
 
 /// \brief Test the bounding_box inside method with another box with edge cases
@@ -526,12 +581,17 @@ TEST(bounding_box, intersects_box) {
 
 /// \brief Test the bounding_box intersects method with bounding_box edge cases
 TEST(bounding_box, intersects_box_edge_cases) {
-    EXPECT_TRUE(bardrix::bounding_box({ 2, 3, 4 }, { 7, 6, 7 }).intersects(bardrix::bounding_box({ 2, 3, 4 }, { 7, 6, 7 }))); // Same box
-    EXPECT_TRUE(bardrix::bounding_box({ -2, -3, 4 }, { 7, -6, -7 }).intersects(bardrix::bounding_box({ -2, -3, 4 }, { 7, -6, -7 }))); // Same box
+    EXPECT_TRUE(bardrix::bounding_box({ 2, 3, 4 }, { 7, 6, 7 }).intersects(
+            bardrix::bounding_box({ 2, 3, 4 }, { 7, 6, 7 }))); // Same box
+    EXPECT_TRUE(bardrix::bounding_box({ -2, -3, 4 }, { 7, -6, -7 }).intersects(
+            bardrix::bounding_box({ -2, -3, 4 }, { 7, -6, -7 }))); // Same box
 
-    EXPECT_TRUE(bardrix::bounding_box({ 2, 3, 4 }, { 7, 6, 7 }).intersects(bardrix::bounding_box({ 2, 3, 4 }, { 7, 6, 5 }))); // No Depth
-    EXPECT_TRUE(bardrix::bounding_box({ 2, 3, 4 }, { 7, 6, 7 }).intersects(bardrix::bounding_box({ 2, 3, 4 }, { 7, 4, 7 }))); // No Height
-    EXPECT_TRUE(bardrix::bounding_box({ 2, 3, 4 }, { 7, 6, 7 }).intersects(bardrix::bounding_box({ 2, 3, 4 }, { 5, 6, 7 }))); // No Width
+    EXPECT_TRUE(bardrix::bounding_box({ 2, 3, 4 }, { 7, 6, 7 }).intersects(
+            bardrix::bounding_box({ 2, 3, 4 }, { 7, 6, 5 }))); // No Depth
+    EXPECT_TRUE(bardrix::bounding_box({ 2, 3, 4 }, { 7, 6, 7 }).intersects(
+            bardrix::bounding_box({ 2, 3, 4 }, { 7, 4, 7 }))); // No Height
+    EXPECT_TRUE(bardrix::bounding_box({ 2, 3, 4 }, { 7, 6, 7 }).intersects(
+            bardrix::bounding_box({ 2, 3, 4 }, { 5, 6, 7 }))); // No Width
 }
 
 /// \brief Test the bounding_box intersects method with ray
@@ -633,6 +693,21 @@ TEST(bounding_box, intersects_ray_inside) {
     box = bardrix::bounding_box({ 0, 0, 0 }, { 0, 0, 0 });
     ray.position = bardrix::point3(0, 0, 0);
     EXPECT_TRUE(box.intersects(ray));
+}
+
+/// \brief Test the bounding_box intersects method with edge cases
+TEST(bounding_box, intersects_ray_edge_cases) {
+    bardrix::point3 min = bardrix::point3(1, 1, 1);
+    bardrix::point3 max = bardrix::point3(2, 2, 2);
+    bardrix::bounding_box box = bardrix::bounding_box(min, max);
+    double distance = 100;
+
+    bardrix::ray ray = bardrix::ray(bardrix::point3(0, 0, 0), bardrix::vector3(1, 2, 1), distance);
+    EXPECT_TRUE(box.intersects(ray));
+
+    box.set_min_max(-max, -min);
+    ray = bardrix::ray(bardrix::point3(0, 0, 0), bardrix::vector3(1, 2, 1), distance);
+    EXPECT_FALSE(box.intersects(ray));
 }
 
 ///\brief Test the operator+ with a vector3
@@ -867,4 +942,190 @@ TEST(bounding_box, operator_stream) {
     std::stringstream stream;
     stream << box;
     EXPECT_EQ(stream.str(), "Bounding Box: (Min: (1, 2, 3), Max: (3, 4, 5))");
+}
+
+// SPHERE
+
+/// \brief Test the constructor of sphere
+TEST(sphere, constructor) {
+    bardrix::sphere sphere = bardrix::sphere(4);
+    EXPECT_EQ(sphere.get_position(), bardrix::point3(0, 0, 0));
+    EXPECT_EQ(sphere.get_radius(), 4);
+    EXPECT_EQ(sphere.get_material(), bardrix::material());
+
+    sphere = bardrix::sphere();
+    EXPECT_EQ(sphere.get_position(), bardrix::point3(0, 0, 0));
+    EXPECT_EQ(sphere.get_radius(), 1);
+    EXPECT_EQ(sphere.get_material(), bardrix::material());
+
+    sphere = bardrix::sphere(bardrix::point3(1, 2, 3), 4);
+    EXPECT_EQ(sphere.get_position(), bardrix::point3(1, 2, 3));
+    EXPECT_EQ(sphere.get_radius(), 4);
+    EXPECT_EQ(sphere.get_material(), bardrix::material());
+
+    sphere = bardrix::sphere(bardrix::point3(-1, -2, -3), -5);
+    EXPECT_EQ(sphere.get_position(), bardrix::point3(-1, -2, -3));
+    EXPECT_EQ(sphere.get_radius(), 0);
+    EXPECT_EQ(sphere.get_material(), bardrix::material());
+
+    sphere = bardrix::sphere(bardrix::point3(0, 0, 0), bardrix::material(), 1);
+    EXPECT_EQ(sphere.get_position(), bardrix::point3(0, 0, 0));
+    EXPECT_EQ(sphere.get_radius(), 1);
+    EXPECT_EQ(sphere.get_material(), bardrix::material());
+}
+
+/// \brief Test the set_radius method of sphere
+TEST(sphere, set_radius) {
+    bardrix::sphere sphere = bardrix::sphere();
+    sphere.set_radius(4);
+    EXPECT_EQ(sphere.get_radius(), 4);
+
+    sphere.set_radius(0);
+    EXPECT_EQ(sphere.get_radius(), 0);
+
+    sphere.set_radius(-1);
+    EXPECT_EQ(sphere.get_radius(), 0);
+}
+
+/// \brief Test the set_material method of sphere
+TEST(sphere, set_material) {
+    bardrix::sphere sphere = bardrix::sphere();
+    bardrix::material material = bardrix::material();
+    material.color = bardrix::color::red();
+    sphere.set_material(material);
+    EXPECT_EQ(sphere.get_material(), material);
+
+    material.color = bardrix::color::green();
+    sphere.set_material(material);
+    EXPECT_EQ(sphere.get_material(), material);
+
+    material.color = bardrix::color::blue();
+    sphere.set_material(material);
+    EXPECT_EQ(sphere.get_material(), material);
+}
+
+/// \brief Test the set_position method of sphere
+TEST(sphere, set_position) {
+    bardrix::sphere sphere = bardrix::sphere();
+    sphere.set_position(bardrix::point3(1, 2, 3));
+    EXPECT_EQ(sphere.get_position(), bardrix::point3(1, 2, 3));
+
+    sphere.set_position(bardrix::point3(-1, -2, -3));
+    EXPECT_EQ(sphere.get_position(), bardrix::point3(-1, -2, -3));
+
+    sphere.set_position(bardrix::point3(0, 0, 0));
+    EXPECT_EQ(sphere.get_position(), bardrix::point3(0, 0, 0));
+}
+
+/// \brief Test the intersects method of sphere with ray
+TEST(sphere, intersects_ray) {
+    bardrix::sphere sphere = bardrix::sphere(bardrix::point3(-12.72, 8.14, 0), 5);
+    bardrix::sphere sphere_negative = bardrix::sphere(bardrix::point3(12.72, -8.14, 0), 5);
+
+    bardrix::ray ray = bardrix::ray(bardrix::point3(5, 6, 7), bardrix::point3(-20.1, 10.55, 3));
+    EXPECT_TRUE(sphere.intersection(ray).has_value());
+    EXPECT_FALSE(sphere_negative.intersection(ray).has_value());
+    EXPECT_EQ(sphere.intersection(ray).value(), bardrix::point3(-10.664, 8.83949, 4.50374));
+
+    ray = bardrix::ray(bardrix::point3(5, 6, 7), bardrix::point3(-19.87738, 5.04547, 3));
+    EXPECT_TRUE(sphere.intersection(ray).has_value());
+    EXPECT_FALSE(sphere_negative.intersection(ray).has_value());
+    EXPECT_EQ(sphere.intersection(ray).value(), bardrix::point3(-12.9181, 5.31249, 4.11898));
+
+    ray = bardrix::ray(bardrix::point3(5, 6, 7), bardrix::point3(-19.87738, 5.04547, 3.67166));
+    EXPECT_FALSE(sphere.intersection(ray).has_value());
+    EXPECT_FALSE(sphere_negative.intersection(ray).has_value());
+}
+
+/// \brief Test the intersects method of sphere when the ray is inside the sphere
+TEST(sphere, intersects_ray_inside) {
+    bardrix::sphere sphere = bardrix::sphere(bardrix::point3(0, 0, 0), 5);
+
+    bardrix::ray ray = bardrix::ray(bardrix::point3(0, 0, 0), bardrix::point3(1, 1, 1));
+    EXPECT_FALSE(sphere.intersection(ray).has_value());
+
+    ray = bardrix::ray(bardrix::point3(0, 0, 0), bardrix::point3(-1, -1, -1));
+    EXPECT_FALSE(sphere.intersection(ray).has_value());
+
+    ray = bardrix::ray(bardrix::point3(0, 0, 0), bardrix::point3(0, 0, 0));
+    EXPECT_FALSE(sphere.intersection(ray).has_value());
+
+    ray = bardrix::ray(bardrix::point3(0, 0, 0), bardrix::point3(10, 20, 30));
+    EXPECT_FALSE(sphere.intersection(ray).has_value());
+}
+
+/// \brief Test the normal_at method of sphere
+TEST(sphere, normal_at) {
+    bardrix::sphere sphere = bardrix::sphere(bardrix::point3(0, 0, 0), 5);
+
+    EXPECT_EQ(sphere.normal_at({ 0, 0, 5 }), bardrix::vector3(0, 0, 1));
+    EXPECT_EQ(sphere.normal_at({ 0, 0, -5 }), bardrix::vector3(0, 0, -1));
+    EXPECT_EQ(sphere.normal_at({ 0, 5, 0 }), bardrix::vector3(0, 1, 0));
+    EXPECT_EQ(sphere.normal_at({ 0, -5, 0 }), bardrix::vector3(0, -1, 0));
+    EXPECT_EQ(sphere.normal_at({ 5, 0, 0 }), bardrix::vector3(1, 0, 0));
+    EXPECT_EQ(sphere.normal_at({ -5, 0, 0 }), bardrix::vector3(-1, 0, 0));
+}
+
+/// \brief Test the normal_at method of sphere with edge cases
+TEST(sphere, normal_at_edge_cases) {
+    bardrix::sphere sphere = bardrix::sphere(bardrix::point3(0, 0, 0), 0);
+
+    EXPECT_EQ(sphere.normal_at({ 0, 0, 0 }), bardrix::vector3(0, 0, 0));
+    EXPECT_EQ(sphere.normal_at({ 0, 0, 1 }), bardrix::vector3(0, 0, 1));
+    EXPECT_EQ(sphere.normal_at({ 0, 1, 0 }), bardrix::vector3(0, 1, 0));
+    EXPECT_EQ(sphere.normal_at({ 1, 0, 0 }), bardrix::vector3(1, 0, 0));
+}
+
+/// \brief Test the bounding_box method of sphere
+TEST(sphere, bounding_box) {
+    bardrix::sphere sphere = bardrix::sphere(bardrix::point3(1, 2, 3), 4);
+    bardrix::bounding_box box = sphere.bounding_box();
+
+    EXPECT_EQ(box.get_min(), bardrix::point3(-3, -2, -1));
+    EXPECT_EQ(box.get_max(), bardrix::point3(5, 6, 7));
+
+    sphere = bardrix::sphere(bardrix::point3(-1, -2, -3), 5);
+    box = sphere.bounding_box();
+
+    EXPECT_EQ(box.get_min(), bardrix::point3(-6, -7, -8));
+    EXPECT_EQ(box.get_max(), bardrix::point3(4, 3, 2));
+}
+
+/// \brief Test the bounding_box method of sphere with edge cases
+TEST(sphere, bounding_box_edge_cases) {
+    bardrix::sphere sphere = bardrix::sphere(bardrix::point3(0, 0, 0), 0);
+    bardrix::bounding_box box = sphere.bounding_box();
+
+    EXPECT_EQ(box.get_min(), bardrix::point3(0, 0, 0));
+    EXPECT_EQ(box.get_max(), bardrix::point3(0, 0, 0));
+}
+
+/// \brief Test the operator== with two equal spheres
+TEST(sphere, operator_equal_equal) {
+    bardrix::sphere sphere1 = bardrix::sphere(bardrix::point3(1, 2, 3), 4);
+    bardrix::sphere sphere2 = bardrix::sphere(bardrix::point3(1, 2, 3), 4);
+    EXPECT_TRUE(sphere1 == sphere2);
+
+    sphere1 = bardrix::sphere(bardrix::point3(0, 0, 0), 0);
+    sphere2 = bardrix::sphere(bardrix::point3(0, 0, 0), 0);
+    EXPECT_TRUE(sphere1 == sphere2);
+
+    sphere1 = bardrix::sphere(bardrix::point3(-1, -2, -3), 5);
+    sphere2 = bardrix::sphere(bardrix::point3(-1, -2, -3), 5);
+    EXPECT_TRUE(sphere1 == sphere2);
+}
+
+/// \brief Test the operator!= with two equal spheres
+TEST(sphere, operator_not_equal) {
+    bardrix::sphere sphere1 = bardrix::sphere(bardrix::point3(1, 2, 3), 4);
+    bardrix::sphere sphere2 = bardrix::sphere(bardrix::point3(1, 2, 3), 4);
+    EXPECT_FALSE(sphere1 != sphere2);
+
+    sphere1 = bardrix::sphere(bardrix::point3(0, 0, 0), 0);
+    sphere2 = bardrix::sphere(bardrix::point3(0, 0, 0), 0);
+    EXPECT_FALSE(sphere1 != sphere2);
+
+    sphere1 = bardrix::sphere(bardrix::point3(-1, -2, -3), 5);
+    sphere2 = bardrix::sphere(bardrix::point3(-1, -2, -3), 5);
+    EXPECT_FALSE(sphere1 != sphere2);
 }

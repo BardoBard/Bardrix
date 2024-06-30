@@ -5,6 +5,7 @@
 #pragma once
 
 #include <bardrix/bardrix.h>
+#include <bardrix/objects.h>
 
 namespace bardrix {
 
@@ -41,7 +42,7 @@ namespace bardrix {
         public:
             /// \brief Constructs a node with the given value and no children.
             /// \param val The value of the node.
-            explicit node(T val) noexcept: node(std::move(val), nullptr, nullptr) {}
+            explicit node(const T& val) noexcept: node(val, nullptr, nullptr) {}
 
             /// \brief Constructs a node with the given value and children.
             /// \param val The value of the node.
@@ -127,7 +128,27 @@ namespace bardrix {
         /// \note Use this function for a balanced binary tree.
         /// \details O(n) time complexity assuming the values are sorted.
         template<typename... Args>
-        void build(T val, Args... args) noexcept;
+        void build(const T& val, Args... args) noexcept;
+
+        /// \brief Rebuilds the binary tree, it's meant to rebalance the binary tree. \n
+        ///        The binary tree should be sorted in ascending order for this function to work.
+        /// \note This function will not fix if the values within the binary tree are not sorted.
+        /// \example tree.rebuild(); // Rebuilds the binary tree to be balanced.
+        ///          5        \n
+        ///         / \       \n
+        ///        3   6      \n
+        ///             \     \n
+        ///              7    \n
+        ///               \   \n
+        ///                8  \n
+        /// This will be turned into:   \n
+        ///          6        \n
+        ///         / \       \n
+        ///        5   8      \n
+        ///       /   /       \n
+        ///      3   7
+        /// \details O(n) time complexity (technically O(2n) time complexity).
+        void rebuild() noexcept;
 
         /// \brief Inserts the given values into the binary tree.           \n
         ///        The values are inserted in the order they are given.     \n
@@ -147,7 +168,7 @@ namespace bardrix {
         /// \details O(log n) time complexity assuming the binary tree is balanced. \n
         ///          O(n) time complexity in the worst case (when the tree is unbalanced).
         template<typename... Args>
-        void insert(T val, Args... args) noexcept;
+        void insert(const T& val, Args... args) noexcept;
 
         /// \brief Inserts the given values into the binary tree.           \n
         ///        The values are inserted in the order they are given.     \n
@@ -214,7 +235,7 @@ namespace bardrix {
         /// \details This function deletes the node with the given value from the binary tree.
         /// \details O(log n) time complexity assuming the binary tree is balanced. \n
         ///          O(n) time complexity in the worst case (when the tree is unbalanced).
-        bool remove(T val, bool prefer_left = false) noexcept;
+        bool remove(const T& val, bool prefer_left = false) noexcept;
 
         /// \brief Checks if the binary tree contains the given value, meant to be a helper function for the public contains function.
         /// \param current The current node to check if it contains the value.
@@ -223,25 +244,25 @@ namespace bardrix {
         /// \example if (tree.contains(3)) std::cout << "The tree contains the value 3!";
         /// \details O(log n) time complexity assuming the binary tree is balanced. \n
         ///          O(n) time complexity in the worst case (when the tree is unbalanced).
-        NODISCARD bool contains(const node* current, T val) const noexcept;
+        NODISCARD bool contains(const node* current, const T& val) const noexcept;
 
         /// \brief Checks if the binary tree contains the given value.
         /// \param val The value to check if it is in the binary tree.
         /// \return True if the binary tree contains the value, false otherwise.
         /// \example if (tree.contains(3)) std::cout << "The tree contains the value 3!";
-        NODISCARD bool contains(T val) const noexcept;
+        NODISCARD bool contains(const T& val) const noexcept;
 
         /// \brief Finds the node with the given value, it's called recursively.
         /// \param current The current node to find the value from.
         /// \param val The value to find in the binary tree.
         /// \return The node with the given value in the binary tree.
-        NODISCARD const node* find(const node* current, T val) const noexcept;
+        NODISCARD const node* find(const node* current, const T& val) const noexcept;
 
         /// \brief Finds the node with the given value.
         /// \param val The value to find in the binary tree.
         /// \return The node with the given value in the binary tree.
         /// \example const node* node = tree.find(3); // (1,2,3,4,5) -> node with value 3
-        NODISCARD const node* find(T val) const noexcept;
+        NODISCARD const node* find(const T& val) const noexcept;
 
         /// \brief Traverses the binary tree in-order, it's called recursively.
         /// \param current The current node to traverse the binary tree from.
@@ -313,7 +334,6 @@ namespace bardrix {
         ///        /   /        \n
         ///   (1) 1   4 (3)
         void traverse_post_order(std::function<void(const T&)> callback) const noexcept;
-
 
         /// \brief Finds the minimum value in the binary tree, it's called recursively.
         /// \param current The current node to find the minimum value from.
@@ -389,7 +409,7 @@ namespace bardrix {
         /// \details This function is called recursively to insert the value into the binary tree.
         /// \details O(log n) time complexity assuming the binary tree is balanced. \n
         ///          O(n) time complexity in the worst case (when the tree is unbalanced).
-        void insert(std::unique_ptr<node>& current, T val);
+        void insert(std::unique_ptr<node>& current, const T& val);
 
         /// \brief Builds a balanced binary tree from the given values, meant to be a helper function for the public build function.
         /// \param current The current node to insert the values into.
@@ -407,9 +427,118 @@ namespace bardrix {
         /// \details This function is called recursively to delete the node with the given value from the binary tree.
         /// \details O(log n) time complexity assuming the binary tree is balanced. \n
         ///          O(n) time complexity in the worst case (when the tree is unbalanced).
-        bool remove(std::unique_ptr<node>& current, T val, bool prefer_left);
+        bool remove(std::unique_ptr<node>& current, const T& val, bool prefer_left);
 
     }; // class binary_tree
+
+    /// \brief Represents the data stored in a BVH node.
+    struct bvh_data {
+        /// \brief The shape associated with the BVH node.
+        std::shared_ptr<bardrix::shape> shape;
+
+        /// \brief The bounding box of the BVH node.
+        bardrix::bounding_box box;
+
+    protected:
+        /// \brief Constructs a BVH data with the given bounding box and shape.
+        /// \param shape The shape associated with the BVH node.
+        /// \param box The bounding box of the BVH node.
+        explicit bvh_data(const std::shared_ptr<bardrix::shape>& shape, bardrix::bounding_box box);
+
+    public:
+        /// \brief Constructs a BVH data with the given shape.
+        /// \param shape The shape associated with the BVH node.
+        /// \details The bounding box of the BVH node is set to the bounding box of the shape.
+        explicit bvh_data(const std::shared_ptr<bardrix::shape>& shape);
+
+        /// \brief Constructs a BVH data with the given bounding box.
+        /// \param box The bounding box of the BVH node.
+        /// \details The shape associated with the BVH node is set to nullptr.
+        explicit bvh_data(bardrix::bounding_box box);
+
+        /// \brief Checks of two BVH data are equal.
+        /// \param lhs The left-hand side BVH data.
+        /// \param rhs The right-hand side BVH data.
+        /// \return True if the two BVH data are equal, false otherwise.
+        friend bool operator==(const bvh_data& lhs, const bvh_data& rhs);
+
+        /// \brief Checks of two BVH data are not equal.
+        /// \param lhs The left-hand side BVH data.
+        /// \param rhs The right-hand side BVH data.
+        /// \return True if the two BVH data are not equal, false otherwise.
+        friend bool operator!=(const bvh_data& lhs, const bvh_data& rhs);
+
+    }; // struct bvh_data
+
+    /// \brief Represents a binary tree used for building a bounding volume hierarchy (BVH).    \n
+    ///        The BVH is used for optimizing ray intersections with shapes, as it reduces the number of shapes to check for intersections.
+    class bvh_tree : private binary_tree<bvh_data> {
+    private:
+        static bool shape_predicate(const std::shared_ptr<bardrix::shape>& shape_lhs,
+                                    const std::shared_ptr<bardrix::shape>& shape_rhs);
+
+    protected:
+        /// \brief Predicate used to compare two BVH data.
+        /// \param box_lhs The left-hand side BVH data.
+        /// \param box_rhs The right-hand side BVH data.
+        /// \return True if the left-hand side BVH data should be inserted to the left of the right-hand side BVH data, false otherwise.
+        /// \note This predicate is used to sort the BVH data in the binary tree. \n
+        ///       The predicate uses shape_predicate to compare the shapes of the BVH data.
+        static bool bvh_predicate(const bvh_data& box_lhs, const bvh_data& box_rhs);
+
+    public:
+        explicit bvh_tree();
+
+        /// \brief Constructs a BVH tree from the given shapes.
+        /// \param shape The shapes to construct the BVH tree from.
+        /// \param size The number of shapes to construct the BVH tree from.
+        /// \example std::shared_ptr<bardrix::shape> shapes[] = {sphere1, sphere2, sphere3}; \n
+        ///          tree.construct_bvh(shapes, sizeof shapes / sizeof shapes[0]);
+        void construct_bvh(std::shared_ptr<bardrix::shape>* shape, std::size_t size) noexcept;
+
+        /// \brief Constructs a BVH tree from the given shapes.
+        /// \tparam Iterator Iterator must be of type std::shared_ptr<shape>::iterator, but can be derived from shape.
+        /// \param begin The beginning of the shapes to construct the BVH tree from.
+        /// \param end The end of the shapes to construct the BVH tree from.
+        /// \example std::vector<std::shared_ptr<bardrix::shape>> shapes = {sphere1, sphere2, sphere3}; \n
+        ///          tree.construct_bvh(shapes.begin(), shapes.end());
+        /// \details O(N log N) time complexity, where N is the number of shapes to construct the BVH tree from. \n
+        ///          However this might be deceptive, as the true complexity is O(3N log N) due to merging the bounding boxes.
+        template<typename Iterator, typename = std::enable_if_t<
+                std::is_base_of_v<bardrix::shape, typename std::iterator_traits<Iterator>::value_type::element_type> &&
+                std::is_same_v<std::shared_ptr<typename std::iterator_traits<Iterator>::value_type::element_type>, typename std::iterator_traits<Iterator>::value_type>>>
+        void construct_bvh(const Iterator& begin, const Iterator& end) noexcept;
+
+        /// \brief Gives all the shapes that intersect with the given ray, in the form of out_hits.
+        /// \param ray The ray to check for intersections with the shapes.
+        /// \param out_hits The shapes that intersect with the given ray.
+        /// \example std::vector<const bardrix::shape*> hits; \n
+        ///          tree.intersect(ray, hits);
+        /// \details O(N) worst case time complexity, where N is the number of nodes in the BVH tree. \n
+        ///          It's hard to determine the average and best case due to the nature of the ray hitting the bounding boxes, but it's generally faster than O(N).
+        void intersect(const bardrix::ray& ray, std::vector<const bardrix::shape*>& out_hits) const noexcept;
+
+    private:
+        /// \brief Constructs a BVH tree from the given shapes. \n
+        ///        This function is a helper function for the public construct_bvh function.
+        /// \tparam Iterator Iterator must be of type std::shared_ptr<shape>::iterator, but can be derived from shape.
+        /// \param current The current node to construct the BVH tree from.
+        /// \param begin The beginning of the shapes to construct the BVH tree from.
+        /// \param end The end of the shapes to construct the BVH tree from.
+        template<typename Iterator, typename = std::enable_if_t<
+                std::is_base_of_v<bardrix::shape, typename std::iterator_traits<Iterator>::value_type::element_type> &&
+                std::is_same_v<std::shared_ptr<typename std::iterator_traits<Iterator>::value_type::element_type>, typename std::iterator_traits<Iterator>::value_type>>>
+        void construct_bvh(std::unique_ptr<bvh_tree::node>& current, const Iterator& begin, const Iterator& end) noexcept;
+
+        /// \brief Gives all the shapes that intersect with the given ray, in the form of out_hits. \n
+        ///        This function is a helper function for the public intersect function.
+        /// \param current The current node to check for intersections with the ray.
+        /// \param ray The ray to check for intersections with the shapes.
+        /// \param out_hits The shapes that intersect with the given ray.
+        void intersect(const std::unique_ptr<node>& current, const bardrix::ray& ray,
+                       std::vector<const bardrix::shape*>& out_hits) const noexcept;
+
+    }; // class bvh_tree
 
     // binary_tree implementation start
 
@@ -443,9 +572,17 @@ namespace bardrix {
 
     template<typename T>
     template<typename... Args>
-    void binary_tree<T>::build(T val, Args... args) noexcept {
+    void binary_tree<T>::build(const T& val, Args... args) noexcept {
         std::initializer_list<T> values = { val, args... };
         build(values.begin(), values.size());
+    }
+
+    template<typename T>
+    void binary_tree<T>::rebuild() noexcept {
+        std::vector<T> values;
+        values.reserve(height());
+        traverse_in_order([&values](const T& val) { values.push_back(val); });
+        build(values.begin(), values.end());
     }
 
     template<typename T>
@@ -463,7 +600,7 @@ namespace bardrix {
 
     template<typename T>
     template<typename... Args>
-    void binary_tree<T>::insert(T val, Args... args) noexcept {
+    void binary_tree<T>::insert(const T& val, Args... args) noexcept {
         std::initializer_list<T> values = { val, args... };
         insert(values.begin(), values.end());
     }
@@ -475,12 +612,12 @@ namespace bardrix {
     }
 
     template<typename T>
-    bool binary_tree<T>::contains(T val) const noexcept {
+    bool binary_tree<T>::contains(const T& val) const noexcept {
         return contains(root.get(), val);
     }
 
     template<typename T>
-    const typename binary_tree<T>::node* binary_tree<T>::find(const binary_tree::node* current, T val) const noexcept {
+    const typename binary_tree<T>::node* binary_tree<T>::find(const binary_tree::node* current, const T& val) const noexcept {
         if (!current) return nullptr;
         if (val == current->data) return current;
 
@@ -488,7 +625,7 @@ namespace bardrix {
     }
 
     template<typename T>
-    const typename binary_tree<T>::node* binary_tree<T>::find(T val) const noexcept {
+    const typename binary_tree<T>::node* binary_tree<T>::find(const T& val) const noexcept {
         return find(root.get(), val);
     }
 
@@ -576,7 +713,7 @@ namespace bardrix {
 
     // helper function for insert
     template<typename T>
-    void binary_tree<T>::insert(std::unique_ptr<node>& current, T val) {
+    void binary_tree<T>::insert(std::unique_ptr<node>& current, const T& val) {
         if (predicate(val, current->data)) {
             if (current->left) insert(current->left, val);
             else current->left = std::make_unique<node>(val);
@@ -601,12 +738,12 @@ namespace bardrix {
     }
 
     template<typename T>
-    bool binary_tree<T>::remove(T val, bool prefer_left) noexcept {
+    bool binary_tree<T>::remove(const T& val, bool prefer_left) noexcept {
         return remove(root, val, prefer_left);
     }
 
     template<typename T>
-    bool binary_tree<T>::contains(const binary_tree::node* current, T val) const noexcept {
+    bool binary_tree<T>::contains(const binary_tree::node* current, const T& val) const noexcept {
         if (!current) return false;
         if (val == current->data) return true;
 
@@ -616,7 +753,7 @@ namespace bardrix {
 
     // helper function for remove
     template<typename T>
-    bool binary_tree<T>::remove(std::unique_ptr<node>& current, T val, bool prefer_left) {
+    bool binary_tree<T>::remove(std::unique_ptr<node>& current, const T& val, bool prefer_left) {
         if (!current) return false;
 
         if (val == current->data) {
@@ -654,5 +791,46 @@ namespace bardrix {
     }
 
     // binary_tree implementation end
+
+    // bvh_tree implementation start
+
+    template<typename Iterator, typename>
+    void bvh_tree::construct_bvh(const Iterator& begin, const Iterator& end) noexcept {
+        std::vector<std::shared_ptr<bardrix::shape>> sorted_shapes(begin, end);
+        std::sort(sorted_shapes.begin(), sorted_shapes.end(), shape_predicate);
+
+        // Build the BVH tree from the sorted shapes
+        construct_bvh(root, sorted_shapes.begin(), sorted_shapes.end());
+    }
+
+    // helper function for construct_bvh
+    template<typename Iterator, typename>
+    void bvh_tree::construct_bvh(std::unique_ptr<bvh_tree::node>& current, const Iterator& begin,
+                                 const Iterator& end) noexcept {
+        if (begin == end) {
+            current = nullptr;
+            return;
+        }
+
+        // If there is only one shape, we make a node with the shape
+        if (std::next(begin) == end) {
+            current = std::make_unique<node>(bvh_data(*begin));
+            return;
+        }
+
+        // Merge all the bounding boxes to create a bounding box that encompasses all the shapes
+        bardrix::bounding_box box = (*begin)->bounding_box();
+        for (auto it = std::next(begin); it != end; ++it)
+            box = box.merge((*it)->bounding_box());
+
+        // Create a new node with the bounding box
+        current = std::make_unique<node>(bvh_data(box));
+
+        auto middle = begin + std::distance(begin, end) / 2;
+        construct_bvh(current->left, begin, middle);
+        construct_bvh(current->right, middle, end);
+    }
+
+    // bvh_tree implementation end
 
 } // namespace bardrix
