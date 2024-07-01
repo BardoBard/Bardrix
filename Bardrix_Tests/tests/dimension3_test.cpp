@@ -17,6 +17,26 @@ public:
     }
 };
 
+/// \brief Test min function
+TEST(dimension3, min) {
+    dim3_test dim3{1, 2, 3};
+    dim3_test dim3_positive{4, 5, 6};
+    dim3_test dim3_2{0,3,4};
+
+    ASSERT_EQ(dim3.min(dim3_positive), dim3_test(1, 2, 3));
+    ASSERT_EQ(dim3.min(dim3_2), dim3_test(0, 2, 3));
+}
+
+/// \brief Test max function
+TEST(dimension3, max) {
+    dim3_test dim3{1, 2, 3};
+    dim3_test dim3_positive{4, 5, 6};
+    dim3_test dim3_2{0,3,4};
+
+    ASSERT_EQ(dim3.max(dim3_positive), dim3_test(4, 5, 6));
+    ASSERT_EQ(dim3.max(dim3_2), dim3_test(1, 3, 4));
+}
+
 /// \brief Test the addition of two dimension3, using the + operator
 TEST(dimension3, add) {
     dim3_test dim3{1, 2, 3};
@@ -421,4 +441,13 @@ TEST(dimension3, stream) {
     std::stringstream ss;
     ss << dim3;
     ASSERT_EQ(ss.str(), "(1, 2, 3)");
+}
+
+/// \brief Test the operator[] of dimension3
+TEST(dimension3, operator_brackets) {
+    dim3_test dim3{1, 2, 3};
+
+    ASSERT_EQ(dim3[bardrix::axis::x], 1);
+    ASSERT_EQ(dim3[bardrix::axis::y], 2);
+    ASSERT_EQ(dim3[bardrix::axis::z], 3);
 }

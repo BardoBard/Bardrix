@@ -6,13 +6,13 @@
 
 #ifdef _WIN32
 
-#include "sphere.h"
 #include "window.h"
 
 #include <bardrix/ray.h>
 #include <bardrix/light.h>
 #include <bardrix/camera.h>
 #include <bardrix/quaternion.h>
+#include <bardrix/objects.h>
 
 int main() {
     int width = 600;
@@ -24,7 +24,7 @@ int main() {
     bardrix::camera camera = bardrix::camera({0,0,0}, {0,0,1}, width, height, 60);
 
     // Create a sphere
-    sphere sphere(1.0, bardrix::point3(0.0, 0.0, 3.0));
+    bardrix::sphere sphere(bardrix::point3(0.0, 0.0, 3.0), 1.0);
 
     // [&camera, &sphere] is a capture list, this means we can access those objects outside the lambda
     // If you'd want to add a light you'd have to add this to the capture list too.

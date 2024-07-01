@@ -3,7 +3,6 @@
 //
 
 #include <bardrix/camera.h>
-#include <optional>
 
 namespace bardrix {
 

@@ -13,6 +13,33 @@ TEST(ray, constructor) {
     EXPECT_EQ(r.get_length(), 1);
 }
 
+/// \brief Constructor for ray, initializes position and end
+TEST(ray, constructor_with_end) {
+    bardrix::ray r(bardrix::point3(1, 2, 3), bardrix::point3(1, 2, 4));
+    EXPECT_EQ(r.position, bardrix::point3(1, 2, 3));
+    EXPECT_EQ(r.get_direction(), bardrix::vector3(0, 0, 1));
+    EXPECT_DOUBLE_EQ(r.get_direction().length(), 1);
+    EXPECT_EQ(r.get_length(), 1);
+
+    bardrix::ray r2(bardrix::point3(1, 2, 3), bardrix::point3(1, 2, 7));
+    EXPECT_EQ(r2.position, bardrix::point3(1, 2, 3));
+    EXPECT_EQ(r2.get_direction(), bardrix::vector3(0, 0, 1));
+    EXPECT_DOUBLE_EQ(r2.get_direction().length(), 1);
+    EXPECT_EQ(r2.get_length(), 4);
+
+    bardrix::ray r3(bardrix::point3(0, 0, 0), bardrix::point3(1, 0, 0));
+    EXPECT_EQ(r3.position, bardrix::point3(0, 0, 0));
+    EXPECT_EQ(r3.get_direction(), bardrix::vector3(1, 0, 0));
+    EXPECT_DOUBLE_EQ(r3.get_direction().length(), 1);
+    EXPECT_EQ(r3.get_length(), 1);
+
+    bardrix::ray r4(bardrix::point3(0, 0, 0), bardrix::point3(0, 0, 0));
+    EXPECT_EQ(r4.position, bardrix::point3(0, 0, 0));
+    EXPECT_EQ(r4.get_direction(), bardrix::vector3(0, 0, 0));
+    EXPECT_DOUBLE_EQ(r4.get_direction().length(), 0);
+    EXPECT_EQ(r4.get_length(), 0);
+}
+
 /// \brief Constructor for ray, initializes position and direction
 TEST(ray, constructor_with_values) {
     bardrix::ray r(bardrix::point3(1, 2, 3), bardrix::vector3(4, 5, 6));

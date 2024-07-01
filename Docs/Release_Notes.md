@@ -1,10 +1,63 @@
+# [v0.4.0](https://github.com/BardoBard/Bardrix/releases/tag/v0.4.0)
+
+**Full Changelog**: https://github.com/BardoBard/Bardrix/compare/v0.3.3...v0.4.0
+
+## Overview
+
+The changes have backward compatibility issues, as the `bounding_box()` virtual function has been added to the `shape`.
+
+Added `sphere` to [objects.h](https://github.com/bardobard/bardrix/blob/v0.4.0/Bardrix/include/bardrix/objects.h). \
+Added `bounding_box` to [objects.h](https://github.com/bardobard/bardrix/blob/v0.4.0/Bardrix/include/bardrix/objects.h). \
+Added `bounding_box()` to [shape](https://github.com/bardobard/bardrix/blob/v0.4.0/Bardrix/include/bardrix/objects.h). \
+Added `binary_tree` class to [algorithms.h](https://github.com/bardobard/bardrix/blob/v0.4.0/Bardrix/include/bardrix/algorithms.h). \
+Added `bvh_tree` class to [algorithms.h](https://github.com/bardobard/bardrix/blob/v0.4.0/Bardrix/include/bardrix/algorithms.h).
+
+Removed `sphere` from examples, it's now a bardrix object.
+
+## Documentation Changes
+
+Added `bounding_box` to [Bardrix_Reference](https://github.com/bardobard/bardrix/blob/v0.4.0/Docs/Bardrix_Reference.md). \
+Added `binary_tree` to [Bardrix_Reference](https://github.com/bardobard/bardrix/blob/v0.4.0/Docs/Bardrix_Reference.md). \
+Added `bvh_tree` to [Bardrix_Reference](https://github.com/bardobard/bardrix/blob/v0.4.0/Docs/Bardrix_Reference.md). \
+Updated class diagrams associated with the new changes.
+
+Added changes from examples that used `sphere` to `bardrix::sphere` in Raytracing.
+
+## Code Changes
+
+### Major Changes
+
+Added `bounding_box` class to objects.h. \
+Added `bounding_box()` to shape. \
+Added `binary_tree` class to algorithms.h. \
+Added `bvh_tree` class to algorithms.h. \
+Added `sphere` to objects.h.
+
+### Minor Changes
+
+Added `ray(position : point3, end : point3)` to ray. \
+Updated `material` default constructor to have a shininess of 1, which is the minimum value. \
+Added `longest_axis()` and `shortest_axis()` to `bounding_box`. \
+Added `enum class axis` to bardrix.h, where `axis::none` is 0, `axis::x` is 1, `axis::y` is 2, `axis::z` is 4 and `axis::w` is 8. \
+Added `operator[axis]` to `dimension3`and `dimension4`.
+
+## Test Changes
+
+Added tests for `bounding_box` and `binary_tree`. \
+Added tests for `ray(position : point3, end : point3)`. \
+Added tests for `sphere` in [objects.h](https://github.com/bardobard/bardrix/blob/v0.4.0/Bardrix/include/bardrix/objects.h). \
+Added tests for `bvh_tree` in [algorithms.h](https://github.com/bardobard/bardrix/blob/v0.4.0/Bardrix/include/bardrix/algorithms.h).
+
+Added tests for `longest_axis()` and `shortest_axis()` in `bounding_box`. \
+Added tests for `operator[axis]` in `dimension3`and `dimension4`.
+
 # [v0.3.3](https://github.com/BardoBard/Bardrix/releases/tag/v0.3.3)
 
 ## Overview
 
-Fixed issue [42](https://github.com/BardoBard/Bardrix/issues/42) where the `pragma once` was missing in `sphere.h` (wth?).
+Fixed issue [42](https://github.com/BardoBard/Bardrix/issues/42) where the `pragma once` was missing in `sphere.h` (wth?). \
 Fixed issue [43](https://github.com/BardoBard/Bardrix/issues/43) where the `+=` was incorrectly formatted in the reference. \
-Fixed issue [44](https://github.com/BardoBard/Bardrix/issues/44) where the diagrams in the reference were incorrectly displayed. \
+Fixed issue [44](https://github.com/BardoBard/Bardrix/issues/44) where the diagrams in the reference were incorrectly displayed.
 
 **Full Changelog**: https://github.com/BardoBard/Bardrix/compare/v0.3.2...v0.3.3
 
