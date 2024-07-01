@@ -13,7 +13,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(Bardrix)
 
 # Add your project files
-add_executable(${PROJECT_NAME} main.cpp sphere.cpp window.cpp)
+add_executable(${PROJECT_NAME} main.cpp window.cpp)
 
 # Add bardrix library
 target_link_libraries(${PROJECT_NAME} Bardrix)
