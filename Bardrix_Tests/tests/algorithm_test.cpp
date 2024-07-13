@@ -32,6 +32,9 @@ TEST(binary_tree, build_array_points) {
             { 64, 37, 13 },
     };
 
+    tree.build(points2.data(), 0);
+    EXPECT_EQ(tree.root, nullptr);
+
     tree.build(points2.data(), points2.size());
     tree.insert({ 2, 3, 4 });
 
@@ -79,6 +82,7 @@ TEST(binary_tree, build_iterators) {
     std::vector<int> values2 = { 2, 9, 10, 11, 12, 13, 14, 24, 62, 63, 64, 65, 66, 67, 68 };
 
     tree.build(values2.begin(), values2.end());
+    tree.build(values2.begin(), values2.begin() - 1);
 
     EXPECT_EQ(tree.root->data, 24);
     EXPECT_EQ(tree.root->left->data, 11);
@@ -123,6 +127,9 @@ TEST(binary_tree, build_array) {
     //    /
     //   1
     std::vector<int> values2 = { 1, 2, 3, 4, 5, 6, 7, 8 };
+
+    tree.build(values2.data(), 0);
+    EXPECT_EQ(tree.root, nullptr);
 
     tree.build(values2.data(), values2.size());
 
@@ -446,6 +453,7 @@ TEST(binary_tree, insert_array) {
     //            7
     std::vector<int> values2 = { 5, 6, 3, 7 };
     tree.insert(values2.data(), values2.size());
+    tree.insert(values2.data(), 0);
 
     EXPECT_EQ(tree.root->data, 5);
     EXPECT_EQ(tree.root->left->data, 3);
@@ -502,6 +510,7 @@ TEST(binary_tree, insert_iterators) {
     //            7
     std::vector<int> values2 = { 5, 6, 3, 7 };
     tree.insert(values2.begin(), values2.end());
+    tree.insert(values2.begin(), values2.begin() - 3);
 
     EXPECT_EQ(tree.root->data, 5);
     EXPECT_EQ(tree.root->left->data, 3);
@@ -705,6 +714,7 @@ TEST(binary_tree, traverse_in_order) {
 
     std::vector<int> values;
     tree.traverse_in_order([&values](int value) { values.push_back(value); });
+    tree.traverse_in_order(nullptr);
 
     EXPECT_EQ(values.size(), 7);
     EXPECT_EQ(values, std::vector<int>({ 1, 3, 4, 5, 6, 7, 8 }));
@@ -721,6 +731,7 @@ TEST(binary_tree, traverse_in_order) {
 
     values.clear();
     tree.traverse_in_order([&values](int value) { values.push_back(value); });
+    tree.traverse_in_order(nullptr);
 
     EXPECT_EQ(values.size(), 15);
     EXPECT_EQ(values, std::vector<int>({ 2, 9, 10, 11, 12, 13, 14, 24, 62, 63, 64, 65, 66, 67, 68 }));
@@ -740,6 +751,7 @@ TEST(binary_tree, traverse_pre_order) {
 
     std::vector<int> values;
     tree.traverse_pre_order([&values](int value) { values.push_back(value); });
+    tree.traverse_pre_order(nullptr);
 
     EXPECT_EQ(values.size(), 7);
     EXPECT_EQ(values, std::vector<int>({ 5, 3, 1, 4, 7, 6, 8 }));
@@ -756,6 +768,7 @@ TEST(binary_tree, traverse_pre_order) {
 
     values.clear();
     tree.traverse_pre_order([&values](int value) { values.push_back(value); });
+    tree.traverse_pre_order(nullptr);
 
     EXPECT_EQ(values.size(), 15);
     EXPECT_EQ(values, std::vector<int>({ 24, 11, 9, 2, 10, 13, 12, 14, 65, 63, 62, 64, 67, 66, 68 }));
@@ -775,6 +788,7 @@ TEST(binary_tree, traverse_post_order) {
 
     std::vector<int> values;
     tree.traverse_post_order([&values](int value) { values.push_back(value); });
+    tree.traverse_post_order(nullptr);
 
     EXPECT_EQ(values.size(), 7);
     EXPECT_EQ(values, std::vector<int>({ 1, 4, 3, 6, 8, 7, 5 }));
@@ -791,6 +805,7 @@ TEST(binary_tree, traverse_post_order) {
 
     values.clear();
     tree.traverse_post_order([&values](int value) { values.push_back(value); });
+    tree.traverse_post_order(nullptr);
 
     EXPECT_EQ(values.size(), 15);
     EXPECT_EQ(values, std::vector<int>({ 2, 10, 9, 12, 14, 13, 11, 62, 64, 63, 66, 68, 67, 65, 24 }));
@@ -1018,6 +1033,24 @@ TEST(binary_tree, height) {
     EXPECT_EQ(tree.height(), 4);
 }
 
+/// \brief Test all methods with a nullptr predicate
+TEST(binary_tree, nullptr_predicate) {
+    bardrix::binary_tree<int> tree(nullptr);
+
+    tree.insert(1, 2, 3, 4, 5, 6, 7, 8);
+    tree.build(1, 2, 3, 4, 5, 6, 7, 8);
+    tree.contains(1);
+    tree.find(1);
+    tree.is_empty();
+    tree.traverse_in_order(nullptr);
+    tree.traverse_pre_order(nullptr);
+    tree.traverse_post_order(nullptr);
+    tree.find_min();
+    tree.find_max();
+    tree.remove(1);
+    tree.height();
+}
+
 // BVH TREE
 
 bool includes_all_shapes(const std::vector<const bardrix::shape*>& hits, const std::vector<const bardrix::shape*>& expecteds) {
@@ -1049,7 +1082,7 @@ TEST(bvh_tree, construct_longest_axis) {
     EXPECT_TRUE(includes_all_shapes(hits, std::vector<const bardrix::shape*>({ shapes[1].get() })));
 
     bvh.construct_longest_axis(shapes2.begin(), shapes2.end());
-    bvh.construct_longest_axis(shapes2.begin(), shapes2.begin());
+    bvh.construct_longest_axis(shapes2.begin(), shapes2.begin() - 1);
     bvh.construct_longest_axis(shapes2.data(), 0);
 }
 

@@ -275,7 +275,7 @@ namespace bardrix {
         ///     (2) 2   5 (5)   \n
         ///        /   /        \n
         ///   (1) 1   4 (4)
-        void traverse_in_order(const node* current, std::function<void(const T&)> callback) const noexcept;
+        void traverse_in_order(const node* current, const std::function<void(const T&)>& callback) const noexcept;
 
         /// \brief Traverses the binary tree in-order, it's called recursively.
         /// \param callback The function to call for each node in the binary tree.
@@ -299,7 +299,7 @@ namespace bardrix {
         ///     (2) 2   5 (4)   \n
         ///        /   /        \n
         ///   (3) 1   4 (5)
-        void traverse_pre_order(const node* current, std::function<void(const T&)> callback) const noexcept;
+        void traverse_pre_order(const node* current, const std::function<void(const T&)>& callback) const noexcept;
 
         /// \brief Traverses the binary tree in pre-order, it's called recursively.
         /// \param callback The function to call for each node in the binary tree.
@@ -310,7 +310,7 @@ namespace bardrix {
         ///     (2) 2   5 (4)   \n
         ///        /   /        \n
         ///   (3) 1   4 (5)
-        void traverse_pre_order(std::function<void(const T&)> callback) const noexcept;
+        void traverse_pre_order(const std::function<void(const T&)>& callback) const noexcept;
 
         /// \brief Traverses the binary tree in post-order, it's called recursively.
         /// \param current The current node to traverse the binary tree from.
@@ -322,7 +322,7 @@ namespace bardrix {
         ///     (2) 2   5 (4)   \n
         ///        /   /        \n
         ///   (1) 1   4 (3)
-        void traverse_post_order(const node* current, std::function<void(const T&)> callback) const noexcept;
+        void traverse_post_order(const node* current, const std::function<void(const T&)>& callback) const noexcept;
 
         /// \brief Traverses the binary tree in post-order, it's called recursively.
         /// \param callback The function to call for each node in the binary tree.
@@ -333,7 +333,7 @@ namespace bardrix {
         ///     (2) 2   5 (4)   \n
         ///        /   /        \n
         ///   (1) 1   4 (3)
-        void traverse_post_order(std::function<void(const T&)> callback) const noexcept;
+        void traverse_post_order(const std::function<void(const T&)>& callback) const noexcept;
 
         /// \brief Finds the minimum value in the binary tree, it's called recursively.
         /// \param current The current node to find the minimum value from.
@@ -511,10 +511,10 @@ namespace bardrix {
         /// \brief Helper function for the longest axis predicate.
         /// \param shape_lhs The left-hand side shape to compare.
         /// \param shape_rhs The right-hand side shape to compare.
-        /// \param axis The axis to compare the shapes on.
+        /// \param axis The axis to compare the shapes on. (has to be either x, y or z, otherwise it will throw an exception based on operator[] of point3).
         /// \return True if the left-hand side shape is less than the right-hand side shape on the given axis, false otherwise.
         static bool longest_axis_predicate(const std::shared_ptr<bardrix::shape>& shape_lhs,
-                                           const std::shared_ptr<bardrix::shape>& shape_rhs, axis axis) noexcept;
+                                           const std::shared_ptr<bardrix::shape>& shape_rhs, axis axis);
 
         /// \brief Constructs a BVH tree from the given shapes, using the longest axis algorithm. \n
         ///        This function is a helper function for the public construct_longest_axis function.
@@ -553,6 +553,7 @@ namespace bardrix {
     template<typename T>
     template<typename Iterator, typename>
     void binary_tree<T>::build(const Iterator begin, const Iterator end) noexcept {
+        if (begin >= end) return;
         build(&(*begin), std::distance(begin, end));
     }
 
@@ -584,7 +585,7 @@ namespace bardrix {
 
     template<typename T>
     void binary_tree<T>::insert(const T* values, std::size_t size) noexcept {
-        if (!root) { // If the tree is empty
+        if (!root && size > 0) { // If the tree is empty
             root = std::make_unique<node>(values[0]);
             ++values;
             --size;
@@ -605,6 +606,7 @@ namespace bardrix {
     template<typename T>
     template<typename Iterator, typename>
     void binary_tree<T>::insert(Iterator begin, Iterator end) noexcept {
+        if (begin >= end) return;
         insert(&(*begin), std::distance(begin, end));
     }
 
@@ -616,7 +618,7 @@ namespace bardrix {
     template<typename T>
     const typename binary_tree<T>::node*
     binary_tree<T>::find(const binary_tree::node* current, const T& val) const noexcept {
-        if (!current) return nullptr;
+        if (!current || predicate == nullptr) return nullptr;
         if (val == current->data) return current;
 
         return predicate(val, current->data) ? find(current->left.get(), val) : find(current->right.get(), val);
@@ -629,8 +631,8 @@ namespace bardrix {
 
     template<typename T>
     void binary_tree<T>::traverse_in_order(const binary_tree::node* current,
-                                           std::function<void(const T&)> callback) const noexcept {
-        if (!current) return;
+                                           const std::function<void(const T&)>& callback) const noexcept {
+        if (!current || callback == nullptr) return;
         traverse_in_order(current->left.get(), callback);
         callback(current->data);
         traverse_in_order(current->right.get(), callback);
@@ -643,8 +645,8 @@ namespace bardrix {
 
     template<typename T>
     void binary_tree<T>::traverse_pre_order(const binary_tree::node* current,
-                                            std::function<void(const T&)> callback) const noexcept {
-        if (!current) return;
+                                            const std::function<void(const T&)>& callback) const noexcept {
+        if (!current || callback == nullptr) return;
 
         callback(current->data);
         traverse_pre_order(current->left.get(), callback);
@@ -652,19 +654,19 @@ namespace bardrix {
     }
 
     template<typename T>
-    void binary_tree<T>::traverse_pre_order(std::function<void(const T&)> callback) const noexcept {
+    void binary_tree<T>::traverse_pre_order(const std::function<void(const T&)>& callback) const noexcept {
         traverse_pre_order(root.get(), callback);
     }
 
     template<typename T>
-    void binary_tree<T>::traverse_post_order(std::function<void(const T&)> callback) const noexcept {
+    void binary_tree<T>::traverse_post_order(const std::function<void(const T&)>& callback) const noexcept {
         traverse_post_order(root.get(), callback);
     }
 
     template<typename T>
     void binary_tree<T>::traverse_post_order(const binary_tree::node* current,
-                                             std::function<void(const T&)> callback) const noexcept {
-        if (!current) return;
+                                             const std::function<void(const T&)>& callback) const noexcept {
+        if (!current || callback == nullptr) return;
 
         traverse_post_order(current->left.get(), callback);
         traverse_post_order(current->right.get(), callback);
@@ -712,6 +714,8 @@ namespace bardrix {
     // helper function for insert
     template<typename T>
     void binary_tree<T>::insert(std::unique_ptr<node>& current, const T& val) {
+        if (predicate == nullptr) return;
+
         if (predicate(val, current->data)) {
             if (current->left) insert(current->left, val);
             else current->left = std::make_unique<node>(val);
@@ -742,7 +746,7 @@ namespace bardrix {
 
     template<typename T>
     bool binary_tree<T>::contains(const binary_tree::node* current, const T& val) const noexcept {
-        if (!current) return false;
+        if (!current || predicate == nullptr) return false;
         if (val == current->data) return true;
 
         return predicate(val, current->data) ? contains(current->left.get(), val) : contains(current->right.get(),
@@ -752,7 +756,7 @@ namespace bardrix {
     // helper function for remove
     template<typename T>
     bool binary_tree<T>::remove(std::unique_ptr<node>& current, const T& val, bool prefer_left) {
-        if (!current) return false;
+        if (!current || predicate == nullptr) return false;
 
         if (val == current->data) {
             if (!current->left && !current->right) { // No children
@@ -795,7 +799,7 @@ namespace bardrix {
     template<typename Iterator, typename>
     void bvh_tree::construct_longest_axis(const Iterator& begin, const Iterator& end) noexcept {
         clear();
-        if (begin == end) return;
+        if (begin >= end) return;
 
 
         // Calculate the bounding box that encompasses all shapes
@@ -821,7 +825,7 @@ namespace bardrix {
     template<typename Iterator, typename>
     void bvh_tree::construct_longest_axis(std::unique_ptr<bvh_tree::node>& current, const Iterator& begin,
                                  const Iterator& end) noexcept {
-        if (begin == end) {
+        if (begin >= end) {
             current = nullptr;
             return;
         }

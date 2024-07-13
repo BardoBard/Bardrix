@@ -26,7 +26,7 @@ namespace bardrix {
     // bvh_tree
 
     bool bvh_tree::longest_axis_predicate(const std::shared_ptr<bardrix::shape>& shape_lhs,
-                                   const std::shared_ptr<bardrix::shape>& shape_rhs, axis axis) noexcept {
+                                   const std::shared_ptr<bardrix::shape>& shape_rhs, axis axis) {
         return shape_lhs && shape_rhs &&
                shape_lhs->bounding_box().center()[axis] < shape_rhs->bounding_box().center()[axis];
     }
