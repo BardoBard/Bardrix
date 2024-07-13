@@ -68,7 +68,7 @@ include(FetchContent) # Include the FetchContent module
 FetchContent_Declare(
         Bardrix
         GIT_REPOSITORY https://github.com/bardobard/Bardrix.git
-        #       GIT_TAG comes here # e.g. v0.0.4
+#        GIT_TAG        v0.4.2 # Set the tag to a specific version (optional)
 )
 
 FetchContent_MakeAvailable(Bardrix)
