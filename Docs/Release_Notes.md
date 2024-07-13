@@ -9,7 +9,8 @@ Updated installation guide to include C++17+ requirement.
 
 ## Documentation Changes
 
-Added C++17+ requirement to [Installation](https://github.com/bardobard/bardrix/blob/v0.4.2/Docs/Installation.md).
+Added C++17+ requirement to [Installation](https://github.com/bardobard/bardrix/blob/v0.4.2/Docs/Installation.md). \
+Added table of contents to Examples for navigation.
 
 ## Code Changes
 
