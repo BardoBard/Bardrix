@@ -1,3 +1,29 @@
+# [v0.4.1](https://github.com/BardoBard/Bardrix/releases/tag/v0.4.1)
+
+**Full Changelog**: https://github.com/BardoBard/Bardrix/compare/v0.4.0...v0.4.1
+
+## Overview
+
+Small optimizations and edge case fixes.
+
+## Documentation Changes
+
+Updated example in `dimension3` and `dimension4` for the `enable_if_n_t` function to be more clear. \
+Added edge cases explanation to binary_tree.
+
+## Code Changes
+
+### Minor Changes
+
+Fixed edge cases surrounding `Iterator begin, Iterator end` in `binary_tree`, where if `begin < end` it would crash. \
+Check for nullptr on callbacks and predicate in `binary_tree` to avoid crashes. \
+Added pass by reference for all the callbacks in `binary_tree` to avoid copying. \
+Changed `static_cast<int>(color.(r/g/b/a)` to `+color.(r/g/b/a)` in `color` to avoid unnecessary casting.
+
+## Test Changes
+
+Added tests for edge cases in `binary_tree`.
+
 # [v0.4.0](https://github.com/BardoBard/Bardrix/releases/tag/v0.4.0)
 
 **Full Changelog**: https://github.com/BardoBard/Bardrix/compare/v0.3.3...v0.4.0

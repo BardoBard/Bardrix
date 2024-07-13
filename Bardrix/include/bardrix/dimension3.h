@@ -17,8 +17,10 @@ namespace bardrix {
         /// \brief A template to check if a type is a derived class of dimension3
         /// \tparam T Type to check
         /// \tparam Result Type to return if T is a derived class of dimension3
-        /// \note Usage: template<typename T>
-        /// \note Example: Add<std::string>(20) -> error
+        /// \example template<typename T> \n
+        ///          auto Add(const T& value) const noexcept -> enable_if_dimension3<T, T>; \n
+        ///          Add<std::string>("hello") -> error \n
+        ///          Add<point3>({}) -> ok
         template<typename T, typename Result>
         using enable_if_dimension3 = std::enable_if_t<std::is_base_of_v<dimension3, T>, Result>;
 

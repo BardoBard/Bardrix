@@ -306,8 +306,8 @@ namespace bardrix {
     }
 
     std::ostream& color::print(std::ostream& os) const noexcept {
-     return os << "(" << static_cast<int>(c_union_.r_g_b_a.r) << ", " << static_cast<int>(c_union_.r_g_b_a.g)
-               << ", " << static_cast<int>(c_union_.r_g_b_a.b) << ", " << static_cast<int>(c_union_.r_g_b_a.a) << ")";
+     return os << "(" << +c_union_.r_g_b_a.r << ", " << +c_union_.r_g_b_a.g
+               << ", " << +c_union_.r_g_b_a.b << ", " << +c_union_.r_g_b_a.a << ")";
     }
 
     std::ostream& operator<<(std::ostream& os, const color& color) noexcept {
