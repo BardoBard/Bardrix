@@ -81,8 +81,8 @@ TEST(binary_tree, build_iterators) {
     //   2  10   12 14   62 64  66  68
     std::vector<int> values2 = { 2, 9, 10, 11, 12, 13, 14, 24, 62, 63, 64, 65, 66, 67, 68 };
 
-    tree.build(values2.begin(), values2.end());
     tree.build(values2.begin(), values2.begin() - 1);
+    tree.build(values2.begin(), values2.end());
 
     EXPECT_EQ(tree.root->data, 24);
     EXPECT_EQ(tree.root->left->data, 11);
@@ -141,6 +141,10 @@ TEST(binary_tree, build_array) {
     EXPECT_EQ(tree.root->left->right->data, 4);
     EXPECT_EQ(tree.root->left->left->data, 2);
     EXPECT_EQ(tree.root->left->left->left->data, 1);
+
+    tree.build(nullptr, 1);
+
+    EXPECT_EQ(tree.root, nullptr);
 }
 
 /// \brief Test the building of a binary tree, with multiple values

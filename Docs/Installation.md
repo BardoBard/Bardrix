@@ -7,7 +7,7 @@ Assuming you follow this guide, you will be able to use Bardrix in your project 
 #include <iostream>
 
 int main(){
-    std::cout << bardrix::vector3(1,2,3) << std::endl;
+    std::cout << bardrix::vector3(1, 2, 3) << std::endl;
 }
 ```
 
@@ -68,7 +68,7 @@ include(FetchContent) # Include the FetchContent module
 FetchContent_Declare(
         Bardrix
         GIT_REPOSITORY https://github.com/bardobard/Bardrix.git
-#       GIT_TAG comes here # e.g. v0.0.4
+        #       GIT_TAG comes here # e.g. v0.0.4
 )
 
 FetchContent_MakeAvailable(Bardrix)
@@ -91,6 +91,15 @@ You can also use the NuGet package manager to install Bardrix, this is only avai
 You can search for Bardio.Bardrix and install it, everything will be set up for you.
 
 ![nuget_package_manager_install.png](Images/nuget_package_manager_install.png)
+
+Make sure the c++ version is set to 17 or higher in your project settings, you can do this by right-clicking on your
+project and selecting properties. Then go to C/C++ -> Language and set the C++ Language Standard to C++17 or higher.
+
+![visual_studio_properties.png](Images/visual_studio_properties.png)
+
+![visual_studio_cpp_version.png](Images/visual_studio_cpp_version.png)
+
+Then click apply/ok and you are ready to use Bardrix in your project.
 
 ## Manual
 

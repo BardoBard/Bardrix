@@ -89,7 +89,7 @@ namespace bardrix {
         ///    1
         /// \note Use this function for a balanced binary tree.
         /// \details O(n) time complexity assuming the values are sorted.
-        void build(const T* values, std::size_t size) noexcept;
+        void build(const T* values, std::size_t size);
 
         /// \brief Builds a balanced binary tree from the given values.                                                         \n
         ///        For a balanced tree the values should be sorted in ascending order. (e.g 1, 2, 3, 4, 5, 6, 7, 8)             \n
@@ -109,7 +109,7 @@ namespace bardrix {
         /// \note Use this function for a balanced binary tree.
         /// \details O(n) time complexity assuming the values are sorted.
         template<typename Iterator, typename = std::enable_if_t<std::is_same_v<T, typename std::iterator_traits<Iterator>::value_type>>>
-        void build(Iterator begin, Iterator end) noexcept;
+        void build(Iterator begin, Iterator end);
 
         /// \brief Builds a balanced binary tree from the given values.                                             \n
         ///        For a balanced tree the values should be sorted in ascending order. (e.g 1, 2, 3, 4, 5, 6, 7, 8) \n
@@ -552,15 +552,17 @@ namespace bardrix {
 
     template<typename T>
     template<typename Iterator, typename>
-    void binary_tree<T>::build(const Iterator begin, const Iterator end) noexcept {
+    void binary_tree<T>::build(const Iterator begin, const Iterator end) {
+        clear();
         if (begin >= end) return;
+
         build(&(*begin), std::distance(begin, end));
     }
 
     template<typename T>
-    void binary_tree<T>::build(const T* values, std::size_t size) noexcept {
+    void binary_tree<T>::build(const T* values, std::size_t size) {
         clear();
-        if (size == 0) return;
+        if (size == 0 || values == nullptr) return;
 
         std::size_t mid = size / 2;
         root = std::make_unique<node>(values[mid]);
@@ -585,15 +587,16 @@ namespace bardrix {
 
     template<typename T>
     void binary_tree<T>::insert(const T* values, std::size_t size) noexcept {
+        if (values == nullptr) return;
+
         if (!root && size > 0) { // If the tree is empty
             root = std::make_unique<node>(values[0]);
             ++values;
             --size;
         }
 
-        for (std::size_t i = 0; i < size; ++i) {
+        for (std::size_t i = 0; i < size; ++i)
             insert(root, values[i]);
-        }
     }
 
     template<typename T>
@@ -728,7 +731,7 @@ namespace bardrix {
     // helper function for build
     template<typename T>
     void binary_tree<T>::build(std::unique_ptr<node>& current, const T* values, std::size_t size) {
-        if (size == 0) return;
+        if (size == 0 || values == nullptr) return;
         if (size == 1) {
             current = std::make_unique<node>(values[0]);
             return;
