@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.27)
 project(Bardrix)
-set(BARDRIX_VERSION 0.4.1)
+set(BARDRIX_VERSION 0.4.2)
 
 # Set C++ standard
 set(CMAKE_CXX_STANDARD 17)

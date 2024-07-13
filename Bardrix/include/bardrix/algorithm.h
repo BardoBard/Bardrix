@@ -89,7 +89,7 @@ namespace bardrix {
         ///    1
         /// \note Use this function for a balanced binary tree.
         /// \details O(n) time complexity assuming the values are sorted.
-        void build(const T* values, std::size_t size) noexcept;
+        void build(const T* values, std::size_t size);
 
         /// \brief Builds a balanced binary tree from the given values.                                                         \n
         ///        For a balanced tree the values should be sorted in ascending order. (e.g 1, 2, 3, 4, 5, 6, 7, 8)             \n
@@ -109,7 +109,7 @@ namespace bardrix {
         /// \note Use this function for a balanced binary tree.
         /// \details O(n) time complexity assuming the values are sorted.
         template<typename Iterator, typename = std::enable_if_t<std::is_same_v<T, typename std::iterator_traits<Iterator>::value_type>>>
-        void build(Iterator begin, Iterator end) noexcept;
+        void build(Iterator begin, Iterator end);
 
         /// \brief Builds a balanced binary tree from the given values.                                             \n
         ///        For a balanced tree the values should be sorted in ascending order. (e.g 1, 2, 3, 4, 5, 6, 7, 8) \n
@@ -187,7 +187,7 @@ namespace bardrix {
         /// \note Do not use this function for a balanced binary tree, use the build function instead.
         /// \details O(log n) time complexity assuming the binary tree is balanced. \n
         ///          O(n) time complexity in the worst case (when the tree is unbalanced).
-        void insert(const T* values, std::size_t size) noexcept;
+        void insert(const T* values, std::size_t size);
 
         /// \brief Inserts the given values into the binary tree.           \n
         ///        The values are inserted in the order they are given.     \n
@@ -208,7 +208,7 @@ namespace bardrix {
         /// \details O(log n) time complexity assuming the binary tree is balanced. \n
         ///          O(n) time complexity in the worst case (when the tree is unbalanced).
         template<typename Iterator, typename = std::enable_if_t<std::is_same_v<T, typename std::iterator_traits<Iterator>::value_type>>>
-        void insert(Iterator begin, Iterator end) noexcept;
+        void insert(Iterator begin, Iterator end);
 
         /// \brief Deletes a node from the binary tree.                                                                  \n
         ///        The node is replaced with a bigger value from the right child or a smaller value from the left child. \n
@@ -496,7 +496,7 @@ namespace bardrix {
         template<typename Iterator, typename = std::enable_if_t<
                 std::is_base_of_v<bardrix::shape, typename std::iterator_traits<Iterator>::value_type::element_type> &&
                 std::is_same_v<std::shared_ptr<typename std::iterator_traits<Iterator>::value_type::element_type>, typename std::iterator_traits<Iterator>::value_type>>>
-        void construct_longest_axis(const Iterator& begin, const Iterator& end) noexcept;
+        void construct_longest_axis(const Iterator& begin, const Iterator& end);
 
         /// \brief Gives all the shapes that intersect with the given ray, in the form of out_hits.
         /// \param ray The ray to check for intersections with the shapes.
@@ -525,7 +525,7 @@ namespace bardrix {
         template<typename Iterator, typename = std::enable_if_t<
                 std::is_base_of_v<bardrix::shape, typename std::iterator_traits<Iterator>::value_type::element_type> &&
                 std::is_same_v<std::shared_ptr<typename std::iterator_traits<Iterator>::value_type::element_type>, typename std::iterator_traits<Iterator>::value_type>>>
-        void construct_longest_axis(std::unique_ptr<bvh_tree::node>& current, const Iterator& begin, const Iterator& end) noexcept;
+        void construct_longest_axis(std::unique_ptr<bvh_tree::node>& current, const Iterator& begin, const Iterator& end);
 
         /// \brief Gives all the shapes that intersect with the given ray, in the form of out_hits. \n
         ///        This function is a helper function for the public intersect function.
@@ -552,15 +552,17 @@ namespace bardrix {
 
     template<typename T>
     template<typename Iterator, typename>
-    void binary_tree<T>::build(const Iterator begin, const Iterator end) noexcept {
+    void binary_tree<T>::build(const Iterator begin, const Iterator end) {
+        clear();
         if (begin >= end) return;
+
         build(&(*begin), std::distance(begin, end));
     }
 
     template<typename T>
-    void binary_tree<T>::build(const T* values, std::size_t size) noexcept {
+    void binary_tree<T>::build(const T* values, std::size_t size) {
         clear();
-        if (size == 0) return;
+        if (size == 0 || values == nullptr) return;
 
         std::size_t mid = size / 2;
         root = std::make_unique<node>(values[mid]);
@@ -584,16 +586,17 @@ namespace bardrix {
     }
 
     template<typename T>
-    void binary_tree<T>::insert(const T* values, std::size_t size) noexcept {
+    void binary_tree<T>::insert(const T* values, std::size_t size) {
+        if (values == nullptr) return;
+
         if (!root && size > 0) { // If the tree is empty
             root = std::make_unique<node>(values[0]);
             ++values;
             --size;
         }
 
-        for (std::size_t i = 0; i < size; ++i) {
+        for (std::size_t i = 0; i < size; ++i)
             insert(root, values[i]);
-        }
     }
 
     template<typename T>
@@ -605,7 +608,7 @@ namespace bardrix {
 
     template<typename T>
     template<typename Iterator, typename>
-    void binary_tree<T>::insert(Iterator begin, Iterator end) noexcept {
+    void binary_tree<T>::insert(Iterator begin, Iterator end) {
         if (begin >= end) return;
         insert(&(*begin), std::distance(begin, end));
     }
@@ -728,7 +731,7 @@ namespace bardrix {
     // helper function for build
     template<typename T>
     void binary_tree<T>::build(std::unique_ptr<node>& current, const T* values, std::size_t size) {
-        if (size == 0) return;
+        if (size == 0 || values == nullptr) return;
         if (size == 1) {
             current = std::make_unique<node>(values[0]);
             return;
@@ -797,7 +800,7 @@ namespace bardrix {
     // bvh_tree implementation start
 
     template<typename Iterator, typename>
-    void bvh_tree::construct_longest_axis(const Iterator& begin, const Iterator& end) noexcept {
+    void bvh_tree::construct_longest_axis(const Iterator& begin, const Iterator& end) {
         clear();
         if (begin >= end) return;
 
@@ -823,8 +826,7 @@ namespace bardrix {
 
     // helper function for construct_longest_axis
     template<typename Iterator, typename>
-    void bvh_tree::construct_longest_axis(std::unique_ptr<bvh_tree::node>& current, const Iterator& begin,
-                                 const Iterator& end) noexcept {
+    void bvh_tree::construct_longest_axis(std::unique_ptr<bvh_tree::node>& current, const Iterator& begin, const Iterator& end) {
         if (begin >= end) {
             current = nullptr;
             return;

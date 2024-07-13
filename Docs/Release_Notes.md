@@ -1,3 +1,24 @@
+# [v0.4.2](https://github.com/BardoBard/Bardrix/releases/tag/v0.4.2)
+
+**Full Changelog**: https://github.com/BardoBard/Bardrix/compare/v0.4.1...v0.4.2
+
+## Overview
+
+Fixed noexcept edge cases for `binary_tree`. \
+Updated installation guide to include C++17+ requirement.
+
+## Documentation Changes
+
+Added C++17+ requirement to [Installation](https://github.com/bardobard/bardrix/blob/v0.4.2/Docs/Installation.md). \
+Added table of contents to Examples for navigation.
+
+## Code Changes
+
+### Minor Changes
+
+Removed `noexcept` from `binary_tree` to avoid crashes on edge cases (e.g. `tree.build(v.begin() - 1, v.end())`). \
+Added `clear()` to `build(Iterator begin, Iterator end)` in `binary_tree` to avoid not clearing if begin >= end.
+
 # [v0.4.1](https://github.com/BardoBard/Bardrix/releases/tag/v0.4.1)
 
 **Full Changelog**: https://github.com/BardoBard/Bardrix/compare/v0.4.0...v0.4.1
